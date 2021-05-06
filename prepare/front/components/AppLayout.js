@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Proptypes from 'prop-types'
+import propTypes from 'prop-types'
 import {Navbar,Container,Row,Col,FormControl,Nav,Form,Button} from 'react-bootstrap'
 import {useSelector} from 'react-redux';
 import UserProfile from './UserProfile'
@@ -10,6 +10,7 @@ import styled, { createGlobalStyle } from 'styled-components';
     .container-true {
          margin: 20px !important;
     }
+    
     `
 
 const AppLayout = ({children}) => {
@@ -48,6 +49,6 @@ const AppLayout = ({children}) => {
     )
 }
 AppLayout.proptypes ={
-    children: Proptypes.node.isRequired,
+    children: propTypes.node.isRequired,
 }
 export default AppLayout

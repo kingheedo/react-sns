@@ -7,7 +7,7 @@ import { removePostOfMeAction } from '../reducers/user'
 import CommentForm from './CommentForm'
 import PostCardContent from './PostCardContent'
 import PostImages from './PostImages'
-
+import PropTypes, { object } from 'prop-types'
 
 const PostCard = ({post}) => {
     const [like, setLike] = useState(false)
@@ -114,5 +114,14 @@ const PostCard = ({post}) => {
         </div>
     )
 }
-
+PostCard.propTypes = {
+    post: PropTypes.shape({
+        id: PropTypes.number,
+        User: PropTypes.object,
+        Images: PropTypes.arrayOf(PropTypes.object),
+        Comments: PropTypes.arrayOf(PropTypes.object),
+        content: PropTypes.string,
+        createdAt: PropTypes.object,
+    }).isRequired,
+}
 export default PostCard
