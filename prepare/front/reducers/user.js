@@ -21,7 +21,7 @@ const dummyUser = (data) => ({
     id:1,
     Posts:[{id: 1}],
     Followings:[{nickname:'부기'},{nickname:'부기2'},{nickname:'부기3'}],
-    Followers:[{nickname: 'king'}]
+    Followers:[{nickname: 'king'}, {nickname: 'king1'}]
 
 })
 export const FOLLOW_REQUEST = 'FOLLOW_REQUEST';

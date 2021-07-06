@@ -78,7 +78,6 @@ function unfollowApi() {
 }
 function* unfollow (action){
     try{
-        yield delay(1000);
         yield put({
             type:UNFOLLOW_SUCCESS,
             data: action.data
