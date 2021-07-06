@@ -29,14 +29,16 @@ Array(number).fill().map(() => ({
         id: shortId.generate(),
         nickname: faker.name.findName(),
     },
-    Images: [{src: faker.random.image()}],
+    Images: [{
+        src: faker.image.image()
+    }],
     Comments:[{
         id: shortId.generate(),
         User: {
             id: shortId.generate(),
             nickname: faker.name.findName(),
         },
-        content: faker.lorem.paragraph(),
+        content: faker.lorem.sentence(),
     }]
     
 }))

@@ -1,11 +1,14 @@
-import React,{useState,useCallback} from 'react'
+import React,{useState,useCallback, useEffect} from 'react'
 import {Form,Button,Col} from 'react-bootstrap'
 import AppLayout from '../components/AppLayout'
 import Head from 'next/head'
+import Router from 'next/router'
 import useInput from '../hooks/useInput'
-import {useDispatch} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
+import { SIGN_UP_REQUEST } from '../reducers/user'
 const signup = () => {
     const dispatch = useDispatch();
+    const {me, signUpLoading, signUpDone} = useSelector(state => state.user)
     const [email, onChangeEmail] = useInput('');
     const [nickname, onChangeNickname] = useInput('');
     const [password, onChangePassword] = useInput('');
@@ -13,6 +16,18 @@ const signup = () => {
     const [passwordError, setPasswordError] = useState(false)
     const [checkbox, setCheckbox] = useState('')
     const [checkError, setCheckError] = useState(false)
+
+    useEffect(() => {
+        
+        if(signUpDone){
+            Router.push('/');
+        }
+    }, [signUpDone])
+    useEffect(() => {
+        if(me && me.id){
+            Router.replace('/');
+        }
+    }, [me && me.id])
     const onChangePasswordCheck = useCallback(
         (e) => {
             setPasswordCheck(e.target.value)
@@ -36,10 +51,10 @@ const signup = () => {
             if(!checkbox){
                 return setCheckError(true);
             }
-            // dispatch({
-            //     type: SIGN_UP_REQUEST,
-            //     data: {email, password, nickname}
-            // })
+            dispatch({
+                type: SIGN_UP_REQUEST,
+                data: {email, password, nickname}
+            })
         },
         [password,passwordCheck,checkbox],
     )
@@ -48,7 +63,7 @@ const signup = () => {
                 <Head>
                     <title>회원가입</title>
                 </Head>
-                <Form onSumbit={onSubmitHandler}>
+                <Form onSubmit={onSubmitHandler}>
                     <Form.Group as={Col} controlId="formGridEmail">
                     <Form.Label>이메일</Form.Label>
                     <Form.Control type="email" placeholder="이메일을 입력하세요." value={email} onChange={onChangeEmail} required/>
@@ -67,14 +82,14 @@ const signup = () => {
                     <Form.Group as={Col} controlId="formGridPasswordCheck">
                     <Form.Label>비밀번호 체크</Form.Label>
                     <Form.Control type="password" value={passwordCheck} onChange={onChangePasswordCheck} required/>
-                    {passwordCheck.length > 0 && passwordError && <div>비밀번호가 일치하지 않습니다.</div>}
+                    {passwordError && <div>비밀번호가 일치하지 않습니다.</div>}
                     </Form.Group>
 
                     <Form.Group id="formGridCheckbox">
                         <Form.Check type="checkbox" label="약관에 동의합니다." checked={checkbox} onChange={onChangeCheck}/>
                         {checkError && <div>약관 버튼을 클릭하세요.</div>}
                     </Form.Group>
-                    <Button variant="primary" type="submit">
+                    <Button disabled ={signUpLoading} variant="primary" type="submit">
                         Submit
                     </Button>
                 </Form>

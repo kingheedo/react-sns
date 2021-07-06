@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import {Card,Button,Image,ListGroup, OverlayTrigger, Tooltip} from 'react-bootstrap'
 import {Share,Heart,HeartFill,ChatDots,ThreeDots} from 'react-bootstrap-icons'
 import { useSelector,useDispatch } from 'react-redux'
@@ -7,9 +7,41 @@ import { removePostOfMeAction } from '../reducers/user'
 import CommentForm from './CommentForm'
 import PostCardContent from './PostCardContent'
 import PostImages from './PostImages'
-import PropTypes, { object } from 'prop-types'
+import PropTypes from 'prop-types'
+import FollowButton from './FollowButton'
 
 const PostCard = ({post}) => {
+    // const cardHeader = styled(Card.Header)`
+    // background : rgba(0,0,0,0);
+    
+    // `
+    const headerStyle = useMemo(() => ({
+        backgroundColor: 'rgba(0,0,0,0)'
+    }),[])
+
+    const ulStyle = useMemo(() => ({
+        margin:0,
+        padding:0,
+        listStyle:'none',
+        borderTop: '1px solid #f0f0f0',
+    }),[])
+
+    const liStyle = useMemo(() => ({
+        width:'25%',
+        borderRight: '1px solid #f0f0f0',
+        float: 'left',
+        textAlign: 'center',
+        margin:'12px 0',
+    }),[])
+
+    const spanStyle = useMemo(() => ({
+        lineHeight: '14px',
+        cursor:'pointer',
+        width:'100%',
+        fontSize:"16px"
+
+    }),[])
+    
     const [like, setLike] = useState(false)
     const [commentOpen, setCommentOpen] = useState(false)
     const id = useSelector(state => state.user.me?.id)
@@ -51,9 +83,13 @@ const PostCard = ({post}) => {
         }
         </Tooltip>
         );
+        
     return (
-        <div style={{margin: '100px 0 20px'}}>
+        <div style={{margin: '100px 0 20px',}}>
             <Card style={{ width: '33rem'}}>
+                <Card.Header style={headerStyle}>
+                    {id &&<FollowButton post = {post}/>}
+                </Card.Header>
                 {post.Images[0] && <PostImages images = {post.Images}/>}
                 <Card.Body style={{padding:0}}>
                     <div style={{padding:'24px'}}>
@@ -62,24 +98,24 @@ const PostCard = ({post}) => {
                         <PostCardContent postContent = {post.content}/>
                         </Card.Text>
                     </div>
-                    <ul style={{margin:0, padding:0, listStyle:'none', borderTop: '1px solid #f0f0f0'}}>
-                        <li style={{width:"25%",borderRight: '1px solid #f0f0f0',float: 'left',textAlign: 'center',margin:'12px 0'}}>
-                            <span style={{lineHeight:'14px',cursor:'pointer',width:'100%',fontSize:"16px"}}>
+                    <ul style={ulStyle}>
+                        <li style={liStyle}>
+                            <span style={spanStyle}>
                             <Share style={{width:'100%'}}/>
                             </span>
                         </li>
-                        <li style={{width:"25%",borderRight: '1px solid #f0f0f0',float: 'left',textAlign: 'center',margin:'12px 0'}}>
-                            <span style={{lineHeight:'14px',cursor:'pointer',width:'100%',fontSize:"16px"}}>
+                        <li style={liStyle}>
+                            <span style={spanStyle}>
                             {like?<HeartFill style={{width:'100%',color:"#dc3545"}} onClick={onToggleLike}/>:<Heart style={{width:'100%'}} onClick={onToggleLike}/>}
                             </span>
                         </li>
-                        <li style={{width:"25%",borderRight: '1px solid #f0f0f0',float: 'left',textAlign: 'center',margin:'12px 0'}}>
-                            <span style={{lineHeight:'14px',cursor:'pointer',width:'100%',fontSize:"16px"}}>
+                        <li style={liStyle}>
+                            <span style={spanStyle}>
                                 <ChatDots style={{width:'100%'}} onClick={OnToggleComment}/>
                             </span>
                             </li>
-                        <li style={{width:"25%",float: 'left',textAlign: 'center',margin:'12px 0'}}>
-                            <span style={{lineHeight:'14px',cursor:'pointer',width:'100%',fontSize:"16px"}}>
+                        <li style={liStyle}>
+                            <span style={spanStyle}>
                                 <OverlayTrigger
                                     placement="top"
                                     overlay={renderTooltip}

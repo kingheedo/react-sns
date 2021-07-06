@@ -5,12 +5,16 @@ import {useSelector} from 'react-redux';
 import UserProfile from './UserProfile'
 import LoginForm from './LoginForm'
 import styled, { createGlobalStyle } from 'styled-components';
+import Link from 'next/link';
 
  const Global = createGlobalStyle`
     .container-true {
          margin: 20px !important;
     }
     
+    a {
+        margin: 5px !important;
+    }
     `
 
 const AppLayout = ({children}) => {
@@ -24,14 +28,14 @@ const AppLayout = ({children}) => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav>
-                    <Nav.Link href="/">Home</Nav.Link>
-                    <Nav.Link href="/profile">프로필</Nav.Link>
+                    <Link href="/">Home</Link>
+                    <Link href="/profile">프로필</Link>
                 </Nav>
                 <Form inline>
                     <FormControl type="text" placeholder="Search" className="mr-sm-2" />
                     <Button variant="outline-success">찾기</Button>
                 </Form>
-                <Nav.Link href="/signup">회원가입</Nav.Link>
+                <Link href="/signup">회원가입</Link>
             </Navbar.Collapse>
         </Navbar>
         <Container fluid="true">

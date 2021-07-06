@@ -7,10 +7,10 @@ const Profile = () => {
     const {me} = useSelector(state => state.user)
 
     useEffect(() => {
-        if(!(me && me.id )){
+        if (!me){
             Router.push('/')
         }
-    }, [me && me.id])
+    }, [me])
     if(!me) {
     return null;
     }
@@ -20,8 +20,8 @@ const Profile = () => {
                 <title>내 프로필 | NodeBird</title>
             </Head>
             <AppLayout>
-                <div>팔로워</div>
-                <div>팔로잉</div>
+                {/* <FollowList header="팔로잉"/>
+                <FollowList header="팔로워"/> */}
             </AppLayout>
         </>
     )
