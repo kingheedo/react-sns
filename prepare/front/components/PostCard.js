@@ -93,7 +93,9 @@ const PostCard = ({post}) => {
                 {post.Images[0] && <PostImages images = {post.Images}/>}
                 <Card.Body style={{padding:0}}>
                     <div style={{padding:'24px'}}>
-                        <Card.Title><Image src="holder.js/171x180" roundedCircle />{post.User.nickname}</Card.Title>
+                        <Card.Title>
+                            {/* <Image src="holder.js/171x180" roundedCircle /> */}
+                        {post.User.nickname}</Card.Title>
                         <Card.Text>
                         <PostCardContent postContent = {post.content}/>
                         </Card.Text>
@@ -136,7 +138,7 @@ const PostCard = ({post}) => {
                 <ListGroup variant="flush" style={{marginTop: 20}}>
                     {post.Comments[0] && post.Comments.map((v) => (
                         <ListGroup.Item>
-                            <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" />
+                            {/* <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" /> */}
                             {v.User && v.User.userNickname}
                             <br/>
                             {v.content}

@@ -5,7 +5,7 @@ import Head from 'next/head'
 import Router from 'next/router'
 import useInput from '../hooks/useInput'
 import {useDispatch, useSelector} from 'react-redux'
-import { SIGN_UP_REQUEST } from '../reducers/user'
+import { SIGN_UP_REQUEST, SIGN_UP_RESET } from '../reducers/user'
 const signup = () => {
     const dispatch = useDispatch();
     const {me, signUpLoading, signUpDone} = useSelector(state => state.user)
@@ -18,9 +18,12 @@ const signup = () => {
     const [checkError, setCheckError] = useState(false)
 
     useEffect(() => {
-        
         if(signUpDone){
+            alert('회원가입이 완료되었습니다.');
             Router.push('/');
+            dispatch({
+                    type: SIGN_UP_RESET,
+                })
         }
     }, [signUpDone])
     useEffect(() => {

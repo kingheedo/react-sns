@@ -43,6 +43,7 @@ export const LOG_OUT_FAILURE = 'LOG_OUT_FAILURE';
 export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
+export const SIGN_UP_RESET = 'SIGN_UP_RESET';
 
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 
@@ -146,6 +147,9 @@ const reducer = (state = initialState, action) => {
             case SIGN_UP_FAILURE:
             draft.signUpLoading = false;
             draft.signUpError = action.error;
+            break;
+            case SIGN_UP_RESET:
+            draft.signUpDone = false;
             break;
 
             case REMOVE_POST_OF_ME:
