@@ -4,7 +4,7 @@ import { FOLLOW_FAILURE, FOLLOW_REQUEST, FOLLOW_SUCCESS, LOG_IN_FAILURE, LOG_IN_
 
 
 function signupApi(data){
-    return axios.post('http://localhost:3065/user/signUp',data);
+    return axios.post('/user/signUp',data);
 }
 function* signup(action) {
     const result = yield call(signupApi, action.data);
@@ -15,6 +15,7 @@ function* signup(action) {
         })
 
     }catch(err){
+        console.error(err)
         yield put ({
             type: SIGN_UP_FAILURE,
             error: err.response.data,
@@ -23,14 +24,14 @@ function* signup(action) {
 }
 
 function logInApi(data){
-    return axios.get('/api/login');
+    return axios.get('/user/login');
 }
 function* logIn(action) {
+    const result = yield call(logInApi, action.data);
     try{
-        yield delay(1000);
         yield put({
             type: LOG_IN_SUCCESS,
-            data: action.data,
+            data: result.data,
         })
 
     }catch(err){
