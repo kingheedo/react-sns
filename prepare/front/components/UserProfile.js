@@ -3,7 +3,7 @@ import {Button, Card} from 'react-bootstrap'
 import {useSelector} from 'react-redux'
 import styled from 'styled-components'
 import {useDispatch} from 'react-redux'
-import { LOG_OUT_REQUEST } from '../reducers/user'
+import { logoutRequestAction, LOG_OUT_REQUEST } from '../reducers/user'
 const CardLinkWrapper = styled.div`
     padding-top : 15px;
     border-top: 1px solid rgba(0, 0, 0, 0.125);
@@ -29,10 +29,9 @@ const UserProfile = () => {
     const logoutHandler = useCallback(
         (e) => {
             e.preventDefault()
-            dispatch({
-                type:LOG_OUT_REQUEST
-            })
-            
+            dispatch(
+                logoutRequestAction()
+            );
         },
         [],
     )

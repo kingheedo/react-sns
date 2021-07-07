@@ -15,15 +15,15 @@ export const initialState = {
     unfollowError: null,
     me: null,
 }
-const dummyUser = (data) => ({
-    ...data,
-    nickname:'닉네임',
-    id:1,
-    Posts:[{id: 1}],
-    Followings:[{nickname:'부기'},{nickname:'부기2'},{nickname:'부기3'}],
-    Followers:[{nickname: 'king'}, {nickname: 'king1'}]
+    // const dummyUser = (data) => ({
+    //     ...data,
+    //     nickname:'닉네임',
+    //     id:1,
+    //     Posts:[{id: 1}],
+    //     Followings:[{nickname:'부기'},{nickname:'부기2'},{nickname:'부기3'}],
+    //     Followers:[{nickname: 'king'}, {nickname: 'king1'}]
 
-})
+    // })
 export const FOLLOW_REQUEST = 'FOLLOW_REQUEST';
 export const FOLLOW_SUCCESS = 'FOLLOW_SUCCESS';
 export const FOLLOW_FAILURE = 'FOLLOW_FAILURE';
@@ -59,7 +59,19 @@ export const loginFailureAction = (data) => ({
     type: LOG_IN_FAILURE,
     data,
 }) 
+export const logoutRequestAction = (data) => ({
+  type: LOG_OUT_REQUEST,
+  data,
+});
 
+export const logoutSuccessAction = (data) => ({
+  type: LOG_OUT_SUCCESS,
+  data,
+});
+export const logoutFailureAction = (data) => ({
+  type: LOG_OUT_FAILURE,
+  data,
+});
 
 
 const reducer = (state = initialState, action) => {
@@ -108,12 +120,12 @@ const reducer = (state = initialState, action) => {
             case LOG_IN_SUCCESS:
             draft.logInLoading = false;
             draft.logInDone = true;
-            draft.me = dummyUser(action.data);
+            draft.me = action.data;
             break;
             
             case LOG_IN_FAILURE:
-            draft.logOutLoading = false;
-            draft.logOutError = action.error;
+            draft.logInLoading = false;
+            draft.logInError = action.error;
             break;
 
             case LOG_OUT_REQUEST:

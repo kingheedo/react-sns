@@ -1,5 +1,5 @@
-import React,{useCallback, useState} from 'react'
-import {Form,Col,Button,Row,Spinner} from 'react-bootstrap'
+import React,{useCallback, useEffect, useState} from 'react'
+import {Form,Col,Button,Row,} from 'react-bootstrap'
 import Link from 'next/link'
 import styled from 'styled-components'
 import useInput from '../hooks/useInput'
@@ -13,7 +13,14 @@ const LoginForm = () => {
     const dispatch =  useDispatch();
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
-    const {logInLoading} = useSelector(state => state.user)
+    const {logInLoading, logInError} = useSelector(state => state.user)
+
+    useEffect(() => {
+  if(logInError){
+    alert(logInError);
+  }
+  
+}, [logInError]);
 
     const onSubmitHandler = useCallback(
         (e) => {

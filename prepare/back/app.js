@@ -4,7 +4,13 @@ const app = express();
 const postRouter = require('./routes/post');
 const userRouter = require('./routes/user');
 const cors = require('cors');
+const passport = require('passport');
 const passportConfig = require('./passport');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const dotenv = require('dotenv');
+
+
 db.sequelize.sync()
 .then(() => {
     console.log('db 연결 성공')
@@ -12,12 +18,22 @@ db.sequelize.sync()
 .catch(console.error);
 
 passportConfig();
+dotenv.config();
 
+app.use(cookieParser(process.env.COOKIE_SECRET));
+app.use(session({
+    saveUninitialized: false,
+    resave: false,
+    secret: process.env.COOKIE_SECRET //쿠키와 이 secret을 알면 백엔드의 데이터를 복원할 수 있다. 위험하므로 숨겨야한다.
+}))
+app.use(passport.initialize());
+app.use(passport.session())
 
 app.use(cors({
     origin : 'http://localhost:3060',
     credentials: true,
 }))
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
