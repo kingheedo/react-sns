@@ -2,7 +2,7 @@ import React, { useCallback, useMemo, useState } from 'react'
 import {Card,Button,Image,ListGroup, OverlayTrigger, Tooltip} from 'react-bootstrap'
 import {Share,Heart,HeartFill,ChatDots,ThreeDots} from 'react-bootstrap-icons'
 import { useSelector,useDispatch } from 'react-redux'
-import { removePostRequestAction, REMOVE_POST_REQUEST } from '../reducers/post'
+import { LIKE_POST_REQUEST, removePostRequestAction, REMOVE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../reducers/post'
 import { removePostOfMeAction } from '../reducers/user'
 import CommentForm from './CommentForm'
 import PostCardContent from './PostCardContent'
@@ -42,16 +42,29 @@ const PostCard = ({post}) => {
 
     }),[])
     
-    const [like, setLike] = useState(false)
     const [commentOpen, setCommentOpen] = useState(false)
     const id = useSelector(state => state.user.me?.id)
     const dispatch = useDispatch();
-    const onToggleLike = useCallback(
+
+    const onUnLike = useCallback(
         () => {
-            setLike((prev)=> !prev)
+            dispatch({
+                type: UNLIKE_POST_REQUEST,
+                data: post.id
+            })
         },
         [],
     )
+    const onLike = useCallback(
+        () => {
+            dispatch({
+                type: LIKE_POST_REQUEST,
+                data: post.id
+            });
+        },
+        [],
+    )
+    
     const OnToggleComment = useCallback(
         () => {
             setCommentOpen((prev)=>!prev)
@@ -83,7 +96,7 @@ const PostCard = ({post}) => {
         }
         </Tooltip>
         );
-        
+    const like = post.Likers.find((v) => v.id === id);
     return (
         <div style={{margin: '100px 0 20px',}}>
             <Card style={{ width: '33rem'}}>
@@ -108,7 +121,10 @@ const PostCard = ({post}) => {
                         </li>
                         <li style={liStyle}>
                             <span style={spanStyle}>
-                            {like?<HeartFill style={{width:'100%',color:"#dc3545"}} onClick={onToggleLike}/>:<Heart style={{width:'100%'}} onClick={onToggleLike}/>}
+                            {like
+                                ?<HeartFill style={{width:'100%',color:"#dc3545"}} onClick={onUnLike}/>
+                                :<Heart style={{width:'100%'}} onClick={onLike}/>
+                                }
                             </span>
                         </li>
                         <li style={liStyle}>
@@ -161,8 +177,6 @@ PostCard.propTypes = {
         content: PropTypes.string,
         createdAt: PropTypes.string,
         Likers: PropTypes.arrayOf(PropTypes.object),
-        RetweetId: PropTypes.number,
-        Retweet: PropTypes.objectOf(PropTypes.any),
     }).isRequired,
 }
 export default PostCard
