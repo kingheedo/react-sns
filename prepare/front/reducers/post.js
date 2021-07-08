@@ -21,27 +21,27 @@ export const initialState = {
 
 }
 
-export const generateDummyPost = (number) =>
-Array(number).fill().map(() => ({
-    id: shortId.generate(),
-    content: faker.lorem.paragraph(),
-    User: {
-        id: shortId.generate(),
-        nickname: faker.name.findName(),
-    },
-    Images: [{
-        src: faker.image.image()
-    }],
-    Comments:[{
-        id: shortId.generate(),
-        User: {
-            id: shortId.generate(),
-            nickname: faker.name.findName(),
-        },
-        content: faker.lorem.sentence(),
-    }]
+// export const generateDummyPost = (number) =>
+// Array(number).fill().map(() => ({
+//     id: shortId.generate(),
+//     content: faker.lorem.paragraph(),
+//     User: {
+//         id: shortId.generate(),
+//         nickname: faker.name.findName(),
+//     },
+//     Images: [{
+//         src: faker.image.image()
+//     }],
+//     Comments:[{
+//         id: shortId.generate(),
+//         User: {
+//             id: shortId.generate(),
+//             nickname: faker.name.findName(),
+//         },
+//         content: faker.lorem.sentence(),
+//     }]
     
-}))
+// }))
 // const dummyPost = (data) => ({
 //     id: data.id,
 //     content: data.content,

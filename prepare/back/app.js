@@ -47,6 +47,7 @@ app.get('/api', (req, res) =>{
 })
 
 app.use('/post', postRouter);
+app.use('/posts', postsRouter);
 app.use('/user', userRouter);
 
 app.use((err, req, res, next) => {

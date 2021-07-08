@@ -159,7 +159,7 @@ PostCard.propTypes = {
         Images: PropTypes.arrayOf(PropTypes.object),
         Comments: PropTypes.arrayOf(PropTypes.object),
         content: PropTypes.string,
-        createdAt: PropTypes.object,
+        createdAt: PropTypes.string,
         Likers: PropTypes.arrayOf(PropTypes.object),
         RetweetId: PropTypes.number,
         Retweet: PropTypes.objectOf(PropTypes.any),

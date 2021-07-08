@@ -67,4 +67,6 @@ router.post('/:postId/addcomment', isLoggedIn, async(req, res, next) => {
     }
 })
 
+
+
 module.exports = router;

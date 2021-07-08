@@ -1,6 +1,9 @@
 import produce from 'immer';
 
 export const initialState = {
+    loadUserLoading : false,
+    loadUserDone: false,
+    loadUserError: null,
     signUpLoading : false,
     signUpDone: false,
     signUpError: null,
@@ -24,6 +27,10 @@ export const initialState = {
     //     Followers:[{nickname: 'king'}, {nickname: 'king1'}]
 
     // })
+export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
+export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
+export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
+
 export const FOLLOW_REQUEST = 'FOLLOW_REQUEST';
 export const FOLLOW_SUCCESS = 'FOLLOW_SUCCESS';
 export const FOLLOW_FAILURE = 'FOLLOW_FAILURE';
@@ -78,6 +85,23 @@ export const logoutFailureAction = (data) => ({
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
         switch(action.type) {
+            case LOAD_USER_REQUEST:
+            draft.loadUserLoading = true;
+            draft.loadUserError = null;
+            draft.loadUserDone = false;
+            break;
+
+            case LOAD_USER_SUCCESS:
+            draft.loadUserLoading = false;
+            draft.loadUserDone = true;
+            draft.me = action.data;
+            break;
+            
+            case LOAD_USER_FAILURE:
+            draft.loadUserLoading = false;
+            draft.loadUserError = action.error;
+            break;
+
             case FOLLOW_REQUEST:
             draft.followLoading = true;
             draft.followError = null;

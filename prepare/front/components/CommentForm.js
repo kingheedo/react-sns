@@ -23,6 +23,7 @@ const CommentForm = ({post}) => {
     const onSubmitComment = useCallback(
         (e) => {
             e.preventDefault();
+
             if(!(me && me.id)){
             Router.push('/signup')
             }
@@ -43,7 +44,7 @@ const CommentForm = ({post}) => {
                     <Form.Label srOnly>Example textarea</Form.Label>
                     <Form.Control as="textarea" rows={3} value={commentText} onChange={OnChangeCommentText}/>
                 </Form.Group>
-                <Button disabled={addCommentLoading} style={{position:'absolute', right:0,}} variant="primary" type="submit">
+                <Button disabled={addCommentLoading || !commentText} style={{position:'absolute', right:0,}} variant="primary" type="submit">
                 {addCommentLoading ? 'Loading…' : '게시'}
                 </Button>
             </Form>
