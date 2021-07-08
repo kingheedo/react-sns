@@ -1,8 +1,8 @@
-import {all, fork, put, takeLatest, delay, throttle } from 'redux-saga/effects'
+import {all, fork, put, takeLatest, delay, throttle, call } from 'redux-saga/effects'
 import axios from 'axios'
 import { ADD_COMMENT_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_POST_FAILURE, ADD_POST_REQUEST, ADD_POST_SUCCESS, generateDummyPost, LOAD_POSTS_FAILURE, LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, REMOVE_POST_FAILURE, REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS } from '../reducers/post';
 import shortId from 'shortid'
-import { REMOVE_POST_OF_ME } from '../reducers/user';
+import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
 
 
@@ -24,22 +24,23 @@ function* loadPosts (action){
         })
     }
 }
-function addPostApi() {
-    return axios.get('api/addpost',data)
+function addPostApi(data) {
+    return axios.post('/post/addpost', {content: data})
 }
 function* addPost (action){
+
+    const result = yield call(addPostApi, action.data)
     try{
-        yield delay(1000);
-        const id = shortId.generate();
         yield put({
             type: ADD_POST_SUCCESS,
-            data:{
-                id,
-                content: action.data
-            }
+            data: result.data
+        });
+        yield put({
+            type: ADD_POST_TO_ME,
+            data: result.data.id
         })
-        
     }catch(err){
+        console.error(err)
         yield put({
             type:ADD_POST_FAILURE,
             data: err.response.data
@@ -52,7 +53,6 @@ function removePostApi() {
 }
 function* removePost (action){
     try{
-        yield delay(1000);
         yield put({
             type: REMOVE_POST_SUCCESS,
             data: action.data
@@ -63,21 +63,24 @@ function* removePost (action){
         })
         
     }catch(err){
+        console.error(err)
+
         yield put({
             type:REMOVE_POST_FAILURE,
             data: err.response.data
         })
     }
 }
-function addCommentApi() {
-    return axios.get('api/addcomment',data)
+
+function addCommentApi(data) {
+    return axios.post(`/post/${data.postId}/addcomment`,data)
 }
 function* addComment (action){
+    const result = yield call(addCommentApi, action.data)
     try{
-        yield delay(1000);
         yield put({
             type: ADD_COMMENT_SUCCESS,
-            data: action.data
+            data: result.data
         })
         
     }catch(err){

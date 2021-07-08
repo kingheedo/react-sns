@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import useInput from '../hooks/useInput'
 import {useDispatch, useSelector} from 'react-redux'
 import { loginRequestAction } from '../reducers/user'
+
 const FormLabel = styled(Form.Label)`
     padding: 10px;
 `
@@ -16,11 +17,11 @@ const LoginForm = () => {
     const {logInLoading, logInError} = useSelector(state => state.user)
 
     useEffect(() => {
-  if(logInError){
-    alert(logInError);
-  }
-  
-}, [logInError]);
+        if(logInError){
+            alert(logInError);
+        }
+        
+        }, [logInError]);
 
     const onSubmitHandler = useCallback(
         (e) => {

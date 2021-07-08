@@ -1,5 +1,5 @@
     import React from 'react';
-    import Proptypes from 'prop-types';
+    import PropTypes from 'prop-types';
     import Head from 'next/head';
     import 'bootstrap/dist/css/bootstrap.css'
     import wrapper from '../store/configureStore'
@@ -16,7 +16,7 @@
         )
     }
     NodeBird.proptypes = {
-        Component :Proptypes.elementType.isRequired
+        Component :PropTypes.elementType.isRequired
     }
 
     export default wrapper.withRedux(withReduxSaga(NodeBird));

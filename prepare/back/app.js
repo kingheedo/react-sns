@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('./models');
 const app = express();
 const postRouter = require('./routes/post');
+const postsRouter = require('./routes/posts');
 const userRouter = require('./routes/user');
 const cors = require('cors');
 const passport = require('passport');
@@ -9,6 +10,7 @@ const passportConfig = require('./passport');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
+const morgan = require('morgan');
 
 
 db.sequelize.sync()
@@ -17,6 +19,7 @@ db.sequelize.sync()
 })
 .catch(console.error);
 
+app.use(morgan('dev'));
 passportConfig();
 dotenv.config();
 
@@ -45,6 +48,10 @@ app.get('/api', (req, res) =>{
 
 app.use('/post', postRouter);
 app.use('/user', userRouter);
+
+app.use((err, req, res, next) => {
+
+})
 
 app.listen(3065, () =>{
     console.log('서버 실행중')

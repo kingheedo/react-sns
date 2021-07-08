@@ -1,5 +1,5 @@
 const express = require('express');
-const { User, Post } = require('../models');
+const { User, Post, Comment } = require('../models');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const passport = require('passport');
@@ -25,6 +25,42 @@ router.post('/signUp', isNotLoggedIn, async(req, res, next) => {
        next(error)
    }
 })
+
+router.get('/login', async(req, res, next) => {
+   try{
+       if(req.user){
+        const user = await User.findOne({
+        where: {id: req.user.id},
+        attributes: {
+            exclude: ['password']
+        },
+        include: [
+        {
+            model: Post,
+            attributes: ['id']
+        },{
+            model: User,
+            as: 'Followings',
+            attributes:['id']
+            
+        },
+        {
+            model: User,
+            as: 'Followers',
+            attributes:['id']
+        }]
+    });
+    res.status(200).json(user)
+    } else{
+        res.status(200).json(null);
+    }
+    
+   }catch(err){
+       console.error(err);
+       next(err);
+    }
+});
+
 router.post('/login',isNotLoggedIn, (req, res, next) => {
     passport.authenticate('local', (err, user, info) =>{
     if(err){

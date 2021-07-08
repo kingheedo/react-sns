@@ -3,7 +3,7 @@ import {Form,Button} from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 import useInput from '../hooks/useInput'
-import {addComment} from '../reducers/post'
+import {addComment, ADD_COMMENT_REQUEST} from '../reducers/post'
 import Link from 'next/link'
 import Router from 'next/router'
 const CommentForm = ({post}) => {
@@ -29,14 +29,10 @@ const CommentForm = ({post}) => {
             if(!me){
                 return null;
             }
-            dispatch(addComment({
-                content: commentText,
-                postId: post.id,
-                User:{
-                    userId: id,
-                    userNickname: nickname,
-                }
-            }))
+            dispatch({
+                type: ADD_COMMENT_REQUEST,
+                data: {content: commentText, postId: post.id, userId: id}
+            })
         },
         [me,commentText,me && me.id],
     )

@@ -24,7 +24,7 @@ function* signup(action) {
 }
 
 function logInApi(data){
-    return axios.post('/user/login',data);
+    return axios.post('/user/login', data);
 }
 function* logIn(action) {
     const result = yield call(logInApi, action.data);
@@ -35,6 +35,7 @@ function* logIn(action) {
         })
 
     }catch(err){
+        console.error(err)
         yield put ({
             type: LOG_IN_FAILURE,
             error: err.response.data,
@@ -53,8 +54,11 @@ function* logOut(){
             type:LOG_OUT_SUCCESS
         })
     }catch(err){
+        console.error(err)
+
         yield put({
-            type:LOG_OUT_FAILURE
+            type:LOG_OUT_FAILURE,
+            error: err.response.data
         })
     }
 }
@@ -70,7 +74,9 @@ function* follow (action){
         })
     }catch(err){
         yield put({
-            type:UNFOLLOW_FAILURE
+            type:UNFOLLOW_FAILURE,
+            error: err.response.data
+
         })
     }
 }
@@ -86,7 +92,9 @@ function* unfollow (action){
         })
     }catch(err){
         yield put({
-            type:UNFOLLOW_FAILURE
+            type:UNFOLLOW_FAILURE,
+            error: err.response.data
+
         })
     }
 }

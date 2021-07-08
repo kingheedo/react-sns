@@ -4,7 +4,6 @@ import styled from 'styled-components';
 import {useDispatch, useSelector} from 'react-redux'
 import { addPostRequestAction } from '../reducers/post';
 import useInput from '../hooks/useInput';
-
 const PostForm = ({me}) => {
     const {addPostDone} = useSelector(state => state.post)
     const dispatch = useDispatch()

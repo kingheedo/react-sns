@@ -2,6 +2,8 @@ import {all, fork, take, put, takeEvery, takeLatest, delay} from 'redux-saga/eff
 import axios from 'axios';
 
 axios.defaults.baseURL = 'http://localhost:3065';
+axios.defaults.withCredentials = true;
+
 import userSaga from './user';
 import postSaga from './post'
 export default function* rootSaga() {

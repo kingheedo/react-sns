@@ -139,7 +139,7 @@ const PostCard = ({post}) => {
                     {post.Comments[0] && post.Comments.map((v) => (
                         <ListGroup.Item>
                             {/* <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" /> */}
-                            {v.User && v.User.userNickname}
+                            {v.UserId && v.User.nickname}
                             <br/>
                             {v.content}
                         </ListGroup.Item>
@@ -160,6 +160,9 @@ PostCard.propTypes = {
         Comments: PropTypes.arrayOf(PropTypes.object),
         content: PropTypes.string,
         createdAt: PropTypes.object,
+        Likers: PropTypes.arrayOf(PropTypes.object),
+        RetweetId: PropTypes.number,
+        Retweet: PropTypes.objectOf(PropTypes.any),
     }).isRequired,
 }
 export default PostCard

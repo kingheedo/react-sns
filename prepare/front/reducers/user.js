@@ -45,6 +45,7 @@ export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
 export const SIGN_UP_RESET = 'SIGN_UP_RESET';
 
+export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
 
 export const loginRequestAction = (data) => ({
@@ -164,6 +165,9 @@ const reducer = (state = initialState, action) => {
             draft.signUpDone = false;
             break;
 
+            case ADD_POST_TO_ME:
+                draft.me.Posts.unshift({id: action.data.id})
+            break;
             case REMOVE_POST_OF_ME:
                 draft.me.Posts = draft.me.Posts.filter((v) => v.id !== action.data)
             break;
