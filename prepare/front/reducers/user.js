@@ -16,6 +16,9 @@ export const initialState = {
     unfollowLoading : false,
     unfollowDone: false,
     unfollowError: null,
+    changeNickNameLoading : false,
+    changeNickNameError : null,
+    changeNickNameDone : false,
     me: null,
 }
     // const dummyUser = (data) => ({
@@ -51,6 +54,10 @@ export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST';
 export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE';
 export const SIGN_UP_RESET = 'SIGN_UP_RESET';
+
+export const CHANGE_NICKNAME_REQUEST = 'CHANGE_NICKNAME_REQUEST';
+export const CHANGE_NICKNAME_SUCCESS = 'CHANGE_NICKNAME_SUCCESS';
+export const CHANGE_NICKNAME_FAILURE = 'CHANGE_NICKNAME_FAILURE';
 
 export const ADD_POST_TO_ME = 'ADD_POST_TO_ME';
 export const REMOVE_POST_OF_ME = 'REMOVE_POST_OF_ME';
@@ -185,15 +192,33 @@ const reducer = (state = initialState, action) => {
             draft.signUpLoading = false;
             draft.signUpError = action.error;
             break;
+
             case SIGN_UP_RESET:
             draft.signUpDone = false;
+            break;
+
+            case CHANGE_NICKNAME_REQUEST:
+            draft.changeNickNameLoading = true;
+            draft.changeNickNameError = null;
+            draft.changeNickNameDone = false;
+            break;
+
+            case CHANGE_NICKNAME_SUCCESS:
+            draft.changeNickNameLoading = false;
+            draft.changeNickNameDone = true;
+            draft.me.nickname = action.data.nickname
+            break;
+            
+            case CHANGE_NICKNAME_FAILURE:
+            draft.changeNickNameLoading = false;
+            draft.changeNickNameError = action.error;
             break;
 
             case ADD_POST_TO_ME:
                 draft.me.Posts.unshift({id: action.data.id})
             break;
             case REMOVE_POST_OF_ME:
-                draft.me.Posts = draft.me.Posts.filter((v) => v.id !== action.data)
+                draft.me.Posts = draft.me.Posts.filter((v) => v.id !== action.data.PostId)
             break;
 
             default: break;

@@ -100,4 +100,21 @@ router.post('/logout',isLoggedIn, (req, res, next) => {
     req.session.destroy(); //세션에 저장된 쿠키랑 아이디 없애기
     res.send('ok');
 });
+
+router.patch('/nickname', isLoggedIn, async(req, res ,next) => {
+    try{
+        await User.update({
+            nickname: req.body.nickname,
+        },{
+            where: { id: req.user.id}
+        })
+        res.status(200).json({nickname : req.body.nickname})
+    }catch(err){
+        console.error(err);
+        next(err)
+    }
+})
+
+
+
 module.exports = router;

@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import  Router  from 'next/router'
 import AppLayout from '../components/AppLayout'
 import FollowList from '../components/FollowList'
+import NickNameEditForm from '../components/NickNameEditForm'
 const Profile = () => {
     const {me} = useSelector(state => state.user)
 
@@ -21,6 +22,7 @@ const Profile = () => {
                 <title>내 프로필 | NodeBird</title>
             </Head>
             <AppLayout>
+                <NickNameEditForm/>
                 <FollowList header="팔로잉" data={me.Followings}/>
                 <FollowList header="팔로워" data={me.Followers}/>
             </AppLayout>

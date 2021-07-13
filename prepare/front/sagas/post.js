@@ -20,7 +20,7 @@ function* loadPosts (){
     }catch(err){
         yield put({
             type:LOAD_POSTS_FAILURE,
-            data: err.response.data
+            error: err.response.data
         })
     }
 }
@@ -44,31 +44,31 @@ function* addPost (action){
         console.error(err)
         yield put({
             type:ADD_POST_FAILURE,
-            data: err.response.data
+            error: err.response.data
         })
     }
 }
 
-function removePostApi() {
-    return axios.get('api/addcomment',data)
+function removePostApi(data) {
+    return axios.delete(`/post/${data}/remove`)
 }
 function* removePost (action){
+    const result = yield call(removePostApi, action.data)
     try{
         yield put({
             type: REMOVE_POST_SUCCESS,
-            data: action.data
+            data: result.data
         })
         yield put({
             type: REMOVE_POST_OF_ME,
-            data: action.data
+            data: result.data
         })
         
     }catch(err){
         console.error(err)
-
         yield put({
             type:REMOVE_POST_FAILURE,
-            data: err.response.data
+            error: err.response.data
         })
     }
 }

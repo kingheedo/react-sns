@@ -101,7 +101,11 @@ const PostCard = ({post}) => {
         <div style={{margin: '100px 0 20px',}}>
             <Card style={{ width: '33rem'}}>
                 <Card.Header style={headerStyle}>
-                    {id &&<FollowButton post = {post}/>}
+                    {/* 아이디가 post의 userid와 같다면 안보이게 */}
+                    {id && post.User.id === id
+                    ? null
+                    : <FollowButton post = {post}/>
+                    }
                 </Card.Header>
                 {post.Images[0] && <PostImages images = {post.Images}/>}
                 <Card.Body style={{padding:0}}>
