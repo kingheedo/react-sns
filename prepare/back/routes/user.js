@@ -132,4 +132,21 @@ router.patch('/:userId/follow', isLoggedIn, async(req, res ,next) => {
     }
 })
 
+router.delete('/:userId/unfollow', isLoggedIn, async(req, res ,next) => {
+    try{
+        const user = await User.findOne({
+            // 팔로잉 아이디를 찾고 나의팔로잉수를 하나증가 팔로잉아이디의 팔로워숫자 하나증가
+            where: {id: req.params.userId}
+        })
+        if(!user) {
+            res.status(403).send('없는 사용자입니다.')
+        }
+        await user.removeFollowers(req.user.id);
+        res.status(200).json({id: user.id, nickname: user.nickname})
+    }catch(err){
+        console.error(err);
+        next(err)
+    }
+})
+
 module.exports = router;

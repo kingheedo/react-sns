@@ -120,14 +120,15 @@ function* follow (action){
     }
 }
 
-function unfollowApi() {
-    return axios.get('api/unfollow')
+function unfollowApi(data) {
+    return axios.delete(`/user/${data}/unfollow`)
 }
 function* unfollow (action){
+    const result = yield call(unfollowApi, action.data)
     try{
         yield put({
             type:UNFOLLOW_SUCCESS,
-            data: action.data
+            data: result.data
         })
     }catch(err){
         yield put({
