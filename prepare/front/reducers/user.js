@@ -16,6 +16,9 @@ export const initialState = {
     unfollowLoading : false,
     unfollowDone: false,
     unfollowError: null,
+    removeFollowerLoading : false,
+    removeFollowerDone: false,
+    removeFollowerError: null,
     changeNickNameLoading : false,
     changeNickNameError : null,
     changeNickNameDone : false,
@@ -41,6 +44,10 @@ export const FOLLOW_FAILURE = 'FOLLOW_FAILURE';
 export const UNFOLLOW_REQUEST = 'UNFOLLOW_REQUEST';
 export const UNFOLLOW_SUCCESS = 'UNFOLLOW_SUCCESS';
 export const UNFOLLOW_FAILURE = 'UNFOLLOW_FAILURE';
+
+export const REMOVE_FOLLOWER_REQUEST = 'REMOVE_FOLLOWER_REQUEST';
+export const REMOVE_FOLLOWER_SUCCESS = 'REMOVE_FOLLOWER_SUCCESS';
+export const REMOVE_FOLLOWER_FAILURE = 'REMOVE_FOLLOWER_FAILURE';
 
 export const LOG_IN_REQUEST = 'LOG_IN_REQUEST';
 export const LOG_IN_SUCCESS = 'LOG_IN_SUCCESS';
@@ -118,7 +125,7 @@ const reducer = (state = initialState, action) => {
             case FOLLOW_SUCCESS:
             draft.followLoading = false;
             draft.followDone = true;
-            draft.me.Followings.push({id: action.data});
+            draft.me.Followings.push(action.data);
             break;
             
             case FOLLOW_FAILURE:
@@ -141,6 +148,23 @@ const reducer = (state = initialState, action) => {
             case UNFOLLOW_FAILURE:
             draft.unfollowLoading = false;
             draft.unfollowError = action.error;
+            break;
+
+            case REMOVE_FOLLOWER_REQUEST:
+            draft.removeFollowerLoading = true;
+            draft.removeFollowerError = null;
+            draft.removeFollowerDone = false;
+            break;
+
+            case REMOVE_FOLLOWER_SUCCESS:
+            draft.removeFollowerLoading = false;
+            draft.removeFollowerDone = true;
+            draft.me.Followers = draft.me.Followers.filter((v) => v.id !== action.data.UserId)
+            break;
+            
+            case REMOVE_FOLLOWER_FAILURE:
+            draft.removeFollowerLoading = false;
+            draft.removeFollowerError = action.error;
             break;
 
             case LOG_IN_REQUEST:

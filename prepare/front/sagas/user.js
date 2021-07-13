@@ -88,7 +88,6 @@ function changeNickNameApi(data){
 function* changeNickName(action){
     const result = yield call(changeNickNameApi, action.data)
     try{
-        console.log(result.data)
         yield put({
             type: CHANGE_NICKNAME_SUCCESS,
             data: result.data
@@ -102,18 +101,19 @@ function* changeNickName(action){
     }
 }
 
-function followApi() {
-    return axios.get('api/follow')
+function followApi(data) {
+    return axios.patch(`/user/${data}/follow`)
 }
 function* follow (action){
+    const result = yield call(followApi, action.data)
     try{
         yield put({
             type:FOLLOW_SUCCESS,
-            data: action.data
+            data: result.data
         })
     }catch(err){
         yield put({
-            type:UNFOLLOW_FAILURE,
+            type:FOLLOW_FAILURE,
             error: err.response.data
 
         })
