@@ -118,7 +118,6 @@ router.patch('/nickname', isLoggedIn, async(req, res ,next) => {
 router.patch('/:userId/follow', isLoggedIn, async(req, res ,next) => {
     try{
         const user = await User.findOne({
-            // 팔로잉 아이디를 찾고 나의팔로잉수를 하나증가 팔로잉아이디의 팔로워숫자 하나증가
             where: {id: req.params.userId}
         })
         if(!user) {
@@ -135,7 +134,6 @@ router.patch('/:userId/follow', isLoggedIn, async(req, res ,next) => {
 router.delete('/:userId/unfollow', isLoggedIn, async(req, res ,next) => {
     try{
         const user = await User.findOne({
-            // 팔로잉 아이디를 찾고 나의팔로잉수를 하나증가 팔로잉아이디의 팔로워숫자 하나증가
             where: {id: req.params.userId}
         })
         if(!user) {
@@ -149,7 +147,6 @@ router.delete('/:userId/unfollow', isLoggedIn, async(req, res ,next) => {
     }
 })
 
-<<<<<<< HEAD
 
 router.get('/followers', isLoggedIn, async(req, res ,next) => {
     try{
@@ -184,7 +181,6 @@ router.get('/followings', isLoggedIn, async(req, res ,next) => {
 router.delete('/follower/:userId', isLoggedIn, async(req, res, next) => {
     try{
         const user = await User.findOne({
-            // 팔로잉 아이디를 찾고 나의팔로잉수를 하나증가 팔로잉아이디의 팔로워숫자 하나증가
             where: {id: req.params.userId}
         })
         if(!user) {
@@ -197,6 +193,4 @@ router.delete('/follower/:userId', isLoggedIn, async(req, res, next) => {
         next(error)
     }
 })
-=======
->>>>>>> 66f3c64a6e0999ae86cbc4ba49c06a4f40bfbe4b
 module.exports = router;
