@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, Button, CardGroup,ListGroup } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
-import { FOLLOW_REQUEST, UNFOLLOW_REQUEST } from '../reducers/user'
+import { REMOVE_FOLLOWER_REQUEST, UNFOLLOW_REQUEST } from '../reducers/user'
 const FollowList = ({header,data}) => {
     const dispatch = useDispatch()
     const onCancel = (id) => () => {
@@ -11,13 +11,13 @@ const FollowList = ({header,data}) => {
             type: UNFOLLOW_REQUEST,
             data : id
         })
+    }
 
             dispatch({
                 type: REMOVE_FOLLOWER_REQUEST,
                 data: id
             })
         
-    }
     }
     
 
@@ -31,7 +31,7 @@ const FollowList = ({header,data}) => {
                                 <Card.Title>{v.nickname}</Card.Title>
                                 </Card.Body>
                                 <Card.Footer>
-                                <Button onClick={onCancel(i.id)}>X</Button>
+                                <Button onClick={onCancel(v.id)}>X</Button>
                                 </Card.Footer>
                             </Card>
                     
