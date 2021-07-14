@@ -149,6 +149,7 @@ router.delete('/:userId/unfollow', isLoggedIn, async(req, res ,next) => {
     }
 })
 
+<<<<<<< HEAD
 
 router.get('/followers', isLoggedIn, async(req, res ,next) => {
     try{
@@ -196,4 +197,6 @@ router.delete('/follower/:userId', isLoggedIn, async(req, res, next) => {
         next(error)
     }
 })
+=======
+>>>>>>> 66f3c64a6e0999ae86cbc4ba49c06a4f40bfbe4b
 module.exports = router;
