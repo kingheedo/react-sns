@@ -3,7 +3,7 @@ const multer = require('multer');
 const path = require('path'); //노드에서 제공
 const fs = require('fs');
 
-const { Post, Comment, Image, User } = require('../models');
+const { Post, Comment, Image, User, Hashtag } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const router = express.Router();
 
@@ -40,10 +40,17 @@ router.get('/loadpost', isNotLoggedIn, async(req, res, next) => { //개시글 �
 
 router.post('/addpost', isLoggedIn, upload.none(), async(req, res, next) => { // 게시글 업로드
     try{
+        const hashtags = req.body.content.match(/#[^\s#]+/g);
         const post = await Post.create({
             content: req.body.content,
             UserId: req.user.id,
         })
+        if(hashtags){
+          const result =  await Promise.all(hashtags.map((tag) => Hashtag.findOrCreate({
+             where:  {name: tag.slice(1).toLowerCase()}
+            }))); //[[노드, true], [리액트, true]]
+            await post.addHashtags(result.map((v) => v[0]));
+        }
         if(req.body.image){
             if(Array.isArray(req.body.image)) {
                 const images = await Promise.all(req.body.image.map((image) => Image.create({src: image})));
@@ -53,6 +60,7 @@ router.post('/addpost', isLoggedIn, upload.none(), async(req, res, next) => { //
                 await post.addImages(image)
             }
         }
+        
         const fullPost = await Post.findOne({
             where: {id : post.id},
             include:[{
