@@ -2,16 +2,16 @@ import React, { useCallback, useEffect, useRef } from 'react'
 import {Form,Button} from 'react-bootstrap';
 import styled from 'styled-components';
 import {useDispatch, useSelector} from 'react-redux'
-import { addPostRequestAction ,UPLOAD_IMAGES_REQUEST } from '../reducers/post';
+import { addPostRequestAction ,ADD_POST_REQUEST,REMOVE_IMAGE,UPLOAD_IMAGES_REQUEST } from '../reducers/post';
 import useInput from '../hooks/useInput';
 const PostForm = ({me}) => {
-    const {addPostDone} = useSelector(state => state.post)
+    const {addPostDone,imagePaths} = useSelector(state => state.post)
     const dispatch = useDispatch()
     const imageUpload = useRef()
-    const [content,onChangeContent,setContent] = useInput('')
+    const [text,onChangeText,setText] = useInput('')
     useEffect(() => {
         if(addPostDone){
-            setContent('')
+            setText('')
         }
         
     }, [addPostDone])
@@ -25,10 +25,21 @@ const PostForm = ({me}) => {
     const onSumbitUpload = useCallback(
         (e) => {
             e.preventDefault();
-            dispatch(addPostRequestAction(content))
+            if(!text || !text.trim()){
+                return alert('게시글을 작성하세요')
+            }
+            const formData = new FormData();
+            imagePaths.forEach((p) => {
+            formData.append('image', p);
+            });
+            formData.append('content', text);
+            dispatch({
+            type: ADD_POST_REQUEST,
+            data: formData,
+            });
             
         },
-        [content],
+        [text,imagePaths],
     )
     const onChangeImages = useCallback(
         (e) => {
@@ -44,17 +55,38 @@ const PostForm = ({me}) => {
         },
         [],
     )
+    const onRemoveImage = useCallback(
+        (index) => () => {
+           dispatch({
+               type: REMOVE_IMAGE,
+               data: index
+           }) 
+        },
+        [],
+    )
     return (
         <Form onSubmit={onSumbitUpload} encType="multipart/form-data">
+            <div>
             <Form.Group>
-                <Form.Label>게시물 작성하기</Form.Label>
-                <Form.Control as="textarea" rows={3} value={content} onChange={onChangeContent} />
-                    <Button style={{float: 'right', marginTop: '1rem'}} type="submit" >게시</Button>
+                <Form.Label visuallyHidden>게시물 작성하기</Form.Label>
+                <Form.Control as="textarea" rows={3} value={text} onChange={onChangeText} />
                     <Form.File.Input type="file" name="image" ref={imageUpload} onChange={onChangeImages} multiple hidden />
-                    <Button style={{float: 'left', marginTop: '1rem'}}  onClick = {onClickImageUpload}>이미지업로드</Button>
+                    <Button style={{marginTop: '1rem'}}  onClick = {onClickImageUpload}>이미지업로드</Button>
+                    <Button style={{float: 'right', marginTop: '1rem'}} type="submit" >게시</Button>
             </Form.Group>
-            
+            </div>
+            <div style={{display: 'flex', marginTop:'20px'}}>
+                {imagePaths.map((v,i) => (
+                    <div key={i} style={{marginRight:'5px'}}>
+                        <img src={`http://localhost:3065/${v}`} alt={v} style= {{width: '220px'}}/>
+                        <div>
+                            <Button onClick={onRemoveImage(i)}>제거</Button>
+                        </div>
+                    </div>
+                ))}
+            </div>
         </Form>
+        
     )
 }
 

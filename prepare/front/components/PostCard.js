@@ -99,7 +99,7 @@ const PostCard = ({post}) => {
     const like = post.Likers.find((v) => v.id === id);
     return (
         <div style={{margin: '100px 0 20px',}}>
-            <Card style={{ width: '33rem'}}>
+            <Card style={{ width: '33rem',}}>
                 <Card.Header style={headerStyle}>
                     {/* 아이디가 post의 userid와 같다면 안보이게 */}
                     {id && post.User.id === id
@@ -107,7 +107,9 @@ const PostCard = ({post}) => {
                     : <FollowButton post = {post}/>
                     }
                 </Card.Header>
-                {post.Images[0] && <PostImages images = {post.Images}/>}
+                <div style={{display:'flex'}}>
+                    {post.Images[0] && <PostImages  images = {post.Images}/>}
+                </div>
                 <Card.Body style={{padding:0}}>
                     <div style={{padding:'24px'}}>
                         <Card.Title>

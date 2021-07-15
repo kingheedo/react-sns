@@ -25,12 +25,12 @@ function* loadPosts (){
     }
 }
 function addPostApi(data) {
-    return axios.post('/post/addpost', {content: data})
+    return axios.post('/post/addpost', data) //formData는 바로 data로 정의
 }
 function* addPost (action){
 
-    const result = yield call(addPostApi, action.data)
     try{
+    const result = yield call(addPostApi, action.data)
         yield put({
             type: ADD_POST_SUCCESS,
             data: result.data
@@ -53,8 +53,9 @@ function removePostApi(data) {
     return axios.delete(`/post/${data}/remove`)
 }
 function* removePost (action){
-    const result = yield call(removePostApi, action.data)
     try{
+    const result = yield call(removePostApi, action.data)
+
         yield put({
             type: REMOVE_POST_SUCCESS,
             data: result.data
@@ -77,8 +78,9 @@ function addCommentApi(data) {
     return axios.post(`/post/${data.postId}/addcomment`,data)
 }
 function* addComment (action){
-    const result = yield call(addCommentApi, action.data)
     try{
+    const result = yield call(addCommentApi, action.data)
+
         yield put({
             type: ADD_COMMENT_SUCCESS,
             data: result.data
@@ -95,8 +97,9 @@ function likePostApi(data) {
     return axios.patch(`/post/${data}/like`)
 }
 function* likePost (action){
-    const result = yield call(likePostApi, action.data)
     try{
+    const result = yield call(likePostApi, action.data)
+
         yield put({
             type: LIKE_POST_SUCCESS,
             data: result.data

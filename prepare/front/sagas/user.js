@@ -6,8 +6,8 @@ function loadUserApi(data){
     return axios.get('/user/login');
 }   
 function* loadUser() {
-    const result = yield call(loadUserApi);
     try{
+    const result = yield call(loadUserApi);
         yield put({
             type: LOAD_USER_SUCCESS,
             data: result.data,
@@ -26,8 +26,8 @@ function signupApi(data){
     return axios.post('/user/signUp',data);
 }
 function* signup(action) {
-    const result = yield call(signupApi, action.data);
     try{
+    const result = yield call(signupApi, action.data);
         yield put({
             type: SIGN_UP_SUCCESS,
             data: result.data,
@@ -46,8 +46,8 @@ function logInApi(data){
     return axios.post('/user/login', data);
 }
 function* logIn(action) {
-    const result = yield call(logInApi, action.data);
     try{
+    const result = yield call(logInApi, action.data);
         yield put({
             type: LOG_IN_SUCCESS,
             data: result.data,
@@ -86,8 +86,8 @@ function changeNickNameApi(data){
     return axios.patch('/user/nickname', {nickname: data})
 }
 function* changeNickName(action){
-    const result = yield call(changeNickNameApi, action.data)
     try{
+    const result = yield call(changeNickNameApi, action.data)
         yield put({
             type: CHANGE_NICKNAME_SUCCESS,
             data: result.data
@@ -105,8 +105,8 @@ function followApi(data) {
     return axios.patch(`/user/${data}/follow`)
 }
 function* follow (action){
-    const result = yield call(followApi, action.data)
     try{
+    const result = yield call(followApi, action.data)
         yield put({
             type:FOLLOW_SUCCESS,
             data: result.data
@@ -124,8 +124,8 @@ function unfollowApi(data) {
     return axios.delete(`/user/${data}/unfollow`)
 }
 function* unfollow (action){
-    const result = yield call(unfollowApi, action.data)
     try{
+    const result = yield call(unfollowApi, action.data)
         yield put({
             type:UNFOLLOW_SUCCESS,
             data: result.data
@@ -143,8 +143,8 @@ function loadfollowersApi(data) {
     return axios.get(`/user/followers`)
 }
 function* loadfollowers (action){
-    const result = yield call(loadfollowersApi, action.data)
     try{
+    const result = yield call(loadfollowersApi, action.data)
         yield put({
             type:LOAD_FOLLOWERS_SUCCESS,
             data: result.data
@@ -162,8 +162,8 @@ function loadfollowingsApi(data) {
     return axios.get(`/user/followings`)
 }
 function* loadfollowings (action){
-    const result = yield call(loadfollowingsApi, action.data)
     try{
+    const result = yield call(loadfollowingsApi, action.data)
         yield put({
             type:LOAD_FOLLOWINGS_SUCCESS,
             data: result.data
@@ -181,8 +181,8 @@ function removefollowerApi(data) {
     return axios.delete(`/user/follower/${data}`)
 }
 function* removefollower (action){
-    const result = yield call(removefollowerApi, action.data)
     try{
+    const result = yield call(removefollowerApi, action.data)
         yield put({
             type:REMOVE_FOLLOWER_SUCCESS,
             data: result.data

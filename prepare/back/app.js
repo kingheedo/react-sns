@@ -11,13 +11,15 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
-
+const path = require('path');
 
 db.sequelize.sync()
 .then(() => {
     console.log('db 연결 성공')
 })
 .catch(console.error);
+
+app.use('/', express.static(path.join(__dirname, 'uploads')))
 
 app.use(morgan('dev'));
 passportConfig();

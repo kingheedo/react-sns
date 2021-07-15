@@ -21,7 +21,7 @@ const PostImages = ({images}) => {
     if(images.length === 1){
         return (
             <>    
-            <Card.Img style={{width: "100%" }}  variant="top" alt={images[0].src} src={images[0].src} onClick={onZoom} />
+            <Card.Img style={{width: "100%" }}  variant="top" alt={images[0].src} src={`http://localhost:3065/${images[0].src}`} onClick={onZoom} />
             {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
             </>
         )
@@ -29,15 +29,15 @@ const PostImages = ({images}) => {
     if(images.length === 2){
         return (
             <>  
-            <Card.Img style={{width: "50%", display:'flex' }}  variant="top" alt={images[0].src} src={images[0].src} onClick={onZoom} />
-            <Card.Img style={{width: "50%", display:'flex' }}  variant="top" alt={images[1].src} src={images[1].src} onClick={onZoom} />
+            <Card.Img style={{width: "50%",  }}  variant="top" alt={images[0].src} src={`http://localhost:3065/${images[0].src}`} onClick={onZoom} />
+            <Card.Img style={{width: "50%",  }}  variant="top" alt={images[1].src} src={`http://localhost:3065/${images[1].src}`} onClick={onZoom} />
             {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
             </>
         )
     }
     return (
         <>
-            <Card.Img style={{width: "100%" }}  variant="top" alt={images[0].src} src={images[0].src} onClick={onZoom} />
+            <Card.Img style={{width: "100%" }}  variant="top" alt={images[0].src} src={`http://localhost:3065/${images[0].src}`} onClick={onZoom} />
             {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
         </>
     )

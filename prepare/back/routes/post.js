@@ -13,6 +13,20 @@ try{
     console.log('uploads 폴더가 없으므로 생성합니다.');
     fs.mkdirSync('uploads');
 }
+const upload = multer ({
+    storage: multer.diskStorage({ //실습할 때 잠깐 디스크 저장소에 저장하지만 나중에 aws에 배포할떄는 s3서비스로 대체할 것이다.
+        destination(req, file, done){
+            done(null, 'uploads');
+        },
+        // 노드는 중복되는 파일의 이름을 덮어씌운다. 이를 해결하기 위해 일이름의 중복성을 시간을 파일이름 뒤에 나타내어 해결하려한다.
+        filename(req, file, done){ //희도.png
+            const ext = path.extname(file.originalname); // 확장자 추출(.png), 파
+            const basename = path.basename(file.originalname, ext); //희도
+            done(null, basename + '_' + new Date().getTime() + ext); //희도12345.png
+        },
+        }),
+        limits: {fileSize: 20 * 1024 * 1024}, //20MB
+});
 
 router.get('/loadpost', isNotLoggedIn, async(req, res, next) => { //개시글 불러오기
     try{
@@ -23,22 +37,35 @@ router.get('/loadpost', isNotLoggedIn, async(req, res, next) => { //개시글 �
     }
 })
 
-router.post('/addpost', isLoggedIn, async(req, res, next) => { // 게시글 업로드
+
+router.post('/addpost', isLoggedIn, upload.none(), async(req, res, next) => { // 게시글 업로드
     try{
-        const newPost = await Post.create({
+        const post = await Post.create({
             content: req.body.content,
             UserId: req.user.id,
         })
+        if(req.body.image){
+            if(Array.isArray(req.body.image)) {
+                const images = await Promise.all(req.body.image.map((image) => Image.create({src: image})));
+                await post.addImages(images)
+            }else{
+                const image = await Image.create({src: req.body.image})
+                await post.addImages(image)
+            }
+        }
         const fullPost = await Post.findOne({
-            where: {id : newPost.id},
+            where: {id : post.id},
             include:[{
+                model: Image,
+            },{
                 model: User,
                 attributes: ['id', 'nickname']
             },{
                 model: Comment,
-                attributes:['id', 'nickname']
-            },{
-                model: Image
+                include: [{
+                model: User, //댓글 작성자
+                attributes: ['id', 'nickname'],
+            }]
             },{
                 model: User,
                 attributes: ['id'],
@@ -46,25 +73,14 @@ router.post('/addpost', isLoggedIn, async(req, res, next) => { // 게시글 업�
             }]
         })
         res.status(201).json(fullPost);
+        console.log(req.body)
     }catch(error){
         console.error(error);
         next(error)
     }
 })
 
-const upload = multer({
-    storage: multer.diskStorage({
-        destination(req, file, done) {
-            done(null, 'uploads');
-        },
-        filename(req, file, done){ //희도.png
-            const ext = path.extname(file.originalname); //확장자 추출(.png)
-            const basename = path.basename(file.originalname, ext); //희도
-            done(null, basename + new Date().getTime() + ext); //희도12314.png
-        },
-    }),
-    limit: {fileSize: 20 * 1024 * 1024},
-})
+
 router.post('/images', isLoggedIn, upload.array('image'), async(req, res, next) => { //Post /post/images
     console.log(req.files);
     res.json(req.files.map((v) => v.filename))
