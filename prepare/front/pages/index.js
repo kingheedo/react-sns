@@ -8,6 +8,7 @@ import { LOAD_USER_REQUEST, LOG_IN_REQUEST } from '../reducers/user'
 const Home = () => {
     const dispatch = useDispatch();
     const me = useSelector(state => state.user.me)
+    const {retweetError} = useSelector(state => state.post)
     const {mainPosts,hasMorePosts,loadPostLoading} = useSelector(state => state.post);
     useEffect(() => {
         dispatch({
@@ -19,7 +20,11 @@ const Home = () => {
             type: LOAD_POSTS_REQUEST,
         })
     }, [])
-
+        useEffect(() => {
+        if(retweetError){
+            return alert(retweetError)
+        }
+    }, [retweetError])
     useEffect(() => {
         function onScroll() {
             if(window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300){

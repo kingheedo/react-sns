@@ -1,8 +1,8 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {Card,Button,Image,ListGroup, OverlayTrigger, Tooltip} from 'react-bootstrap'
 import {Share,Heart,HeartFill,ChatDots,ThreeDots} from 'react-bootstrap-icons'
 import { useSelector,useDispatch } from 'react-redux'
-import { LIKE_POST_REQUEST, removePostRequestAction, REMOVE_POST_REQUEST, UNLIKE_POST_REQUEST } from '../reducers/post'
+import { LIKE_POST_REQUEST, removePostRequestAction, REMOVE_POST_REQUEST, RETWEET_REQUEST, UNLIKE_POST_REQUEST } from '../reducers/post'
 import { removePostOfMeAction } from '../reducers/user'
 import CommentForm from './CommentForm'
 import PostCardContent from './PostCardContent'
@@ -10,7 +10,16 @@ import PostImages from './PostImages'
 import PropTypes from 'prop-types'
 import FollowButton from './FollowButton'
 
+
+
+
+
+
 const PostCard = ({post}) => {
+    const [commentOpen, setCommentOpen] = useState(false)
+    const id = useSelector(state => state.user.me?.id)
+    const {retweetError} = useSelector(state => state.post)
+    const dispatch = useDispatch();
     // const cardHeader = styled(Card.Header)`
     // background : rgba(0,0,0,0);
     
@@ -42,27 +51,45 @@ const PostCard = ({post}) => {
 
     }),[])
     
-    const [commentOpen, setCommentOpen] = useState(false)
-    const id = useSelector(state => state.user.me?.id)
-    const dispatch = useDispatch();
+    
+
+    
+    const onRetweet = useCallback(
+        () => {
+            if(!id){
+                return alert('로그인 후 이용하실 수 있습니다.')
+            }
+            dispatch({
+                type: RETWEET_REQUEST,
+                data: post.id
+            })
+        },
+        [id],
+    )
 
     const onUnLike = useCallback(
         () => {
+            if(!id){
+                return alert('로그인 후 이용하실 수 있습니다.')
+            }
             dispatch({
                 type: UNLIKE_POST_REQUEST,
                 data: post.id
             })
         },
-        [],
+        [id],
     )
     const onLike = useCallback(
         () => {
+            if(!id){
+                return alert('로그인 후 이용하실 수 있습니다.')
+            }
             dispatch({
                 type: LIKE_POST_REQUEST,
                 data: post.id
             });
         },
-        [],
+        [id],
     )
     
     const OnToggleComment = useCallback(
@@ -74,6 +101,9 @@ const PostCard = ({post}) => {
     const onPostDelete = useCallback(
         (e) => {
             e.preventDefault()
+            if(!id){
+                return alert('로그인 후 이용하실 수 있습니다.')
+            }
             dispatch({
                 type: REMOVE_POST_REQUEST,
                 data: post.id
@@ -111,7 +141,26 @@ const PostCard = ({post}) => {
                     {post.Images[0] && <PostImages  images = {post.Images}/>}
                 </div>
                 <Card.Body style={{padding:0}}>
-                    <div style={{padding:'24px'}}>
+                    {post.RetweetId && post.Retweet
+                    ?
+                    (<Card style={{ width: '31rem', display:'inline-block',margin:'0.9rem' }}>
+                        <Card.Header style={headerStyle}>
+                            {post.RetweetId? `${post.User.nickname}님이 리트윗 하셨습니다.` : null}
+                        </Card.Header>
+                        <div style={{display:'flex'}}>
+                            {post.Retweet.Images[0] && <PostImages  images = {post.Retweet.Images}/>}
+                            </div>
+                            <div style={{padding:'24px'}}>
+                            <Card.Title>
+                                {/* <Image src="holder.js/171x180" roundedCircle /> */}
+                            {post.Retweet.User.nickname}</Card.Title>
+                            <Card.Text>
+                            <PostCardContent postContent = {post.Retweet.content}/>
+                            </Card.Text>
+                        </div>
+                    </Card>)
+                    :
+                    (<div style={{padding:'24px'}}>
                         <Card.Title>
                             {/* <Image src="holder.js/171x180" roundedCircle /> */}
                         {post.User.nickname}</Card.Title>
@@ -119,10 +168,12 @@ const PostCard = ({post}) => {
                         <PostCardContent postContent = {post.content}/>
                         </Card.Text>
                     </div>
+                    )
+                    }
                     <ul style={ulStyle}>
                         <li style={liStyle}>
                             <span style={spanStyle}>
-                            <Share style={{width:'100%'}}/>
+                            <Share style={{width:'100%'}} onClick={onRetweet}/>
                             </span>
                         </li>
                         <li style={liStyle}>
@@ -151,6 +202,7 @@ const PostCard = ({post}) => {
                             </span>
                         </li>
                     </ul>
+                    
                 </Card.Body>
             </Card>
             {commentOpen &&
@@ -183,6 +235,8 @@ PostCard.propTypes = {
         content: PropTypes.string,
         createdAt: PropTypes.string,
         Likers: PropTypes.arrayOf(PropTypes.object),
+        RetweetId: PropTypes.number,
+        RetweetId: PropTypes.objectOf(PropTypes.any),
     }).isRequired,
 }
 export default PostCard
