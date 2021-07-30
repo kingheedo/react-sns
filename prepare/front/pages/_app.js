@@ -9,7 +9,7 @@
             <>
                 <Head>
                     <meta charSet="utf-8"/>
-                    <title>NodeBird</title>
+                    <title>트위터</title>
                 </Head>
                 <Component/>
             </>

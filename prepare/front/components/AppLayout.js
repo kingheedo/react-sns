@@ -24,7 +24,7 @@ const AppLayout = ({children}) => {
        <div>
            <Global/>
            <Navbar bg="light" expand="lg">
-        <Navbar.Brand>노드버드</Navbar.Brand>
+        <Navbar.Brand>트위터</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
                 <Nav>

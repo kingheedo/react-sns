@@ -28,9 +28,38 @@ const upload = multer ({
         limits: {fileSize: 20 * 1024 * 1024}, //20MB
 });
 
-router.get('/loadpost', isNotLoggedIn, async(req, res, next) => { //개시글 불러오기
+router.get('/:postId', isNotLoggedIn, async(req, res, next) => { //개시글 불러오기
     try{
-        Post.findAll
+      const post = await Post.findOne({
+          where : {id : req.params.postId},
+          include: [{
+              model: Post,
+              as: 'Retweet',
+              include:[{
+                  model : User,
+                  attributes: ['id', 'nickname'],
+              },{
+                  model : Image,
+              }]
+          },{
+              model: User,
+              attributes: ['id', 'nickname']
+          },{
+              model: Comment,
+              include: [{
+                  model :User,
+                  attributes : ['id', 'nickname']
+              }]
+          },{
+              model: Image,
+          },{
+              model: User,
+              attributes: ['id','nickname'],
+              as: 'Likers'
+          }
+        ]
+      })
+      res.status(200).json(post);
     }catch(error){
         console.error(error);
         next(error)

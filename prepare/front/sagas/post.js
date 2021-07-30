@@ -1,10 +1,28 @@
 import {all, fork, put, takeLatest, delay, throttle, call } from 'redux-saga/effects'
 import axios from 'axios'
-import { ADD_COMMENT_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_POST_FAILURE, ADD_POST_REQUEST, ADD_POST_SUCCESS, generateDummyPost, LIKE_POST_FAILURE, LIKE_POST_REQUEST, LIKE_POST_SUCCESS, LOAD_POSTS_FAILURE, LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, REMOVE_POST_FAILURE, REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, RETWEET_FAILURE, RETWEET_REQUEST, RETWEET_SUCCESS, UNLIKE_POST_FAILURE, UNLIKE_POST_REQUEST, UNLIKE_POST_SUCCESS, UPLOAD_IMAGES_FAILURE, UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS } from '../reducers/post';
+import { ADD_COMMENT_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_POST_FAILURE, ADD_POST_REQUEST, ADD_POST_SUCCESS, generateDummyPost, LIKE_POST_FAILURE, LIKE_POST_REQUEST, LIKE_POST_SUCCESS, LOAD_POSTS_FAILURE, LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POST_FAILURE, LOAD_POST_REQUEST, LOAD_POST_SUCCESS, REMOVE_POST_FAILURE, REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, RETWEET_FAILURE, RETWEET_REQUEST, RETWEET_SUCCESS, UNLIKE_POST_FAILURE, UNLIKE_POST_REQUEST, UNLIKE_POST_SUCCESS, UPLOAD_IMAGES_FAILURE, UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS } from '../reducers/post';
 import shortId from 'shortid'
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
 
+function loadPostApi(data) {
+    return axios.get(`/post/${data}`)
+}
+function* loadPost (action){
+    try{
+        const result = yield call(loadPostApi, action.data )
+        yield put({
+            type: LOAD_POST_SUCCESS,
+            data: result.data
+        })
+        
+    }catch(err){
+        yield put({
+            type:LOAD_POST_FAILURE,
+            error: err.response.data
+        })
+    }
+}
 
 function loadPostsApi(lastId) {
     return axios.get(`/posts?lastId=${lastId || 0}`)
@@ -175,6 +193,9 @@ function* retweet(action) {
 }
 
 
+function* watchLoadPost() {
+  yield throttle(2000, LOAD_POST_REQUEST, loadPost);
+}
 function* watchLoadPosts() {
   yield throttle(2000, LOAD_POSTS_REQUEST, loadPosts);
 }
@@ -202,6 +223,7 @@ function* watchRetweet() {
 
 export default function* postSaga(){
     yield all([
+        fork(watchLoadPost),
         fork(watchLoadPosts),
         fork(watchAddPost),
         fork(watchRemovePost),
