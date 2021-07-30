@@ -5,7 +5,10 @@ import Head from 'next/head'
 import Router from 'next/router'
 import useInput from '../hooks/useInput'
 import {useDispatch, useSelector} from 'react-redux'
-import { SIGN_UP_REQUEST, SIGN_UP_RESET } from '../reducers/user'
+import { LOAD_MY_INFO_REQUEST, SIGN_UP_REQUEST, SIGN_UP_RESET } from '../reducers/user'
+import axios from 'axios'
+import { END } from 'redux-saga'
+import wrapper from '../store/configureStore'
 const signup = () => {
     const dispatch = useDispatch();
     const {me, signUpLoading, signUpDone} = useSelector(state => state.user)
@@ -21,9 +24,6 @@ const signup = () => {
         if(signUpDone){
             alert('회원가입이 완료되었습니다.');
             Router.push('/');
-            dispatch({
-                    type: SIGN_UP_RESET,
-                })
         }
     }, [signUpDone])
     useEffect(() => {
@@ -99,5 +99,17 @@ const signup = () => {
             </AppLayout>
     )
 }
-
+export const getServerSideProps = wrapper.getServerSideProps(async (context) => {
+    const cookie = context.req ? context.req.headers.cookie : '';
+    axios.defaults.headers.Cookie = '';
+    if(cookie && context.req){
+        axios.defaults.headers.Cookie = cookie;
+    }
+    context.store.dispatch({
+        type: LOAD_MY_INFO_REQUEST
+    });
+    
+    context.store.dispatch(END);
+    await context.store.sagaTask.toPromise();
+})
 export default signup

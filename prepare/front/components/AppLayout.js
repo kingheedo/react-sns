@@ -35,7 +35,9 @@ const AppLayout = ({children}) => {
                     <FormControl type="text" placeholder="Search" className="mr-sm-2" />
                     <Button variant="outline-success">찾기</Button>
                 </Form>
-                <Link href="/signup">회원가입</Link>
+                {!me && <Link href="/signup">회원가입</Link>
+                }
+               
             </Navbar.Collapse>
         </Navbar>
         <Container fluid="true">
