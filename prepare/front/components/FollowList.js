@@ -3,27 +3,27 @@ import { Card, Button, CardGroup,ListGroup } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { REMOVE_FOLLOWER_REQUEST, UNFOLLOW_REQUEST } from '../reducers/user'
-const FollowList = ({header,data}) => {
+const FollowList = ({header,data,mutate}) => {
     const dispatch = useDispatch()
     const onCancel = (id) => () => {
         if(header === '팔로잉'){
         dispatch({
             type: UNFOLLOW_REQUEST,
             data : id
-        })
+        });
+        mutate((prev) => prev.filter((data) => data.id !== id))
     }
 
             dispatch({
                 type: REMOVE_FOLLOWER_REQUEST,
                 data: id
             })
-        
+        mutate((prev) => prev.filter((data) => data.id !== id))
     }
     
 
 
-    const CardContent = data.map((v,i) => (
-                    <>
+    const CardContent = data && data.map((v,i) => (
                   
                             <Card >
                                 <Card.Header>{header}</Card.Header>
@@ -35,10 +35,8 @@ const FollowList = ({header,data}) => {
                                 </Card.Footer>
                             </Card>
                     
-                    </>
     ))
     return (
-        <>
             <ListGroup  style={{marginBottom:'5rem'}}>
                 <ListGroup.Item>
                     <CardGroup>
@@ -46,7 +44,6 @@ const FollowList = ({header,data}) => {
                     </CardGroup>
                 </ListGroup.Item>
             </ListGroup>
-        </>
     )
 }
 FollowList.propTypes ={

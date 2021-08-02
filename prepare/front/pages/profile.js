@@ -1,25 +1,26 @@
-import React, { useEffect } from 'react'
-import Head from 'next/head'
-import { useDispatch, useSelector } from 'react-redux'
-import  Router  from 'next/router'
-import AppLayout from '../components/AppLayout'
-import FollowList from '../components/FollowList'
-import NickNameEditForm from '../components/NickNameEditForm'
-import { LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST, LOAD_MY_INFO_REQUEST } from '../reducers/user'
-import axios from 'axios'
-import wrapper from '../store/configureStore'
-import {END} from 'redux-saga'
+import React, { useEffect } from 'react';
+import Head from 'next/head';
+import { useDispatch, useSelector } from 'react-redux';
+import  Router  from 'next/router';
+import AppLayout from '../components/AppLayout';
+import FollowList from '../components/FollowList';
+import NickNameEditForm from '../components/NickNameEditForm';
+import { LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST, LOAD_MY_INFO_REQUEST } from '../reducers/user';
+import axios from 'axios';
+import wrapper from '../store/configureStore';
+import {END} from 'redux-saga';
+import useSWR from 'swr';
+
+const fetcher = (url) => axios.get(url, {withCredentials: true}).then((result) => result.data)
 const Profile = () => {
     const {me} = useSelector(state => state.user)
+
     const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch({
-            type: LOAD_FOLLOWERS_REQUEST,
-        })
-        dispatch({
-            type: LOAD_FOLLOWINGS_REQUEST,
-        })
-    })
+
+    const {data: followersData, error: followerError, mutate: mutateFollower} = useSWR('http://localhost:3065/user/followers', fetcher)
+    const {data: followingsData, error: followingError,mutate: mutateFollowing} = useSWR('http://localhost:3065/user/followings', fetcher)
+    
+    
     useEffect(() => {
         if (!me){
             Router.push('/')
@@ -28,6 +29,10 @@ const Profile = () => {
     if(!me) {
     return null;
     }
+    if(followerError || followingError) {
+        console.error(followerError || followingError);
+        return '팔로잉/팔로워 로딩중 오류가 발생하였습니다.'
+    }
     return (
         <>
             <Head>
@@ -35,8 +40,8 @@ const Profile = () => {
             </Head>
             <AppLayout>
                 <NickNameEditForm/>
-                <FollowList header="팔로잉" data={me.Followings}/>
-                <FollowList header="팔로워" data={me.Followers}/>
+                <FollowList header="팔로잉" mutate ={mutateFollowing} data={followingsData}/>
+                <FollowList header="팔로워" mutate ={mutateFollower}   data={followersData}/>
             </AppLayout>
         </>
     )
@@ -50,6 +55,12 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
     }
     context.store.dispatch({
         type: LOAD_MY_INFO_REQUEST
+    });
+    context.store.dispatch({
+        type: LOAD_FOLLOWERS_REQUEST,
+    });
+    context.store.dispatch({
+        type: LOAD_FOLLOWINGS_REQUEST,
     });
     
     context.store.dispatch(END);
