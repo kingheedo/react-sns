@@ -1,10 +1,10 @@
 const express = require('express');
-const { User, Post, Comment } = require('../models');
+const { User, Post, Comment, Image } = require('../models');
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const {isLoggedIn, isNotLoggedIn} = require('./middlewares')
-
+const {Op} = require('sequelize');
 router.get('/login', async(req, res, next) => {
    try{
         if(req.user){
@@ -103,6 +103,58 @@ router.get('/:userId', async(req, res, next) => {
        console.error(err);
        next(err);
     }
+});
+
+router.get('/:userId/posts', async (req, res, next) => { //GET /user/1/posts
+    try{
+        const where ={UserId : req.params.userId}
+        if (parseInt(req.query.lastId, 10)){ //초기 로딩이 아닐때
+            where.id = {[Op.lt]: parseInt(req.query.lastId, 10)} //보다 작은
+            
+        }
+        const posts = await Post.findAll({
+            where,
+            limit :10,
+                //limit과 offset 방식은 중간에 데이터가 삽입되거나 삭제될때 오류가 발생할수 있기 때문에 잘 사용 x
+                // 2차원 배열인이유는 여러기준으로 정렬할수 있다.
+                order: [
+                ['createdAt', 'DESC'],
+            ],
+            include: [{
+                model: User,
+                attributes: ['id', 'nickname'],
+            },{
+                model: Image,
+            },{
+                model : Comment,
+                include: [{
+                    model: User,
+                    attributes: ['id', 'nickname'],
+                    order:[['createdAt','DESC']],
+                }],
+            },{
+                model: User, // 좋아요 누른사람
+                as: 'Likers',
+                attributes: ['id'],
+            },{
+            model: Post,
+            as: 'Retweet',
+            include: [{
+                model: User,
+                attributes: ['id', 'nickname'],
+            },{
+                model: Image,
+            }]
+        }],
+            //20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
+        });
+        res.status(200).json(posts)
+    }catch(error){
+        console.error(error);
+        next(error);
+        
+    }
+    
 });
 
 

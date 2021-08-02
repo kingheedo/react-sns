@@ -12,7 +12,7 @@ const Home = () => {
     const dispatch = useDispatch();
     const me = useSelector(state => state.user.me)
     const {retweetError} = useSelector(state => state.post)
-    const {mainPosts,hasMorePosts,loadPostLoading} = useSelector(state => state.post);
+    const {mainPosts,hasMorePosts,loadPostsLoading} = useSelector(state => state.post);
     
         useEffect(() => {
         if(retweetError){
@@ -22,7 +22,7 @@ const Home = () => {
     useEffect(() => {
         function onScroll() {
             if(window.scrollY + document.documentElement.clientHeight > document.documentElement.scrollHeight - 300){
-                if(hasMorePosts && !loadPostLoading){
+                if(hasMorePosts && !loadPostsLoading){
                     const lastId = mainPosts[mainPosts.length - 1].id
                     dispatch({
                     type: LOAD_POSTS_REQUEST,
@@ -36,7 +36,7 @@ const Home = () => {
         return () => {
         window.removeEventListener('scroll',onScroll)
         }
-    }, [hasMorePosts,  loadPostLoading, mainPosts])
+    }, [hasMorePosts,  loadPostsLoading, mainPosts])
     
     return (
         <AppLayout>

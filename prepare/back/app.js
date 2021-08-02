@@ -1,6 +1,7 @@
 const express = require('express');
 const db = require('./models');
 const app = express();
+const hashtagRouter = require('./routes/hashtag')
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
 const userRouter = require('./routes/user');
@@ -48,6 +49,7 @@ app.get('/api', (req, res) =>{
     res.send('hello express');
 })
 
+app.use('/hashtag', hashtagRouter);
 app.use('/post', postRouter);
 app.use('/posts', postsRouter);
 app.use('/user', userRouter);
