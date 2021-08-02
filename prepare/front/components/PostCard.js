@@ -9,6 +9,7 @@ import PostCardContent from './PostCardContent'
 import PostImages from './PostImages'
 import PropTypes from 'prop-types'
 import FollowButton from './FollowButton'
+import Link from 'next/link'
 
 
 
@@ -145,15 +146,13 @@ const PostCard = ({post}) => {
                     ?
                     (<Card style={{ width: '31rem', display:'inline-block',margin:'0.9rem' }}>
                         <Card.Header style={headerStyle}>
-                            {post.RetweetId? `${post.User.nickname}님이 리트윗 하셨습니다.` : null}
+                            {post.RetweetId ? `${post.User.nickname}님이 리트윗 하셨습니다.` : null}
                         </Card.Header>
                         <div style={{display:'flex'}}>
                             {post.Retweet.Images[0] && <PostImages  images = {post.Retweet.Images}/>}
                             </div>
                             <div style={{padding:'24px'}}>
-                            <Card.Title>
-                                {/* <Image src="holder.js/171x180" roundedCircle /> */}
-                            {post.Retweet.User.nickname}</Card.Title>
+                            <Link href= {`/user/${post.Retweet.User.id}`}><a><Card.Title>{/* <Image src="holder.js/171x180" roundedCircle /> */}{post.Retweet.User.nickname}</Card.Title></a></Link>
                             <Card.Text>
                             <PostCardContent postContent = {post.Retweet.content}/>
                             </Card.Text>
@@ -161,9 +160,8 @@ const PostCard = ({post}) => {
                     </Card>)
                     :
                     (<div style={{padding:'24px'}}>
-                        <Card.Title>
-                            {/* <Image src="holder.js/171x180" roundedCircle /> */}
-                        {post.User.nickname}</Card.Title>
+                                                    <Link href= {`/user/${post.User.id}`}><a><Card.Title>{/* <Image src="holder.js/171x180" roundedCircle /> */}{post.User.nickname}</Card.Title></a></Link>
+
                         <Card.Text>
                         <PostCardContent postContent = {post.content}/>
                         </Card.Text>
@@ -213,7 +211,8 @@ const PostCard = ({post}) => {
                     {post.Comments[0] && post.Comments.map((v) => (
                         <ListGroup.Item>
                             {/* <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" /> */}
-                            {v.UserId && v.User.nickname}
+                            
+                            <Link href= {`/user/${v.User.id}`}><a>{v.UserId && v.User.nickname}</a></Link>
                             <br/>
                             {v.content}
                         </ListGroup.Item>

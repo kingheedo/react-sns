@@ -4,6 +4,7 @@ import {useSelector} from 'react-redux'
 import styled from 'styled-components'
 import {useDispatch} from 'react-redux'
 import { logoutRequestAction, LOG_OUT_REQUEST } from '../reducers/user'
+import Link from 'next/link'
 const CardLinkWrapper = styled.div`
     padding-top : 15px;
     border-top: 1px solid rgba(0, 0, 0, 0.125);
@@ -39,13 +40,13 @@ const UserProfile = () => {
         <Card style={{ width: '31rem', flexDirection: 'row' }}>
             <Card.Img variant="left" src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" width='155' />
             <CardBody>
-                <Card.Title>{me.nickname}</Card.Title>
+                <Link href= {`/user/${me.id}`}><a><Card.Title>{me.nickname}</Card.Title></a></Link>
                 <LogoutButton onClick={logoutHandler}>로그아웃</LogoutButton>
                 <br/>
                 <CardLinkWrapper>
-                    <CardLink href="#">게시글 수 <br/>{me.Posts.length}</CardLink>
-                    <CardLink href="#">팔로잉 <br/>{me.Followings.length}</CardLink>
-                    <CardLink href="#">팔로워 <br/>{me.Followers.length}</CardLink>
+                    <Link href= {`/user/${me.id}`}><a><CardLink style={{padding: 0}} href="#">게시글 수 <br/>{me.Posts.length}</CardLink></a></Link>
+                    <Link href={`/profile`}><a><CardLink style={{padding: 0}} href="#">팔로잉 <br/>{me.Followings.length}</CardLink></a></Link>
+                    <Link href={`/profile`}><a><CardLink style={{padding: 0}} href="#">팔로워 <br/>{me.Followers.length}</CardLink></a></Link>
                 </CardLinkWrapper>
                 
             </CardBody>

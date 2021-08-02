@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import propTypes from 'prop-types'
 import {Navbar,Container,Row,Col,FormControl,Nav,Form,Button} from 'react-bootstrap'
 import {useSelector} from 'react-redux';
@@ -6,6 +6,8 @@ import UserProfile from './UserProfile'
 import LoginForm from './LoginForm'
 import styled, { createGlobalStyle } from 'styled-components';
 import Link from 'next/link';
+import useInput from '../hooks/useInput';
+import Router from 'next/router';
 
  const Global = createGlobalStyle`
     .container-true {
@@ -18,8 +20,14 @@ import Link from 'next/link';
     `
 
 const AppLayout = ({children}) => {
-   
     const {me} = useSelector(state => state.user)
+    const [searchInput, onChangeSearchInput] = useInput('');
+    const onSearch = useCallback(
+        () => {
+            Router.push(`/hashtag/${searchInput}`)
+        },
+        [searchInput],
+    )
     return (
        <div>
            <Global/>
@@ -32,8 +40,8 @@ const AppLayout = ({children}) => {
                     <Link href="/profile">프로필</Link>
                 </Nav>
                 <Form inline>
-                    <FormControl type="text" placeholder="Search" className="mr-sm-2" />
-                    <Button variant="outline-success">찾기</Button>
+                    <FormControl value={searchInput} onChange={onChangeSearchInput} type="text" placeholder="Search" className="mr-sm-2" />
+                    <Button variant="outline-success" onClick={onSearch}>찾기</Button>
                 </Form>
                 {!me && <Link href="/signup">회원가입</Link>
                 }
