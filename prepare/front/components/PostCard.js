@@ -10,9 +10,9 @@ import PostImages from './PostImages'
 import PropTypes from 'prop-types'
 import FollowButton from './FollowButton'
 import Link from 'next/link'
+import moment from 'moment';
 
-
-
+moment.locale('ko');
 
 
 
@@ -130,9 +130,11 @@ const PostCard = ({post}) => {
     const like = post.Likers.find((v) => v.id === id);
     return (
         <div style={{margin: '100px 0 20px',}}>
-            <Card style={{ width: '33rem',}}>
+            <Card style={{ width: '100%',}}>
                 <Card.Header style={headerStyle}>
                     {/* 아이디가 post의 userid와 같다면 안보이게 */}
+                    {post.RetweetId ? `${post.User.nickname}님이 리트윗 하셨습니다.` : null}
+
                     {id && post.User.id === id
                     ? null
                     : <FollowButton post = {post}/>
@@ -144,28 +146,34 @@ const PostCard = ({post}) => {
                 <Card.Body style={{padding:0}}>
                     {post.RetweetId && post.Retweet
                     ?
-                    (<Card style={{ width: '31rem', display:'inline-block',margin:'0.9rem' }}>
-                        <Card.Header style={headerStyle}>
-                            {post.RetweetId ? `${post.User.nickname}님이 리트윗 하셨습니다.` : null}
-                        </Card.Header>
+                    (<Card style={{border: 0, width: '100%', display:'inline-block',margin:'0.05rem' }}>
                         <div style={{display:'flex'}}>
                             {post.Retweet.Images[0] && <PostImages  images = {post.Retweet.Images}/>}
                             </div>
-                            <div style={{padding:'24px'}}>
+                            <div style={{width: '100%', padding:'24px'}}>
                             <Link href= {`/user/${post.Retweet.User.id}`}><a><Card.Title>{/* <Image src="holder.js/171x180" roundedCircle /> */}{post.Retweet.User.nickname}</Card.Title></a></Link>
                             <Card.Text>
+                            <div style={{float:'right'}}>{moment(post.createdAt).fromNow()}</div>
                             <PostCardContent postContent = {post.Retweet.content}/>
                             </Card.Text>
+
                         </div>
+
                     </Card>)
                     :
-                    (<div style={{padding:'24px'}}>
+                    (<Card style={{ border: 0,width: '100%', display:'inline-block',margin:'0.05rem' }}>
+                        <div style={{display:'flex'}}>
+                            {post.Images[0] && <PostImages  images = {post.Images}/>}
+                        </div>
+                            <div style={{padding:'24px'}}>
                                                     <Link href= {`/user/${post.User.id}`}><a><Card.Title>{/* <Image src="holder.js/171x180" roundedCircle /> */}{post.User.nickname}</Card.Title></a></Link>
-
                         <Card.Text>
+                            <div style={{float:'right'}}>{moment(post.createdAt).fromNow()}</div>
                         <PostCardContent postContent = {post.content}/>
                         </Card.Text>
                     </div>
+                    </Card>
+                    
                     )
                     }
                     <ul style={ulStyle}>

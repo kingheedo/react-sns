@@ -68,7 +68,7 @@ const PostForm = ({me}) => {
         <Form onSubmit={onSumbitUpload} encType="multipart/form-data">
             <div>
             <Form.Group>
-                <Form.Label visuallyHidden>게시물 작성하기</Form.Label>
+                <Form.Label visuallyHidden><h2>Home</h2></Form.Label>
                 <Form.Control as="textarea" rows={3} value={text} onChange={onChangeText} />
                     <Form.File.Input type="file" name="image" ref={imageUpload} onChange={onChangeImages} multiple hidden />
                     <Button style={{marginTop: '1rem'}}  onClick = {onClickImageUpload}>이미지업로드</Button>

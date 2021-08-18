@@ -4,18 +4,22 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "next -p 3060"
+    "dev": "next -p 3060",
+    "build": "cross-env ANALYZE=true NODE_ENV=production next build"
   },
   "author": "Heedo",
   "license": "ISC",
   "dependencies": {
+    "@next/bundle-analyzer": "^11.0.1",
     "axios": "^0.21.1",
     "babel-plugin-styled-components": "^1.13.2",
     "bootstrap": "^4.6.0",
     "bootstrap-icons": "^1.4.0",
+    "cross-env": "^7.0.3",
     "faker": "^5.4.0",
     "glyphicons": "^0.2.0",
     "immer": "^8.0.3",
+    "moment": "^2.29.1",
     "next": "^9.5.5",
     "next-redux-wrapper": "^6.0.2",
     "prop-types": "^15.7.2",

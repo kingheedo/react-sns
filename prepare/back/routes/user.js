@@ -64,7 +64,6 @@ router.get('/followings', isLoggedIn, async(req, res ,next) => {
         }
         const followings = await user.getFollowings({
             limit: 3,
-
         });
         res.status(203).json(followings);
     }catch(err){
@@ -72,6 +71,7 @@ router.get('/followings', isLoggedIn, async(req, res ,next) => {
         next(err)
     }
 })
+
 router.get('/:userId', async(req, res, next) => {
    try{
         const fullUserWithoutPassword = await User.findOne({

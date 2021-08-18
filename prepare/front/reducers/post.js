@@ -1,6 +1,6 @@
-import produce from 'immer'
-import shortId from 'shortid'
-import faker from 'faker'
+import produce from '../util/produce';
+// import shortId from 'shortid'
+// import faker from 'faker'
 
 export const initialState = {
     mainPosts:[],
@@ -87,7 +87,6 @@ export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE';
 export const UNLIKE_POST_REQUEST = 'UNLIKE_POST_REQUEST';
 export const UNLIKE_POST_SUCCESS = 'UNLIKE_POST_SUCCESS';
 export const UNLIKE_POST_FAILURE = 'UNLIKE_POST_FAILURE';
-
 
 export const ADD_POST_REQUEST = 'ADD_POST_REQUEST';
 export const ADD_POST_SUCCESS = 'ADD_POST_SUCCESS';
@@ -235,6 +234,7 @@ const reducer = (state =  initialState, action) =>{
                 draft.mainPosts = draft.mainPosts.concat(action.data);
                 draft.hasMorePosts = action.data.length === 10;
                 break;
+                
             case LOAD_POSTS_FAILURE:
             case LOAD_HASHTAG_POSTS_FAILURE:
             case LOAD_USER_POSTS_FAILURE:
