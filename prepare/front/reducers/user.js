@@ -1,6 +1,8 @@
 import produce from '../util/produce';
 
 export const initialState = {
+   searchUserList: null,
+
     loadUserLoading : false,
     loadUserDone: false,
     loadUserError: null,
@@ -40,8 +42,14 @@ export const initialState = {
     changeNickNameLoading : false,
     changeNickNameError : null,
     changeNickNameDone : false,
+
+    searchUserLoading : false,
+   searchUserDone : false,
+   searchUserError : null,
+
     me: null,
     userInfo: null,
+    recommend: null,
 }
     // const dummyUser = (data) => ({
     //     ...data,
@@ -52,6 +60,16 @@ export const initialState = {
     //     Followers:[{nickname: 'king'}, {nickname: 'king1'}]
 
     // })
+
+
+export const LOAD_RECOMMEND_USER_REQUEST = 'LOAD_RECOMMEND_USER_REQUEST';
+export const LOAD_RECOMMEND_USER_SUCCESS = 'LOAD_RECOMMEND_USER_SUCCESS';
+export const LOAD_RECOMMEND_USER_FAILURE = 'LOAD_RECOMMEND_USER_FAILURE';
+
+export const LOAD_SEARCH_USER_REQUEST = 'LOAD_SEARCH_USER_REQUEST';
+export const LOAD_SEARCH_USER_SUCCESS = 'LOAD_SEARCH_USER_SUCCESS';
+export const LOAD_SEARCH_USER_FAILURE = 'LOAD_SEARCH_USER_FAILURE';
+
 export const LOAD_USER_REQUEST = 'LOAD_USER_REQUEST';
 export const LOAD_USER_SUCCESS = 'LOAD_USER_SUCCESS';
 export const LOAD_USER_FAILURE = 'LOAD_USER_FAILURE';
@@ -130,6 +148,38 @@ export const logoutFailureAction = (data) => ({
 const reducer = (state = initialState, action) => {
   return produce(state, (draft) => {
         switch(action.type) {
+            case LOAD_RECOMMEND_USER_REQUEST:
+            draft.loadMyInfoLoading = true;
+            draft.loadMyInfoError = null;
+            draft.loadMyInfoDone = false;
+            break;
+
+            case LOAD_RECOMMEND_USER_SUCCESS:
+            draft.loadMyInfoLoading = false;
+            draft.loadMyInfoDone = true;
+            draft.recommend = action.data;
+            break;
+            
+            case LOAD_RECOMMEND_USER_FAILURE:
+            draft.loadMyInfoLoading = false;
+            draft.loadMyInfoError = action.error;
+            break;
+
+             case LOAD_SEARCH_USER_REQUEST:
+                draft.searchUserLoading = true;
+                draft.searchUserDone = false;
+                draft.searchUserError = null;
+                break;
+            case LOAD_SEARCH_USER_SUCCESS:
+                draft.searchUserLoading = false;
+                draft.searchUserDone = true;
+                draft.searchUserList=action.data
+                break;
+            case LOAD_SEARCH_USER_FAILURE:
+                draft.searchUserLoading = false;
+                draft.searchUserError = action.error;
+                break;
+
             case LOAD_MY_INFO_REQUEST:
             draft.loadMyInfoLoading = true;
             draft.loadMyInfoError = null;

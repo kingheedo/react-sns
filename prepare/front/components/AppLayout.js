@@ -1,7 +1,7 @@
-import React, { useCallback,  } from 'react';
+import React, { useCallback, useRef,  } from 'react';
 import propTypes from 'prop-types'
-import {Navbar,Container,Row,Col,FormControl,Form,Button, ButtonGroup, Modal} from 'react-bootstrap'
-import {useSelector} from 'react-redux';
+import {Navbar,Container,Row,Col,FormControl,Form,Button, ButtonGroup, Modal, ListGroup, CloseButton} from 'react-bootstrap'
+import {useDispatch, useSelector} from 'react-redux';
 import UserProfile from './UserProfile'
 import LoginForm from './LoginForm'
 import styled, { createGlobalStyle } from 'styled-components';
@@ -13,6 +13,7 @@ import { useMemo } from 'react';
 import { useState } from 'react';
 import PostForm from './PostForm';
 import { useEffect } from 'react';
+import { LOAD_SEARCH_USER_REQUEST } from '../reducers/user';
 
     const Global = createGlobalStyle`
     .container-true {
@@ -72,9 +73,24 @@ const AppLayout = ({children}) => {
         [show],
     )
     
-    const {me} = useSelector(state => state.user)
+    const {me,searchUserList } = useSelector(state => state.user)
     const {addPostLoading} = useSelector(state => state.post)
     const [searchInput, onChangeSearchInput] = useInput('');
+    const [searchUser, setsearchUserInput] = useState('');
+    const dispatch = useDispatch();
+    const userLink = useRef();
+    const formValue = useRef();
+
+    const onChangeSearchUserInput = useCallback(
+        (e) => {
+            setsearchUserInput(e.target.value);
+            dispatch({
+                type: LOAD_SEARCH_USER_REQUEST,
+                data: e.target.value
+            })
+        },
+        [],
+    )
     useEffect(() => {
         if(addPostLoading){
             if(show){
@@ -82,26 +98,48 @@ const AppLayout = ({children}) => {
             }
         }
     }, [addPostLoading])
-    const onSearch = useCallback(
+   
+    const DeleteSearch = useCallback(
         () => {
+            setsearchUserInput('');
+            dispatch({
+                type: LOAD_SEARCH_USER_REQUEST,
+                data: null
+            })
+        },
+        [],
+    )
+     const onSearchHashtag = useCallback(
+         () => {
             Router.push(`/hashtag/${searchInput}`)
         },
         [searchInput],
     )
+ 
+    const FindHashtag = useCallback(
+        (e) => {
+            if(e.keyCode === 13) {
+                e.preventDefault();
+                onSearchHashtag()
+            }
+        },
+        [searchInput],
+    )
+    const FindUser = useCallback(
+        (e) => {
+                e.preventDefault();
+                if(searchUser && searchUserList.length >=1 ){
+                userLink.current.click();
+                setsearchUserInput('')
+                }
+                
+            
+        },
+        [searchUserList,searchUser,userLink.current,],
+    )
     return (
         
        <div>
-            {/* <style type="text/css">
-                {`
-                .btn-flat {
-                background-color: white;
-                color: white;
-                }
-                
-                `}
-            </style> */}
-
-           
            <Global/>
         <Container fluid="true">
             <Row xs={1} md ={2} lg={3}>
@@ -135,10 +173,28 @@ const AppLayout = ({children}) => {
                 <Col style={Col2}>{children}</Col>
 
                 <Col>
-                    <Form inline>
-                        <FormControl style={{display: 'inline-block',width: '87%'}} value={searchInput} onChange={onChangeSearchInput} type="text" placeholder="Search" className="mr-sm-2" />
-                        <Button variant="outline-success" onClick={onSearch}>찾기</Button>
+                    <Form inline >
+                        <FormControl onKeyDown={FindHashtag} style={{display: 'inline-block',width: '87%'}}  value={searchInput} onChange={onChangeSearchInput} type="text" placeholder="Search" className="mr-sm-2" />
+                        <Button variant="outline-success" onClick={onSearchHashtag}>찾기</Button>
                     </Form>
+                    
+                        
+                    
+                    <Form inline style={{position:'relative'}}  onSubmit ={FindUser} >
+                        <FormControl  style={{display: 'inline-block',width: '87%'}}  value={searchUser} onChange={onChangeSearchUserInput} type="text" placeholder="Search" className="mr-sm-2" />
+                        {searchUser && <CloseButton style={{position:'absolute', right: '4.6rem', top: '0.25rem'}} onClick={DeleteSearch}/>}
+                        {/* <Button style={{display:'none'}} variant="outline-success" onClick={onSearchUser}>찾기</Button> */}
+                    <ListGroup style={{width: '87%'}}>
+                            {
+                                searchUserList && searchUserList.map((v,i) => (
+                                <ListGroup.Item>
+                                    <Link href= {`/user/${v.id}`}><a ref ={userLink} >{v.nickname}</a></Link>
+                                 </ListGroup.Item>
+                        ))
+                            }
+                        </ListGroup>
+                    </Form>
+                        
                     {me ? <UserProfile/> : <LoginForm/>}
                 </Col>
             </Row>

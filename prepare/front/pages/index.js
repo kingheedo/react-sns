@@ -10,7 +10,7 @@ import { END } from 'redux-saga'
 import axios from 'axios'
 const Home = () => {
     const dispatch = useDispatch();
-    const me = useSelector(state => state.user.me)
+    const {me,recommend} = useSelector(state => state.user)
     const {retweetError} = useSelector(state => state.post)
     const {mainPosts,hasMorePosts,loadPostsLoading} = useSelector(state => state.post);
     
@@ -41,6 +41,7 @@ const Home = () => {
     return (
         <AppLayout>
             {me &&<PostForm me={me}/>}
+            {recommend && <div>{recommend}</div>}
             {mainPosts.map((post) =>  <PostCard key={post.id} post={post}/>)}
         </AppLayout>
     )

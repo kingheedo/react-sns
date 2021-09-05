@@ -43,6 +43,8 @@ export const initialState = {
    retweetDone : false,
    retweetError : null,
 
+   
+
 }
 
 // export const generateDummyPost = (number) =>
@@ -80,6 +82,8 @@ export const initialState = {
 //     id: shortId.generate(),
 //     ...data,
 // })
+
+
 export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST';
 export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS';
 export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE';
@@ -151,6 +155,8 @@ const reducer = (state =  initialState, action) =>{
             case REMOVE_IMAGE :
                 draft.imagePaths = draft.imagePaths.filter((v,i) => i !== action.data);
                 break;
+
+           
 
             case LIKE_POST_REQUEST:
                 draft.likePostLoading = true;
