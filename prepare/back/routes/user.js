@@ -72,8 +72,34 @@ router.get('/followings', isLoggedIn, async(req, res ,next) => {
     }
 })
 
+// router.get('/recommend', isLoggedIn, async(req, res ,next) => {
+//     try{
+//         const user = await User.findOne({
+//             where: {id: req.user.id}
+//         })
+//         if(!user) {
+//             res.status(403).send('없는 사용자입니다.')
+//         }
+//         const followings = await user.getFollowings();
+//         // const userId = {[Op.eq] : [followings.map((v) => v.id), followers.map((v) => v.id)]};
+//         // const userIdFollowings = await userId.getFollowings();
+//         // const userIdFollowers = await userId.getFollowers();
+//         // const userId2 = {[Op.eq] : [userIdFollowings.map((v) => v.id), userIdFollowers.map((v) => v.id)]};
+//         // const recommendId = {[Op.ne]: [userId2,followings.map((v) => v.id),followers.map((v) => v.id) ]};
+//         // const recommendUser = await User.findOne({
+//         //     where : {id : recommendId},
+//         //     attributes: ['id', 'nickname']
+//         // })
+//         res.status(200).json(followings)
+//     }catch(err){
+//         console.error(err);
+//         next(err)
+//     }
+// })
+
 router.get('/list', isLoggedIn, async(req, res ,next) => {
     try{
+       
         if(req.query.data){
             const user = await User.findAll({
             where: {nickname: {[Op.like]: req.query.data +'%'}},
@@ -88,32 +114,7 @@ router.get('/list', isLoggedIn, async(req, res ,next) => {
         next(err)
     }
 })
-// router.get('/recommend', isLoggedIn, async(req, res ,next) => {
-//     try{
-//         const where = {}
-//         const user = await User.findOne({
-//             where: {id: req.user.id}
-//         })
-//         if(!user) {
-//             res.status(403).send('없는 사용자입니다.')
-//         }
-//         const followings = await user.getFollowings();
-//         const followers = await user.getFollowers();
-//         const userId = {[Op.eq] : [followings.map((v) => v.id), followers.map((v) => v.id)]};
-//         const userIdFollowings = await userId.getFollowings();
-//         const userIdFollowers = await userId.getFollowers();
-//         const userId2 = {[Op.eq] : [userIdFollowings.map((v) => v.id), userIdFollowers.map((v) => v.id)]};
-//         const recommendId = {[Op.ne]: [userId2,followings.map((v) => v.id),followers.map((v) => v.id) ]};
-//         const recommendUser = await User.findOne({
-//             where : {id : recommendId},
-//             attributes: ['id', 'nickname']
-//         })
-//         res.status(200).json({recommendUser})
-//     }catch(err){
-//         console.error(err);
-//         next(err)
-//     }
-// })
+
 
 router.get('/:userId', async(req, res, next) => {
    try{

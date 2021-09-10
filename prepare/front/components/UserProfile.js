@@ -5,6 +5,8 @@ import styled from 'styled-components'
 import {useDispatch} from 'react-redux'
 import { logoutRequestAction, LOG_OUT_REQUEST } from '../reducers/user'
 import Link from 'next/link'
+import moment from 'moment'
+
 const CardLinkWrapper = styled.div`
     padding-top : 15px;
     border-top: 1px solid rgba(0, 0, 0, 0.125);
@@ -42,6 +44,9 @@ const UserProfile = () => {
             <CardBody>
                 <Link href= {`/user/${me.id}`}><a><Card.Title>{me.nickname}</Card.Title></a></Link>
                 <LogoutButton onClick={logoutHandler}>로그아웃</LogoutButton>
+                <div style ={{float:'right', marginTop:'15px'}}>
+                    Joined {moment(me.createdAt).format('MMMM YYYY')}
+                </div>
                 <br/>
                 <CardLinkWrapper>
                     <Link href= {`/user/${me.id}`}><a><CardLink style={{padding: 0}} href="#">게시글 수 <br/>{me.Posts.length}</CardLink></a></Link>

@@ -157,7 +157,7 @@ const reducer = (state = initialState, action) => {
             case LOAD_RECOMMEND_USER_SUCCESS:
             draft.loadMyInfoLoading = false;
             draft.loadMyInfoDone = true;
-            draft.recommend = action.data;
+            draft.recommend = action.data
             break;
             
             case LOAD_RECOMMEND_USER_FAILURE:

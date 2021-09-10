@@ -1,6 +1,6 @@
 import React, { useCallback, useRef,  } from 'react';
 import propTypes from 'prop-types'
-import {Navbar,Container,Row,Col,FormControl,Form,Button, ButtonGroup, Modal, ListGroup, CloseButton} from 'react-bootstrap'
+import {Container,Row,Col,FormControl,Form,Button, ButtonGroup, Modal, ListGroup, CloseButton, Dropdown} from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux';
 import UserProfile from './UserProfile'
 import LoginForm from './LoginForm'
@@ -8,7 +8,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import Link from 'next/link';
 import useInput from '../hooks/useInput';
 import Router from 'next/router';
-import { HouseDoor, Twitter } from 'react-bootstrap-icons';
+import {Twitter,Search } from 'react-bootstrap-icons';
 import { useMemo } from 'react';
 import { useState } from 'react';
 import PostForm from './PostForm';
@@ -45,7 +45,28 @@ import { LOAD_SEARCH_USER_REQUEST } from '../reducers/user';
         font-size: 1.5rem;
 }
 `
-
+    const SearchForm = styled(FormControl)`
+    display: inline-block;
+    width: 87% !important;
+    padding-left:30px;
+}
+`
+    const SearchIcon = styled(Search)`
+                            position:absolute;
+                            top:9px;
+                            left:5px;
+                            width:20px;
+                            height:20px;
+                            padding-left:5px;
+    `
+    const DeleteSearchContent = styled(CloseButton)`
+                            position: absolute;
+                             right: 4.6rem;
+                             top: 0.25rem;
+    `
+    const DropdownDivider = styled(Dropdown.Divider)`
+                            margin: 0;
+    `
 
 const AppLayout = ({children}) => {
     
@@ -73,24 +94,43 @@ const AppLayout = ({children}) => {
         [show],
     )
     
-    const {me,searchUserList } = useSelector(state => state.user)
+    const {me,searchUserList,searchUserLoading,searchUserDone} = useSelector(state => state.user)
     const {addPostLoading} = useSelector(state => state.post)
-    const [searchInput, onChangeSearchInput] = useInput('');
-    const [searchUser, setsearchUserInput] = useState('');
+    const [searchContent, setsearchContent] = useState('');
+    const [searchHashtag, setsearchHashtag] = useState('');
+    const [searchControl, setSearchControl] = useState(false);
+    const [showControl, setshowControl] = useState(false);
     const dispatch = useDispatch();
     const userLink = useRef();
     const formValue = useRef();
 
-    const onChangeSearchUserInput = useCallback(
-        (e) => {
-            setsearchUserInput(e.target.value);
+    
+
+        useEffect(() => {
+            //#stat
+            // stat 을 뽑아내고 그걸 dispatch 해야한다. 
+            if(searchContent.startsWith('#')){
+                setsearchHashtag(searchContent.slice(1))
+            console.log('searchUser',searchHashtag)
+            }
+            if(searchContent){
             dispatch({
                 type: LOAD_SEARCH_USER_REQUEST,
-                data: e.target.value
+                data: searchContent
             })
-        },
-        [],
-    )
+            }
+        }, [searchContent,searchHashtag])
+
+        
+
+    useEffect(() => {
+        if(searchUserLoading){
+            setSearchControl(true)
+        }
+        if(searchUserDone)
+        setSearchControl(false)
+    }, [searchUserLoading,searchUserDone])
+
     useEffect(() => {
         if(addPostLoading){
             if(show){
@@ -98,10 +138,16 @@ const AppLayout = ({children}) => {
             }
         }
     }, [addPostLoading])
-   
+
+   const onChangeSearchUserInput = useCallback(
+        (e) => {
+            setsearchContent(e.target.value);
+        },
+        [searchContent],
+    )
     const DeleteSearch = useCallback(
         () => {
-            setsearchUserInput('');
+            setsearchContent('');
             dispatch({
                 type: LOAD_SEARCH_USER_REQUEST,
                 data: null
@@ -109,33 +155,30 @@ const AppLayout = ({children}) => {
         },
         [],
     )
-     const onSearchHashtag = useCallback(
-         () => {
-            Router.push(`/hashtag/${searchInput}`)
-        },
-        [searchInput],
-    )
  
-    const FindHashtag = useCallback(
-        (e) => {
-            if(e.keyCode === 13) {
-                e.preventDefault();
-                onSearchHashtag()
-            }
-        },
-        [searchInput],
-    )
+    
     const FindUser = useCallback(
         (e) => {
                 e.preventDefault();
-                if(searchUser && searchUserList.length >=1 ){
+                if(!searchHashtag && searchContent && searchUserList.length >=1 ){
                 userLink.current.click();
-                setsearchUserInput('')
+                setsearchContent('')
                 }
-                
-            
+                if(searchHashtag){
+                Router.push(`/hashtag/${searchHashtag}`)
+                setsearchContent('')
+                }
         },
-        [searchUserList,searchUser,userLink.current,],
+        [searchHashtag,searchUserList,searchContent,userLink.current,],
+    )
+    const SelectListItem = useCallback(
+        () => {
+                setshowControl((showControl) => !showControl)
+                setsearchContent('')
+                
+                },
+        
+        [showControl,],
     )
     return (
         
@@ -173,23 +216,26 @@ const AppLayout = ({children}) => {
                 <Col style={Col2}>{children}</Col>
 
                 <Col>
-                    <Form inline >
-                        <FormControl onKeyDown={FindHashtag} style={{display: 'inline-block',width: '87%'}}  value={searchInput} onChange={onChangeSearchInput} type="text" placeholder="Search" className="mr-sm-2" />
-                        <Button variant="outline-success" onClick={onSearchHashtag}>찾기</Button>
-                    </Form>
-                    
-                        
-                    
-                    <Form inline style={{position:'relative'}}  onSubmit ={FindUser} >
-                        <FormControl  style={{display: 'inline-block',width: '87%'}}  value={searchUser} onChange={onChangeSearchUserInput} type="text" placeholder="Search" className="mr-sm-2" />
-                        {searchUser && <CloseButton style={{position:'absolute', right: '4.6rem', top: '0.25rem'}} onClick={DeleteSearch}/>}
+                    <Form inline style={{position:'relative', }}  onSubmit ={FindUser} >
+                        <SearchIcon/>
+                            
+                        <SearchForm value={searchContent} onChange={onChangeSearchUserInput} type="text" placeholder="Search User or Hashtag" className="mr-sm-2" />
+                        {searchContent && <DeleteSearchContent  onClick={DeleteSearch}/>}
                         {/* <Button style={{display:'none'}} variant="outline-success" onClick={onSearchUser}>찾기</Button> */}
-                    <ListGroup style={{width: '87%'}}>
+                    
+                
+                    
+                    
+                    <ListGroup style={{width: '87%', borderLeft: '1px solid #e9ecef',borderRight: '1px solid #e9ecef' }}>
                             {
-                                searchUserList && searchUserList.map((v,i) => (
-                                <ListGroup.Item>
-                                    <Link href= {`/user/${v.id}`}><a ref ={userLink} >{v.nickname}</a></Link>
-                                 </ListGroup.Item>
+                                !searchUserLoading && searchUserList && searchUserList.map((v,i) => (
+                                    <Dropdown>
+                                        <Dropdown.Item disabled={searchControl}   show={showControl} onSelect={SelectListItem}>
+                                                <Link href= {`/user/${v.id}`}><a style={{display:'block', textDecoration:'none'}} ref ={userLink} >{v.nickname}</a></Link>
+                                        </Dropdown.Item>
+                                        <DropdownDivider/>
+                                    </Dropdown>
+                                
                         ))
                             }
                         </ListGroup>
