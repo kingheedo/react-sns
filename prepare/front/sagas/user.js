@@ -12,6 +12,7 @@ function* recommendUser() {
         yield put({
             type: LOAD_RECOMMEND_USER_SUCCESS,
             data: result.data,
+            
         })
 
     }catch(err){

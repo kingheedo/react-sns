@@ -72,30 +72,76 @@ router.get('/followings', isLoggedIn, async(req, res ,next) => {
     }
 })
 
-// router.get('/recommend', isLoggedIn, async(req, res ,next) => {
-//     try{
-//         const user = await User.findOne({
-//             where: {id: req.user.id}
-//         })
-//         if(!user) {
-//             res.status(403).send('없는 사용자입니다.')
-//         }
-//         const followings = await user.getFollowings();
-//         // const userId = {[Op.eq] : [followings.map((v) => v.id), followers.map((v) => v.id)]};
-//         // const userIdFollowings = await userId.getFollowings();
-//         // const userIdFollowers = await userId.getFollowers();
-//         // const userId2 = {[Op.eq] : [userIdFollowings.map((v) => v.id), userIdFollowers.map((v) => v.id)]};
-//         // const recommendId = {[Op.ne]: [userId2,followings.map((v) => v.id),followers.map((v) => v.id) ]};
-//         // const recommendUser = await User.findOne({
-//         //     where : {id : recommendId},
-//         //     attributes: ['id', 'nickname']
-//         // })
-//         res.status(200).json(followings)
-//     }catch(err){
-//         console.error(err);
-//         next(err)
-//     }
-// })
+router.get('/recommend', isLoggedIn, async(req, res ,next) => {
+    try{
+        const user = await User.findOne({
+            where: {id: req.user.id}
+        })
+        if(!user) {
+            res.status(403).send('없는 사용자입니다.')
+        }
+        const myfollowings = await user.getFollowings();
+        const myfollowers = await user.getFollowers();
+        const EachOther =  myfollowers.filter(v => myfollowings.some(f => v.id === f.id)).map(v => v.id).sort(() => Math.floor(Math.random()-0.5))
+        // const random = Math.floor(Math.random()*EachOther.length)
+        // console.log('EachOther',EachOther)
+        // console.log('random',random)
+        const user2 = await User.findOne({
+            where: {id: EachOther[0]},
+            attributes: {exclude:['password']},
+            include:[
+                {
+                model: User,
+                as: 'Followings',
+                attributes: ['id', 'nickname']
+            },
+                {
+                    model: User,
+                as: 'Followers',
+                attributes: ['id', 'nickname']
+            },
+        ] 
+        })
+        // console.log('user2',user2.Followers.filter(v => user2.Followings.some(f => v.id === f.id)))
+        // console.log('user2id',user2.Followers.filter(v => user2.Followings.some(f => v.id === f.id)).map(v => v.id))
+        const user2EachOther = user2.Followers.filter(v => user2.Followings.some(f => v.id === f.id)).map(v => v.id)
+        
+
+        // console.log('resultarray',user2EachOther.filter(v => EachOther.some(f => v !== f)))
+        const recommendArray =  user2EachOther.filter(v => EachOther.some(f => v !== f))
+        const recommendUsers = await User.findAll({
+            where: {id : {
+                [Op.and]: [
+                    recommendArray,
+                    {[Op.ne]: req.user.id}
+                ]
+            }},
+            attributes: ['id','nickname'],
+            limit :1
+        })
+        
+        // console.log('recommendUsers', recommendUsers)
+        //user2.Following과 user2.Followers의 처리한 결과들을 배열로 만든다.
+        // 그 배열안의 id가 나와 follow following 관계가 아니라면 그 id를 팔로우추천 (알수도 있는 계정)이된다.
+        
+
+        // const userId = {[Op.eq] : [followings.map((v) => v.id), followers.map((v) => v.id)]};
+        // const userIdFollowings = await userId.getFollowings();
+        // const userIdFollowers = await userId.getFollowers();
+        // const userId2 = {[Op.eq] : [userIdFollowings.map((v) => v.id), userIdFollowers.map((v) => v.id)]};
+        // const recommendId = {[Op.ne]: [userId2,followings.map((v) => v.id),followers.map((v) => v.id) ]};
+        // const recommendUser = await User.findOne({
+        //     where : {id : recommendId},
+        //     attributes: ['id', 'nickname']
+        // })
+        res.status(200).json(recommendUsers)
+        // console.log('followings',followings)
+        
+    }catch(err){
+        console.error(err);
+        next(err)
+    }
+})
 
 router.get('/list', isLoggedIn, async(req, res ,next) => {
     try{
