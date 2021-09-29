@@ -58,9 +58,7 @@ export const getServerSideProps = wrapper.getServerSideProps(async (context) => 
     context.store.dispatch({
         type: LOAD_POSTS_REQUEST
     });
-    context.store.dispatch({
-        type: LOAD_RECOMMEND_USER_REQUEST
-    });
+  
     
     context.store.dispatch(END);
     await context.store.sagaTask.toPromise();

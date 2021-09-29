@@ -13,7 +13,7 @@ import { useMemo } from 'react';
 import { useState } from 'react';
 import PostForm from './PostForm';
 import { useEffect } from 'react';
-import { LOAD_SEARCH_USER_REQUEST } from '../reducers/user';
+import { LOAD_RECOMMEND_USER_REQUEST, LOAD_SEARCH_USER_REQUEST } from '../reducers/user';
 import Recommend from './Recommend';
 
     const Global = createGlobalStyle`
@@ -111,6 +111,14 @@ const AppLayout = ({children}) => {
     
 
         useEffect(() => {
+          if(me && me.Followers.length >=1 && me.Followings.length >=1){
+              dispatch({
+                  type :LOAD_RECOMMEND_USER_REQUEST
+              })
+          }
+        }, [me])
+
+        useEffect(() => {
             //#stat
             // stat 을 뽑아내고 그걸 dispatch 해야한다. 
             if(searchContent.startsWith('#')){
@@ -131,9 +139,7 @@ const AppLayout = ({children}) => {
         if(searchUserLoading){
             setSearchControl(true)
         }
-        if(searchUserDone)
-        setSearchControl(false)
-    }, [searchUserLoading,searchUserDone])
+    }, [searchUserLoading])
 
     useEffect(() => {
         if(addPostLoading){
@@ -142,7 +148,12 @@ const AppLayout = ({children}) => {
             }
         }
     }, [addPostLoading])
-
+    useEffect(() => {
+        if(searchUserDone){
+            setSearchControl(false)
+        }
+        
+    }, [searchUserDone])
    const onChangeSearchUserInput = useCallback(
         (e) => {
             setsearchContent(e.target.value);
@@ -164,10 +175,15 @@ const AppLayout = ({children}) => {
     const FindUser = useCallback(
         (e) => {
                 e.preventDefault();
-                if(!searchHashtag && searchContent && searchUserList.length >=1 ){
-                userLink.current.click();
-                setsearchContent('')
-                }
+                searchUserList && searchUserList.map((v) => {
+                    if(searchContent && searchContent === v.nickname){
+                        Router.push(`/user/${v.id}`)
+                    setsearchContent('')
+                    setshowControl(true)
+                   
+                    }
+                })
+                
                 if(searchHashtag){
                 Router.push(`/hashtag/${searchHashtag}`)
                 setsearchContent('')
@@ -220,7 +236,7 @@ const AppLayout = ({children}) => {
                 <Col style={Col2}>{children}</Col>
 
                 <Col>
-                    <Form inline style={{position:'relative',}}  onSubmit ={FindUser} >
+                    <Form inline style={{position:'relative',}} onSubmit ={FindUser} >
                         <SearchIcon/>
                             
                         <SearchForm value={searchContent} onChange={onChangeSearchUserInput} type="text" placeholder="Search User or Hashtag" className="mr-sm-2" />
@@ -232,9 +248,9 @@ const AppLayout = ({children}) => {
                     
                     <ListGroup style={{width: '87%', borderLeft: '1px solid #e9ecef',borderRight: '1px solid #e9ecef', marginBottom:'10rem'  }}>
                             {
-                                !searchUserLoading && searchUserList && searchUserList.map((v,i) => (
-                                    <Dropdown>
-                                        <Dropdown.Item disabled={searchControl}   show={showControl} onSelect={SelectListItem}>
+                                (!searchUserDone && searchUserList) && searchUserList.map((v,i) => (
+                                    <Dropdown key = {i}>
+                                        <Dropdown.Item disabled={searchControl} show={showControl} onSelect={SelectListItem}>
                                                 <Link href= {`/user/${v.id}`}><a style={{display:'block', textDecoration:'none'}} ref ={userLink} >{v.nickname}</a></Link>
                                         </Dropdown.Item>
                                         <DropdownDivider/>
@@ -254,6 +270,7 @@ const AppLayout = ({children}) => {
        </div>
     )
 }
+
 AppLayout.proptypes ={
     children: propTypes.node.isRequired,
 }

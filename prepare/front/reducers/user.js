@@ -276,7 +276,7 @@ const reducer = (state = initialState, action) => {
             draft.loadFollowingsDone = true;
             draft.me.Followings = action.data;
             break;
-            
+                
             case LOAD_FOLLOWINGS_FAILURE:
             draft.loadFollowingsLoading = false;
             draft.loadFollowingsError = action.error;

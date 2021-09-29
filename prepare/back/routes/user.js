@@ -82,6 +82,10 @@ router.get('/recommend', isLoggedIn, async(req, res ,next) => {
         }
         const myfollowings = await user.getFollowings();
         const myfollowers = await user.getFollowers();
+
+        if(!myfollowings || !myfollowers){
+           return res.status(201).json(null)
+        }
         const EachOther =  myfollowers.filter(v => myfollowings.some(f => v.id === f.id)).map(v => v.id).sort(() => Math.floor(Math.random()-0.5))
         // const random = Math.floor(Math.random()*EachOther.length)
         // console.log('EachOther',EachOther)
@@ -117,7 +121,7 @@ router.get('/recommend', isLoggedIn, async(req, res ,next) => {
                 ]
             }},
             attributes: ['id','nickname'],
-            limit :1
+            // limit :1
         })
         
         // console.log('recommendUsers', recommendUsers)
@@ -136,7 +140,6 @@ router.get('/recommend', isLoggedIn, async(req, res ,next) => {
         // })
         res.status(200).json(recommendUsers)
         // console.log('followings',followings)
-        
     }catch(err){
         console.error(err);
         next(err)
