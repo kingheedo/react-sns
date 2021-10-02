@@ -110,7 +110,7 @@ router.post('/addpost', isLoggedIn, upload.none(), async(req, res, next) => { //
             }]
         })
         res.status(201).json(fullPost);
-        console.log(req.body)
+        console.log('req.body',req.body)
     }catch(error){
         console.error(error);
         next(error)

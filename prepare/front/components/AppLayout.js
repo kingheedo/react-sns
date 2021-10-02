@@ -1,4 +1,4 @@
-import React, { useCallback, useRef,  } from 'react';
+import React, { useCallback,  } from 'react';
 import propTypes from 'prop-types'
 import {Container,Row,Col,FormControl,Form,Button, ButtonGroup, Modal, ListGroup, CloseButton, Dropdown} from 'react-bootstrap'
 import {useDispatch, useSelector} from 'react-redux';
@@ -103,10 +103,8 @@ const AppLayout = ({children}) => {
     const [searchContent, setsearchContent] = useState('');
     const [searchHashtag, setsearchHashtag] = useState('');
     const [searchControl, setSearchControl] = useState(false);
-    const [showControl, setshowControl] = useState(false);
+    const [showControl, setshowControl] = useState(true);
     const dispatch = useDispatch();
-    const userLink = useRef();
-    const formValue = useRef();
 
     
 
@@ -118,12 +116,14 @@ const AppLayout = ({children}) => {
           }
         }, [me])
 
+        
+
         useEffect(() => {
             //#stat
             // stat 을 뽑아내고 그걸 dispatch 해야한다. 
             if(searchContent.startsWith('#')){
                 setsearchHashtag(searchContent.slice(1))
-            console.log('searchUser',searchHashtag)
+            // console.log('searchUser',searchHashtag)
             }
             if(searchContent){
             dispatch({
@@ -131,7 +131,7 @@ const AppLayout = ({children}) => {
                 data: searchContent
             })
             }
-        }, [searchContent,searchHashtag])
+        }, [searchContent])
 
         
 
@@ -154,6 +154,9 @@ const AppLayout = ({children}) => {
         }
         
     }, [searchUserDone])
+    
+
+
    const onChangeSearchUserInput = useCallback(
         (e) => {
             setsearchContent(e.target.value);
@@ -179,8 +182,6 @@ const AppLayout = ({children}) => {
                     if(searchContent && searchContent === v.nickname){
                         Router.push(`/user/${v.id}`)
                     setsearchContent('')
-                    setshowControl(true)
-                   
                     }
                 })
                 
@@ -189,16 +190,14 @@ const AppLayout = ({children}) => {
                 setsearchContent('')
                 }
         },
-        [searchHashtag,searchUserList,searchContent,userLink.current,],
+        [searchHashtag,searchUserList,searchContent,],
     )
     const SelectListItem = useCallback(
         () => {
-                setshowControl((showControl) => !showControl)
                 setsearchContent('')
-                
                 },
         
-        [showControl,],
+        [],
     )
     return (
         
@@ -235,8 +234,8 @@ const AppLayout = ({children}) => {
 
                 <Col style={Col2}>{children}</Col>
 
-                <Col>
-                    <Form inline style={{position:'relative',}} onSubmit ={FindUser} >
+                <Col  >
+                    <Form inline style={{position: 'relative',zIndex:'10'}} onSubmit ={FindUser} >
                         <SearchIcon/>
                             
                         <SearchForm value={searchContent} onChange={onChangeSearchUserInput} type="text" placeholder="Search User or Hashtag" className="mr-sm-2" />
@@ -246,12 +245,12 @@ const AppLayout = ({children}) => {
                 
                     
                     
-                    <ListGroup style={{width: '87%', borderLeft: '1px solid #e9ecef',borderRight: '1px solid #e9ecef', marginBottom:'10rem'  }}>
+                    <ListGroup style={{ position: 'absolute', top: '2.6rem', zIndex:'9', width: '87%', borderLeft: '1px solid #e9ecef', backgroundColor: '#ffffff',borderRight: '1px solid #e9ecef', }}>
                             {
-                                (!searchUserDone && searchUserList) && searchUserList.map((v,i) => (
+                                (searchContent && searchUserList) && searchUserList.map((v,i) => (
                                     <Dropdown key = {i}>
-                                        <Dropdown.Item disabled={searchControl} show={showControl} onSelect={SelectListItem}>
-                                                <Link href= {`/user/${v.id}`}><a style={{display:'block', textDecoration:'none'}} ref ={userLink} >{v.nickname}</a></Link>
+                                        <Dropdown.Item  disabled={searchControl}  onSelect={SelectListItem}>
+                                                <Link href= {`/user/${v.id}`}><a style={{display:'block', textDecoration:'none',}}  >{v.nickname}</a></Link>
                                         </Dropdown.Item>
                                         <DropdownDivider/>
                                     </Dropdown>
@@ -260,10 +259,11 @@ const AppLayout = ({children}) => {
                             }
                         </ListGroup>
                     </Form>
-                        {(me && recommend) ? <Recommend recommend ={recommend}/> : null}
-                        <div>
+                        <div style={{marginBottom:'2rem',zIndex:'8', position: 'fixed'}}>
                             {me ? <UserProfile/> : <LoginForm/>}
                         </div>
+                        {(me && recommend) ? <Recommend recommend ={recommend}/> : null}
+                        
                 </Col>
             </Row>
         </Container>

@@ -11,11 +11,24 @@ import PropTypes from 'prop-types'
 import FollowButton from './FollowButton'
 import Link from 'next/link'
 import moment from 'moment';
+import styled from 'styled-components'
 
 moment.locale('ko');
 
-
-
+const CommentList = styled(ListGroup)`
+        a{
+            text-decoration : none;
+            color : #212529;
+            font-weight: 500;
+        },
+        p{
+            margin-top : 0.3rem
+        }
+    `
+const CommentListItem = styled(ListGroup.Item)`
+        display:flex;
+        margin-top : 1rem;
+`
 const PostCard = ({post}) => {
     const [commentOpen, setCommentOpen] = useState(false)
     const id = useSelector(state => state.user.me?.id)
@@ -53,7 +66,6 @@ const PostCard = ({post}) => {
     }),[])
     
     
-
     
     const onRetweet = useCallback(
         () => {
@@ -140,9 +152,6 @@ const PostCard = ({post}) => {
                     : <FollowButton post = {post}/>
                     }
                 </Card.Header>
-                <div style={{display:'flex'}}>
-                    {post.Images[0] && <PostImages  images = {post.Images}/>}
-                </div>
                 <Card.Body style={{padding:0}}>
                     {post.RetweetId && post.Retweet
                     ?
@@ -154,7 +163,14 @@ const PostCard = ({post}) => {
                             <Link href= {`/user/${post.Retweet.User.id}`}><a><Card.Title>{/* <Image src="holder.js/171x180" roundedCircle /> */}{post.Retweet.User.nickname}</Card.Title></a></Link>
                             <Card.Text>
                             <div style={{float:'right'}}>{moment(post.createdAt).fromNow()}</div>
+                               {post.Likers.length >=1 ?  <h6 style={{fontWeight : '600'}}>좋아요 {post.Likers.length}개</h6> : null}
+                            <br/>
                             <PostCardContent postContent = {post.Retweet.content}/>
+                            <div style ={{marginTop : '1rem', display:'flex'}}>
+                                <h6>{post.Comments[0] && <Link href={`/user/${post.Comments[0].User.id}`}><a style={{textDecoration:'none',color: '#212529'}}>{post.Comments[0].User.nickname}</a></Link>}</h6>
+                                &nbsp;
+                                <p style={{lineHeight: '1.2'}}>{post.Comments[0] && post.Comments[0].content}</p>
+                            </div>
                             </Card.Text>
 
                         </div>
@@ -169,7 +185,16 @@ const PostCard = ({post}) => {
                                                     <Link href= {`/user/${post.User.id}`}><a><Card.Title>{/* <Image src="holder.js/171x180" roundedCircle /> */}{post.User.nickname}</Card.Title></a></Link>
                         <Card.Text>
                             <div style={{float:'right'}}>{moment(post.createdAt).fromNow()}</div>
+                        <div>
+                             {post.Likers.length >=1 ?  <h6 style={{fontWeight : '600'}}>좋아요 {post.Likers.length}개</h6> : null}
+                        </div>
+                        <br/>
                         <PostCardContent postContent = {post.content}/>
+                        <div style ={{marginTop : '1rem', display:'flex'}}>
+                                <h6>{post.Comments[0] && <Link href={`/user/${post.Comments[0].User.id}`}><a style={{textDecoration:'none',color: '#212529'}}>{post.Comments[0].User.nickname}</a></Link>}</h6>
+                                &nbsp;
+                                <p style={{lineHeight: '1.2'}}>{post.Comments[0] && post.Comments[0].content}</p>
+                        </div>
                         </Card.Text>
                     </div>
                     </Card>
@@ -212,21 +237,19 @@ const PostCard = ({post}) => {
                 </Card.Body>
             </Card>
             {commentOpen &&
-            (<div style={{width:'33rem'}}>
+            (<div style={{width:'33rem', }}>
                 <CommentForm post={post}/>
                 <span>{post.Comments.length}개의 댓글</span>
-                <ListGroup variant="flush" style={{marginTop: 20}}>
+                <CommentList variant="flush">
                     {post.Comments[0] && post.Comments.map((v) => (
-                        <ListGroup.Item>
+                        <CommentListItem>
                             {/* <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" /> */}
-                            
                             <Link href= {`/user/${v.User.id}`}><a>{v.UserId && v.User.nickname}</a></Link>
-                            <br/>
-                            {v.content}
-                        </ListGroup.Item>
+                            <p>{v.content}</p>
+                        </CommentListItem>
                     ))}
                     
-                </ListGroup>
+                </CommentList>
             </div>
             )    
         }
@@ -243,7 +266,7 @@ PostCard.propTypes = {
         createdAt: PropTypes.string,
         Likers: PropTypes.arrayOf(PropTypes.object),
         RetweetId: PropTypes.number,
-        RetweetId: PropTypes.objectOf(PropTypes.any),
+        Retweet: PropTypes.objectOf(PropTypes.any),
     }).isRequired,
 }
 export default PostCard
