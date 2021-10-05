@@ -51,8 +51,8 @@ import Recommend from './Recommend';
 `
     const SearchForm = styled(FormControl)`
     display: inline-block;
-    width: 87% !important;
     padding-left:30px;
+    width: 100% !important;
 }
 `
     const SearchIcon = styled(Search)`
@@ -65,7 +65,7 @@ import Recommend from './Recommend';
     `
     const DeleteSearchContent = styled(CloseButton)`
                             position: absolute;
-                             right: 4.6rem;
+                             right: 1.5rem;
                              top: 0.25rem;
     `
     const DropdownDivider = styled(Dropdown.Divider)`
@@ -82,6 +82,7 @@ const AppLayout = ({children}) => {
     const Col1 = useMemo(() => ({
         paddingLeft: '12rem',
         borderRight: '1px solid #DCDCDC',
+        position: 'relative',
     }),[])
     const Col2 = useMemo(() => ({
         borderRight:'1px solid #DCDCDC',
@@ -206,12 +207,12 @@ const AppLayout = ({children}) => {
         <Container fluid="true">
             <Row xs={1} md ={2} lg={3}>
                 <Col style={Col1}>
-                    <Link href="/">
+                    <Link style={{position: 'fixed'}} href="/">
                         <h2 style={containerH2}>
-                            <Twitter style={{color: '#0a58ca'}}/>
+                            <Twitter style={{color: '#0a58ca',position: 'fixed'}}/>
                         </h2>
                     </Link>
-                    <ButtonGroupWrapper vertical style= {{display:'flex',}}>
+                    <ButtonGroupWrapper vertical style= {{display:'flex',position: 'fixed',top: '7rem'}}>
                         <Button variant size="lg"><Link href="/">Home</Link></Button>
                         <Button variant size="lg"><Link href="/profile">Profile</Link></Button>
                         {!me && <Button variant size="lg"><Link href="/signup">회원가입</Link>
@@ -235,17 +236,18 @@ const AppLayout = ({children}) => {
                 <Col style={Col2}>{children}</Col>
 
                 <Col  >
-                    <Form inline style={{position: 'relative',zIndex:'10'}} onSubmit ={FindUser} >
-                        <SearchIcon/>
-                            
-                        <SearchForm value={searchContent} onChange={onChangeSearchUserInput} type="text" placeholder="Search User or Hashtag" className="mr-sm-2" />
-                        {searchContent && <DeleteSearchContent  onClick={DeleteSearch}/>}
+                    <Form inline style={{position: 'relative',zIndex:'10',}} onSubmit ={FindUser} >
+                        <div  style={{position: 'fixed', width : '29%' }}>
+                            <SearchIcon/>
+                            <SearchForm value={searchContent} onChange={onChangeSearchUserInput} type="text" placeholder="Search User or Hashtag" className="mr-sm-2" />
+                            {searchContent && <DeleteSearchContent  onClick={DeleteSearch}/>}
+                        </div>
                         {/* <Button style={{display:'none'}} variant="outline-success" onClick={onSearchUser}>찾기</Button> */}
                     
                 
                     
                     
-                    <ListGroup style={{ position: 'absolute', top: '2.6rem', zIndex:'9', width: '87%', borderLeft: '1px solid #e9ecef', backgroundColor: '#ffffff',borderRight: '1px solid #e9ecef', }}>
+                    <ListGroup style={{ position: 'fixed', top: '3.19rem', zIndex:'9', width: '29%', borderLeft: '1px solid #e9ecef', backgroundColor: '#ffffff',borderRight: '1px solid #e9ecef', }}>
                             {
                                 (searchContent && searchUserList) && searchUserList.map((v,i) => (
                                     <Dropdown key = {i}>
@@ -259,7 +261,7 @@ const AppLayout = ({children}) => {
                             }
                         </ListGroup>
                     </Form>
-                        <div style={{marginBottom:'2rem',zIndex:'8', position: 'fixed'}}>
+                        <div style={{marginTop: '3rem',zIndex:'8', position: 'fixed'}}>
                             {me ? <UserProfile/> : <LoginForm/>}
                         </div>
                         {(me && recommend) ? <Recommend recommend ={recommend}/> : null}
