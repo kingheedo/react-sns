@@ -8,7 +8,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import Link from 'next/link';
 import useInput from '../hooks/useInput';
 import Router from 'next/router';
-import {Twitter,Search } from 'react-bootstrap-icons';
+import {Twitter,Search, HouseDoor, Bookmark, Person } from 'react-bootstrap-icons';
 import { useMemo } from 'react';
 import { useState } from 'react';
 import PostForm from './PostForm';
@@ -36,6 +36,9 @@ import Recommend from './Recommend';
     },
     Button{
         text-align: left;
+    },
+    h3{
+         color: #0a58ca;
     }
 
 `
@@ -213,8 +216,9 @@ const AppLayout = ({children}) => {
                         </h2>
                     </Link>
                     <ButtonGroupWrapper vertical style= {{display:'flex',position: 'fixed',top: '7rem'}}>
-                        <Button variant size="lg"><Link href="/">Home</Link></Button>
-                        <Button variant size="lg"><Link href="/profile">Profile</Link></Button>
+                        <Button variant size="lg"><Link href="/"><h3><HouseDoor style={{marginRight: '1rem'}}/>Home</h3></Link></Button>
+                        <Button variant size="lg"><Link href="/bookmarks"><h3><Bookmark style={{marginRight: '1rem'}}/>Bookmark</h3></Link></Button>
+                        <Button variant size="lg"><Link href="/profile"><h3><Person style={{marginRight: '1rem'}}/>Profile</h3></Link></Button>
                         {!me && <Button variant size="lg"><Link href="/signup">회원가입</Link>
                         </Button>}
                         

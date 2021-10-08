@@ -7,6 +7,15 @@ export const initialState = {
     singlePost: null,
     imagePaths:[],
     hasMorePosts: true,
+
+    removeBookmarkLoading :false,
+    removeBookmarkDone : false,
+    removeBookmarkError : null,
+
+    addBookmarkLoading :false,
+    addBookmarkDone : false,
+    addBookmarkError : null,
+
     likePostLoading :false,
     likePostDone : false,
     likePostError : null,
@@ -84,6 +93,18 @@ export const initialState = {
 // })
 
 
+export const LOAD_USER_BOOKMARKS_REQUEST = 'LOAD_USER_BOOKMARKS_REQUEST';
+export const LOAD_USER_BOOKMARKS_SUCCESS = 'LOAD_USER_BOOKMARKS_SUCCESS';
+export const LOAD_USER_BOOKMARKS_FAILURE = 'LOAD_USER_BOOKMARKS_FAILURE';
+
+export const ADD_BOOKMARK_REQUEST = 'ADD_BOOKMARK_REQUEST';
+export const ADD_BOOKMARK_SUCCESS = 'ADD_BOOKMARK_SUCCESS';
+export const ADD_BOOKMARK_FAILURE = 'ADD_BOOKMARK_FAILURE';
+
+export const REMOVE_BOOKMARK_REQUEST = 'REMOVE_BOOKMARK_REQUEST';
+export const REMOVE_BOOKMARK_SUCCESS = 'REMOVE_BOOKMARK_SUCCESS';
+export const REMOVE_BOOKMARK_FAILURE = 'REMOVE_BOOKMARK_FAILURE';
+
 export const LIKE_POST_REQUEST = 'LIKE_POST_REQUEST';
 export const LIKE_POST_SUCCESS = 'LIKE_POST_SUCCESS';
 export const LIKE_POST_FAILURE = 'LIKE_POST_FAILURE';
@@ -155,8 +176,40 @@ const reducer = (state =  initialState, action) =>{
             case REMOVE_IMAGE :
                 draft.imagePaths = draft.imagePaths.filter((v,i) => i !== action.data);
                 break;
-
-           
+            
+            case REMOVE_BOOKMARK_REQUEST:
+                draft.removeBookmarkLoading = true;
+                draft.removeBookmarkDone = false;
+                draft.removeBookmarkError = null;
+                break;
+            case REMOVE_BOOKMARK_SUCCESS:{
+                draft.removeBookmarkLoading = false;
+                draft.removeBookmarkDone = true;
+                const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+                post.Bookmarkers = post.Bookmarkers.filter((v) => v.id !== action.data.UserId);
+                break;
+            }
+            case REMOVE_BOOKMARK_FAILURE:
+                draft.removeBookmarkLoading = false;
+                draft.removeBookmarkError = action.error;
+                break;
+            
+            case ADD_BOOKMARK_REQUEST:
+                draft.addBookmarkLoading = true;
+                draft.addBookmarkDone = false;
+                draft.addBookmarkError = null;
+                break;
+            case ADD_BOOKMARK_SUCCESS:{
+                draft.addBookmarkLoading = false;
+                draft.addBookmarkDone = true;
+                const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+                post.Bookmarkers.push({id: action.data.UserId})
+                break;
+            }
+            case ADD_BOOKMARK_FAILURE:
+                draft.addBookmarkLoading = false;
+                draft.addBookmarkError = action.error;
+                break;
 
             case LIKE_POST_REQUEST:
                 draft.likePostLoading = true;
@@ -225,6 +278,7 @@ const reducer = (state =  initialState, action) =>{
                 draft.loadPostError = action.error;
                 break;
 
+            case LOAD_USER_BOOKMARKS_REQUEST:
             case LOAD_POSTS_REQUEST:
             case LOAD_HASHTAG_POSTS_REQUEST:
             case LOAD_USER_POSTS_REQUEST:
@@ -232,6 +286,9 @@ const reducer = (state =  initialState, action) =>{
                 draft.loadPostsDone = false;
                 draft.loadPostsError = null;
                 break;
+
+
+            case LOAD_USER_BOOKMARKS_SUCCESS:
             case LOAD_POSTS_SUCCESS:
             case LOAD_HASHTAG_POSTS_SUCCESS:
             case LOAD_USER_POSTS_SUCCESS:
@@ -241,6 +298,7 @@ const reducer = (state =  initialState, action) =>{
                 draft.hasMorePosts = action.data.length === 10;
                 break;
                 
+            case LOAD_USER_BOOKMARKS_FAILURE:
             case LOAD_POSTS_FAILURE:
             case LOAD_HASHTAG_POSTS_FAILURE:
             case LOAD_USER_POSTS_FAILURE:

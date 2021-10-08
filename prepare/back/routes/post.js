@@ -183,6 +183,38 @@ router.delete('/:postId/unlike', isLoggedIn, async(req, res, next) => {
     }
 })
 
+router.patch('/:postId/bookmark', isLoggedIn, async(req, res, next) => {
+    try{
+       const post = await Post.findOne({
+           where: {id : req.params.postId}
+       })
+       if(!post){
+           return res.status(403).send('존재하지 않는 게시글 입니다.');
+       }
+       await post.addBookmarkers(req.user.id);
+             res.status(201).json({UserId: req.user.id, PostId : post.id})
+    }catch(error){
+        console.error(error);
+        next(error)
+    }
+})
+
+router.patch('/:postId/unbookmark', isLoggedIn, async(req, res, next) => {
+    try{
+       const post = await Post.findOne({
+           where: {id : req.params.postId}
+       })
+       if(!post){
+           return res.status(403).send('존재하지 않는 게시글 입니다.');
+       }
+       await post.removeBookmarkers(req.user.id);
+             res.status(201).json({UserId: req.user.id, PostId : post.id})
+    }catch(error){
+        console.error(error);
+        next(error)
+    }
+})
+
 router.delete('/:postId/remove', isLoggedIn, async(req, res, next) => {
     try{
        await Post.destroy({

@@ -71,7 +71,60 @@ router.get('/followings', isLoggedIn, async(req, res ,next) => {
         next(err)
     }
 })
+router.get('/bookmarks', async(req, res, next) => {
+    try{
+        const where = {}
+        if(parseInt(req.query.lastId, 10)){
+            where.id = {[Op.lt] : parseInt(req.query.lastId ,10)}
+            
+        }
+        
+        const posts = await Post.findAll({
+            where,
+            limit: 10,
+            order: [['createdAt', 'DESC']],
+            include: [{
+                model: User,
+                attributes: ['id','nickname'],
+            },{
+                model : Image,
+            },{
+                model: Comment,
+                include:[{
+                    model: User,
+                    attributes: ['id', 'nickname'],
+                    order: [[Comment,'createdAt', 'DESC']],
+                }]
 
+            },{
+                model: User,
+                attributes: ['id'],
+                as : 'Likers'
+            },{
+                model: User,
+                attributes: ['id'],
+                as : 'Bookmarkers',
+                 where : {id : req.user.id},
+                
+                
+            },{
+                model: Post,
+                as : 'Retweet',
+                include: [{
+                    model: User,
+                    attributes: ['id', 'nickname']
+                },{
+                    model: Image
+                },]
+            },]
+            
+        })
+        res.status(201).json(posts)
+    }catch(error){
+        console.error(error);
+        next(error);
+    }
+})
 router.get('/recommend', isLoggedIn, async(req, res ,next) => {
     try{
         const user = await User.findOne({
@@ -202,6 +255,8 @@ router.get('/:userId', async(req, res, next) => {
        next(err);
     }
 });
+
+
 
 router.get('/:userId/posts', async (req, res, next) => { //GET /user/1/posts
     try{

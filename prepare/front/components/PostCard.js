@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import {Card,Button,Image,ListGroup, OverlayTrigger, Tooltip} from 'react-bootstrap'
-import {Share,Heart,HeartFill,ChatDots,ThreeDots} from 'react-bootstrap-icons'
+import {Share,Heart,HeartFill,ChatDots,ThreeDots,Bookmark, BookmarkFill} from 'react-bootstrap-icons'
 import { useSelector,useDispatch } from 'react-redux'
-import { LIKE_POST_REQUEST, removePostRequestAction, REMOVE_POST_REQUEST, RETWEET_REQUEST, UNLIKE_POST_REQUEST } from '../reducers/post'
+import { ADD_BOOKMARK_REQUEST, LIKE_POST_REQUEST, removePostRequestAction, REMOVE_BOOKMARK_REQUEST, REMOVE_POST_REQUEST, RETWEET_REQUEST, UNLIKE_POST_REQUEST } from '../reducers/post'
 import { removePostOfMeAction } from '../reducers/user'
 import CommentForm from './CommentForm'
 import PostCardContent from './PostCardContent'
@@ -65,7 +65,11 @@ const PostCard = ({post}) => {
 
     }),[])
     
-    
+    const BookmarkStyle = useMemo(() => ({
+        fontSize: '1.5rem',
+        float: 'right',
+        cursor : 'pointer'
+        }),[])
     
     const onRetweet = useCallback(
         () => {
@@ -125,6 +129,33 @@ const PostCard = ({post}) => {
         },
         [post.id],
     )
+
+    const OnBookmark = useCallback(
+        () => {
+            if(!id){
+                return alert('로그인 후 이용하실 수 있습니다.')
+            }
+            dispatch({
+                type: ADD_BOOKMARK_REQUEST,
+                data : post.id
+            })
+        },
+        [id],
+    )
+    const OnUnBookmark = useCallback(
+        () => {
+            if(!id){
+                return alert('로그인 후 이용하실 수 있습니다.')
+            }
+            dispatch({
+                type: REMOVE_BOOKMARK_REQUEST,
+                data : post.id
+            })
+        },
+        [id],
+    )
+
+
     const renderTooltip = (props) => (
         <Tooltip id="button-tooltip" {...props}>
             {id && post.User.id === id 
@@ -140,6 +171,8 @@ const PostCard = ({post}) => {
         </Tooltip>
         );
     const like = post.Likers.find((v) => v.id === id);
+
+    const bookmark = post.Bookmarkers.find((v) => v.id === id)
     return (
         <div style={{margin: '100px 0 20px',}}>
             <Card style={{ width: '100%',}}>
@@ -160,7 +193,18 @@ const PostCard = ({post}) => {
                             {post.Retweet.Images[0] && <PostImages  images = {post.Retweet.Images}/>}
                             </div>
                             <div style={{width: '100%', padding:'24px'}}>
-                            <Link href= {`/user/${post.Retweet.User.id}`}><a><Card.Title>{/* <Image src="holder.js/171x180" roundedCircle /> */}{post.Retweet.User.nickname}</Card.Title></a></Link>
+                                {bookmark 
+                                ? <BookmarkFill style = {BookmarkStyle} onClick = {OnUnBookmark}/>
+                                : <Bookmark style={BookmarkStyle} onClick={OnBookmark}/> 
+                                }
+                            
+                                <Card.Title style={{marginBottom: '2rem'}}>
+                            <Link href= {`/user/${post.Retweet.User.id}`}>
+                                <a>
+                                    {/* <Image src="holder.js/171x180" roundedCircle /> */}{post.Retweet.User.nickname}
+                                </a>
+                            </Link>
+                                </Card.Title>
                             <Card.Text>
                             <div style={{float:'right'}}>{moment(post.createdAt).fromNow()}</div>
                                {post.Likers.length >=1 ?  <h6 style={{fontWeight : '600'}}>좋아요 {post.Likers.length}개</h6> : null}
@@ -182,21 +226,39 @@ const PostCard = ({post}) => {
                             {post.Images[0] && <PostImages  images = {post.Images}/>}
                         </div>
                             <div style={{padding:'24px'}}>
-                                                    <Link href= {`/user/${post.User.id}`}><a><Card.Title>{/* <Image src="holder.js/171x180" roundedCircle /> */}{post.User.nickname}</Card.Title></a></Link>
-                        <Card.Text>
-                            <div style={{float:'right'}}>{moment(post.createdAt).fromNow()}</div>
-                        <div>
-                             {post.Likers.length >=1 ?  <h6 style={{fontWeight : '600'}}>좋아요 {post.Likers.length}개</h6> : null}
+                                {bookmark 
+                                ? <BookmarkFill style = {BookmarkStyle} onClick = {OnUnBookmark}/>
+                                : <Bookmark style={BookmarkStyle} onClick={OnBookmark}/> 
+                                }
+                                <Card.Title style={{marginBottom: '2rem'}}>
+                                <Link href= {`/user/${post.User.id}`}>
+                                    {/* <Image src="holder.js/171x180" roundedCircle /> */}<a>{post.User.nickname}</a>
+                                </Link>
+                                </Card.Title>
+                                <Card.Text>
+                                    <div style={{float:'right'}}>
+                                        {moment(post.createdAt).fromNow()}
+                                    </div>
+                                    <div>
+                                        {post.Likers.length >=1 ?  <h6 style={{fontWeight : '600'}}>좋아요 {post.Likers.length}개</h6> : null}
+                                    </div>
+
+                                    <br/>
+
+                                    <PostCardContent postContent = {post.content}/>
+
+                                    <div style ={{marginTop : '1rem', display:'flex'}}>
+                                        <h6>{post.Comments[0] && 
+                                            <Link href={`/user/${post.Comments[0].User.id}`}>
+                                                <a style={{textDecoration:'none',color: '#212529'}}>{post.Comments[0].User.nickname}</a>
+                                            </Link>}
+                                        </h6>
+                                        &nbsp;
+                                        <p style={{lineHeight: '1.2'}}>{post.Comments[0] && post.Comments[0].content}</p>
+                                    </div>
+                                </Card.Text>
+
                         </div>
-                        <br/>
-                        <PostCardContent postContent = {post.content}/>
-                        <div style ={{marginTop : '1rem', display:'flex'}}>
-                                <h6>{post.Comments[0] && <Link href={`/user/${post.Comments[0].User.id}`}><a style={{textDecoration:'none',color: '#212529'}}>{post.Comments[0].User.nickname}</a></Link>}</h6>
-                                &nbsp;
-                                <p style={{lineHeight: '1.2'}}>{post.Comments[0] && post.Comments[0].content}</p>
-                        </div>
-                        </Card.Text>
-                    </div>
                     </Card>
                     
                     )

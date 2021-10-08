@@ -21,6 +21,7 @@ module.exports = class Post extends Model{
         db.Post.hasMany(db.Comment);
         db.Post.hasMany(db.Image);
         db.Post.belongsToMany(db.User, {through : 'Like', as: 'Likers'}); //addLikers
+        db.Post.belongsToMany(db.User, {through : 'Bookmark', as : 'Bookmarkers'});
         db.Post.belongsToMany(db.Hashtag, {through : 'PostHashtag'});
         db.Post.belongsTo(db.Post, {as: 'Retweet'}) //post.addRetweet
     }

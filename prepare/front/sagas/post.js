@@ -1,6 +1,6 @@
 import {all, fork, put, takeLatest, delay, throttle, call } from 'redux-saga/effects'
 import axios from 'axios'
-import { ADD_COMMENT_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_POST_FAILURE, ADD_POST_REQUEST, ADD_POST_SUCCESS, generateDummyPost, LIKE_POST_FAILURE, LIKE_POST_REQUEST, LIKE_POST_SUCCESS, LOAD_HASHTAG_POSTS_FAILURE, LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_SUCCESS, LOAD_POSTS_FAILURE, LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POST_FAILURE, LOAD_POST_REQUEST, LOAD_POST_SUCCESS, REMOVE_POST_FAILURE, REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, RETWEET_FAILURE, RETWEET_REQUEST, RETWEET_SUCCESS, UNLIKE_POST_FAILURE, UNLIKE_POST_REQUEST, UNLIKE_POST_SUCCESS, UPLOAD_IMAGES_FAILURE, UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS } from '../reducers/post';
+import { ADD_BOOKMARK_FAILURE, ADD_BOOKMARK_REQUEST, ADD_BOOKMARK_SUCCESS, ADD_COMMENT_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_POST_FAILURE, ADD_POST_REQUEST, ADD_POST_SUCCESS, generateDummyPost, LIKE_POST_FAILURE, LIKE_POST_REQUEST, LIKE_POST_SUCCESS, LOAD_HASHTAG_POSTS_FAILURE, LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_SUCCESS, LOAD_POSTS_FAILURE, LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POST_FAILURE, LOAD_POST_REQUEST, LOAD_POST_SUCCESS, REMOVE_BOOKMARK_FAILURE, REMOVE_BOOKMARK_REQUEST, REMOVE_BOOKMARK_SUCCESS, REMOVE_POST_FAILURE, REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, RETWEET_FAILURE, RETWEET_REQUEST, RETWEET_SUCCESS, UNLIKE_POST_FAILURE, UNLIKE_POST_REQUEST, UNLIKE_POST_SUCCESS, UPLOAD_IMAGES_FAILURE, UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS } from '../reducers/post';
 import shortId from 'shortid'
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
@@ -63,6 +63,8 @@ function* loadPosts (action){
         })
     }
 }
+
+
 function addPostApi(data) {
     return axios.post('/post/addpost', data) //formData는 바로 data로 정의
 }
@@ -128,6 +130,48 @@ function* addComment (action){
     }catch(err){
         yield put({
             type:ADD_COMMENT_FAILURE,
+            data: err.response.data
+        })
+    }
+}
+
+function addBookMarkApi(data) {
+    return axios.patch(`/post/${data}/bookmark`)
+}
+function* addBookMark (action){
+    try{
+    const result = yield call(addBookMarkApi, action.data)
+
+        yield put({
+            type: ADD_BOOKMARK_SUCCESS,
+            data: result.data
+        })
+        
+    }catch(err){
+        console.error(err);
+        yield put({
+            type: ADD_BOOKMARK_FAILURE,
+            data: err.response.data
+        })
+    }
+}
+
+function removeBookMarkApi(data) {
+    return axios.patch(`/post/${data}/unbookmark`)
+}
+function* removeBookMark (action){
+    try{
+    const result = yield call(removeBookMarkApi, action.data)
+
+        yield put({
+            type: REMOVE_BOOKMARK_SUCCESS,
+            data: result.data
+        })
+        
+    }catch(err){
+        console.error(err);
+        yield put({
+            type: REMOVE_BOOKMARK_FAILURE,
             data: err.response.data
         })
     }
@@ -218,6 +262,12 @@ function* retweet(action) {
 function* watchLoadHashtagPosts() {
   yield throttle(2000, LOAD_HASHTAG_POSTS_REQUEST, loadHashtagPosts);
 }
+function* watchRemoveBookmark() {
+  yield takeLatest(REMOVE_BOOKMARK_REQUEST, removeBookMark);
+}
+function* watchAddBookmark() {
+  yield takeLatest(ADD_BOOKMARK_REQUEST, addBookMark);
+}
 function* watchLoadPost() {
   yield throttle(2000, LOAD_POST_REQUEST, loadPost);
 }
@@ -248,6 +298,8 @@ function* watchRetweet() {
 
 export default function* postSaga(){
     yield all([
+        fork(watchRemoveBookmark),
+        fork(watchAddBookmark),
         fork(watchLoadHashtagPosts),
         fork(watchLoadPost),
         fork(watchLoadPosts),
