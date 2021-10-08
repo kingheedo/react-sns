@@ -71,8 +71,11 @@ router.get('/followings', isLoggedIn, async(req, res ,next) => {
         next(err)
     }
 })
-router.get('/bookmarks', async(req, res, next) => {
+router.get('/bookmarks', isLoggedIn, async(req, res, next) => {
     try{
+        if(!req.user.id){
+          return  res.status(403).send('로그인이 필요합니다.')
+        }
         const where = {}
         if(parseInt(req.query.lastId, 10)){
             where.id = {[Op.lt] : parseInt(req.query.lastId ,10)}

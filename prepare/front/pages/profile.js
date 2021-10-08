@@ -22,17 +22,12 @@ const Profile = () => {
         
     
     useEffect(() => {
-        if (!me){
+        if(!me){
+            alert('로그인이 필요합니다')
             Router.push('/')
         }
     }, [me])
-    if(!me) {
-    return null;
-    }
-    if(followerError || followingError) {
-        console.error(followerError || followingError);
-        return '팔로잉/팔로워 로딩중 오류가 발생하였습니다.'
-    }
+    
     return (
         <>
             <Head>
