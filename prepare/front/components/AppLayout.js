@@ -29,6 +29,9 @@ import Recommend from './Recommend';
     `
 
     const ButtonGroupWrapper = styled(ButtonGroup)`
+    display:flex;
+    position: fixed;
+    top: 7rem;
     a{
         margin: 0 !important;
          padding-right: 14rem;
@@ -42,6 +45,15 @@ import Recommend from './Recommend';
     }
 
 `
+    const SearchList = styled(ListGroup)`
+     position: fixed;
+     top: 3.19rem;
+     z-index: 9;
+     width: 29%;
+     border-left: 1px solid #e9ecef;
+     background-color: #ffffff;
+     border-right: 1px solid #e9ecef;
+    `
     const CircleButton = styled(Button)`
     margin-top: 50px;
     border-radius: 9999px;
@@ -90,9 +102,7 @@ const AppLayout = ({children}) => {
     const Col2 = useMemo(() => ({
         borderRight:'1px solid #DCDCDC',
     }),[])
-    const ButtonH1 = useMemo(() => ({
-        
-    }),[])
+    
     
     const [show, setShow] = useState(false);
     const handleModalForm  = useCallback(
@@ -215,14 +225,14 @@ const AppLayout = ({children}) => {
                             <Twitter style={{color: '#0a58ca',position: 'fixed'}}/>
                         </h2>
                     </Link>
-                    <ButtonGroupWrapper vertical style= {{display:'flex',position: 'fixed',top: '7rem'}}>
+                    <ButtonGroupWrapper vertical>
                         <Button variant size="lg"><Link href="/"><h3><HouseDoor style={{marginRight: '1rem'}}/>Home</h3></Link></Button>
                         <Button variant size="lg"><Link href="/bookmarks"><h3><Bookmark style={{marginRight: '1rem'}}/>Bookmark</h3></Link></Button>
                         <Button variant size="lg"><Link href="/profile"><h3><Person style={{marginRight: '1rem'}}/>Profile</h3></Link></Button>
                         {!me && <Button variant size="lg"><Link href="/signup">회원가입</Link>
                         </Button>}
                         
-                        <h1 stlye={ButtonH1}>
+                        <h1>
                             <CircleButton variant="primary" onClick={handleModalForm}>
                             Tweet
                         </CircleButton>
@@ -251,7 +261,7 @@ const AppLayout = ({children}) => {
                 
                     
                     
-                    <ListGroup style={{ position: 'fixed', top: '3.19rem', zIndex:'9', width: '29%', borderLeft: '1px solid #e9ecef', backgroundColor: '#ffffff',borderRight: '1px solid #e9ecef', }}>
+                    <SearchList>
                             {
                                 (searchContent && searchUserList) && searchUserList.map((v,i) => (
                                     <Dropdown key = {i}>
@@ -263,7 +273,7 @@ const AppLayout = ({children}) => {
                                 
                         ))
                             }
-                        </ListGroup>
+                        </SearchList>
                     </Form>
                         <div style={{marginTop: '3rem',zIndex:'8', position: 'fixed'}}>
                             {me ? <UserProfile/> : <LoginForm/>}

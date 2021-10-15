@@ -3,7 +3,7 @@ import {Button, Card} from 'react-bootstrap'
 import {useSelector} from 'react-redux'
 import styled from 'styled-components'
 import {useDispatch} from 'react-redux'
-import { logoutRequestAction, LOG_OUT_REQUEST } from '../reducers/user'
+import { logoutRequestAction,} from '../reducers/user'
 import Link from 'next/link'
 import moment from 'moment'
 
@@ -20,10 +20,9 @@ const CardBody = styled(Card.Body)`
     padding: 1.0rem;
 `
 const CardLink = styled(Card.Link)`
-    padding : 5px;
+    padding: 0;
     display:flex;
     text-align : center;
-    padding : 0 1.0rem;
 `
 const UserProfile = () => {
     
@@ -40,7 +39,7 @@ const UserProfile = () => {
     )
     return (
         <Card style={{ width: '31rem', flexDirection: 'row' }}>
-            <Card.Img variant="left" src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" width='155' />
+            {/* <Card.Img variant="left" src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" width='155' /> */}
             <CardBody>
                 <Link href= {`/user/${me.id}`}><a><Card.Title>{me.nickname}</Card.Title></a></Link>
                 <LogoutButton onClick={logoutHandler}>로그아웃</LogoutButton>
@@ -49,9 +48,9 @@ const UserProfile = () => {
                 </div>
                 <br/>
                 <CardLinkWrapper>
-                    <Link href= {`/user/${me.id}`}><a><CardLink style={{padding: 0}} href="#">게시글 수 <br/>{me.Posts.length}</CardLink></a></Link>
-                    <Link href={`/profile`}><a><CardLink style={{padding: 0}} href="#">팔로잉 <br/>{me.Followings.length}</CardLink></a></Link>
-                    <Link href={`/profile`}><a><CardLink style={{padding: 0}} href="#">팔로워 <br/>{me.Followers.length}</CardLink></a></Link>
+                    <Link href= {`/user/${me.id}`}><a><CardLink href="#">게시물 <br/>{me.Posts.length}</CardLink></a></Link>
+                    <Link href={`/profile`}><a><CardLink href="#">팔로우 <br/>{me.Followings.length}</CardLink></a></Link>
+                    <Link href={`/profile`}><a><CardLink href="#">팔로워 <br/>{me.Followers.length}</CardLink></a></Link>
                 </CardLinkWrapper>
                 
             </CardBody>

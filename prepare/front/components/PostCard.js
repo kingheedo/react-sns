@@ -29,6 +29,15 @@ const CommentListItem = styled(ListGroup.Item)`
         display:flex;
         margin-top : 1rem;
 `
+const MoreButton = styled(Tooltip)`
+        .tooltip-inner{
+            border: 1px solid #f0f0f1;
+            background-color: #f0f0f1;
+        },
+        .arrow::before {
+            border-top-color: #f0f0f1;
+        },
+`
 const PostCard = ({post}) => {
     const [commentOpen, setCommentOpen] = useState(false)
     const id = useSelector(state => state.user.me?.id)
@@ -154,21 +163,32 @@ const PostCard = ({post}) => {
         },
         [id],
     )
-
+    const onEditPost = useCallback(
+        () => {
+            if(!id){
+                return alert('로그인 후 이용하실 수 있습니다.')
+            }
+            dispatch({
+                type : EDIT_POST_CONTENT_REQUEST,
+                data : post.id
+            })
+        },
+        [],
+    )
 
     const renderTooltip = (props) => (
-        <Tooltip id="button-tooltip" {...props}>
+        <MoreButton id="button-tooltip" {...props}>
             {id && post.User.id === id 
             ? (
                <>
-                 <Button  variant="warning">수정</Button>
+                 <Button  variant="warning" onClick={onEditPost}>수정</Button>
                 <Button variant="danger" onClick={onPostDelete}>삭제</Button>
                </>
             )
         :
                 <Button variant="danger">신고</Button>
         }
-        </Tooltip>
+        </MoreButton>
         );
     const like = post.Likers.find((v) => v.id === id);
 

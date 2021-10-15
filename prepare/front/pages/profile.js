@@ -5,7 +5,7 @@ import  Router  from 'next/router';
 import AppLayout from '../components/AppLayout';
 import FollowList from '../components/FollowList';
 import NickNameEditForm from '../components/NickNameEditForm';
-import { LOAD_FOLLOWERS_REQUEST, LOAD_FOLLOWINGS_REQUEST, LOAD_MY_INFO_REQUEST,  } from '../reducers/user';
+import {LOAD_MY_INFO_REQUEST,  } from '../reducers/user';
 import axios from 'axios';
 import wrapper from '../store/configureStore';
 import {END} from 'redux-saga';

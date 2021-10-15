@@ -56,6 +56,10 @@ router.get('/:postId', isNotLoggedIn, async(req, res, next) => { //개시글 불
               model: User,
               attributes: ['id','nickname'],
               as: 'Likers'
+          },{
+              model: User,
+              attributes: ['id','nickname'],
+              as: 'Bookmarkers'
           }
         ]
       })
@@ -107,6 +111,10 @@ router.post('/addpost', isLoggedIn, upload.none(), async(req, res, next) => { //
                 model: User,
                 attributes: ['id'],
                 as: 'Likers'
+            },{
+                model: User,
+                attributes: ['id'],
+                as: 'Bookmarkers'
             }]
         })
         res.status(201).json(fullPost);
@@ -284,6 +292,10 @@ router.post('/:postId/retweet', isLoggedIn, async(req, res, next) => {
                model: User,
                as:'Likers',
                attributes: ['id', 'nickname']
+           },{
+               model: User,
+               as:'Bookmarkers',
+               attributes: ['id']
            }]
        })
        res.status(201).json(retweetWithPrevPost);

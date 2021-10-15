@@ -1,6 +1,3 @@
-/* eslint-disable react/no-unused-prop-types */
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-disable react/prop-types */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Slick from 'react-slick';
