@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
-import {Card,Button,Image,ListGroup, OverlayTrigger, Tooltip} from 'react-bootstrap'
+import {Card,Button,Image,ListGroup, OverlayTrigger, Tooltip, Modal} from 'react-bootstrap'
 import {Share,Heart,HeartFill,ChatDots,ThreeDots,Bookmark, BookmarkFill} from 'react-bootstrap-icons'
 import { useSelector,useDispatch } from 'react-redux'
 import { ADD_BOOKMARK_REQUEST, LIKE_POST_REQUEST, removePostRequestAction, REMOVE_BOOKMARK_REQUEST, REMOVE_POST_REQUEST, RETWEET_REQUEST, UNLIKE_POST_REQUEST } from '../reducers/post'
@@ -12,6 +12,7 @@ import FollowButton from './FollowButton'
 import Link from 'next/link'
 import moment from 'moment';
 import styled from 'styled-components'
+import EditPostContent from './EditPostContent'
 
 moment.locale('ko');
 
@@ -29,7 +30,7 @@ const CommentListItem = styled(ListGroup.Item)`
         display:flex;
         margin-top : 1rem;
 `
-const MoreButton = styled(Tooltip)`
+let MoreButton = styled(Tooltip)`
         .tooltip-inner{
             border: 1px solid #f0f0f1;
             background-color: #f0f0f1;
@@ -43,10 +44,12 @@ const PostCard = ({post}) => {
     const id = useSelector(state => state.user.me?.id)
     const {retweetError} = useSelector(state => state.post)
     const dispatch = useDispatch();
+    const [show, setShow] = useState(false);
     // const cardHeader = styled(Card.Header)`
     // background : rgba(0,0,0,0);
     
     // `
+    
     const headerStyle = useMemo(() => ({
         backgroundColor: 'rgba(0,0,0,0)'
     }),[])
@@ -163,31 +166,30 @@ const PostCard = ({post}) => {
         },
         [id],
     )
-    const onEditPost = useCallback(
-        () => {
-            if(!id){
-                return alert('로그인 후 이용하실 수 있습니다.')
-            }
-            dispatch({
-                type : EDIT_POST_CONTENT_REQUEST,
-                data : post.id
-            })
+    
+    const handleModalForm  = useCallback(
+        (e) => {
+            setShow((show) => !show);
         },
-        [],
+        [show,],
     )
 
     const renderTooltip = (props) => (
         <MoreButton id="button-tooltip" {...props}>
-            {id && post.User.id === id 
-            ? (
+            
+            
                <>
-                 <Button  variant="warning" onClick={onEditPost}>수정</Button>
-                <Button variant="danger" onClick={onPostDelete}>삭제</Button>
+               {id && post.User.id === id && !post.Retweet &&
+                 <Button  variant="warning" onClick={handleModalForm}>수정</Button>
+               }
+               {id && post.User.id === id &&
+               <Button variant="danger" onClick={onPostDelete}>삭제</Button>
+               }
                </>
-            )
-        :
+            
+               {id && post.User.id !== id &&
                 <Button variant="danger">신고</Button>
-        }
+                }
         </MoreButton>
         );
     const like = post.Likers.find((v) => v.id === id);
@@ -304,13 +306,17 @@ const PostCard = ({post}) => {
                             </li>
                         <li style={liStyle}>
                             <span style={spanStyle}>
-                                <OverlayTrigger
+                                {show 
+                                ? null
+                                : <OverlayTrigger
                                     placement="top"
                                     overlay={renderTooltip}
                                     trigger='click'
                                 >
-                                    <ThreeDots style={{width:'100%'}}>Hover me to see</ThreeDots>
+                                    <ThreeDots style={{width:'100%'}}/>
                                 </OverlayTrigger>
+                            
+                            }    
                                 
                             </span>
                         </li>
@@ -335,6 +341,8 @@ const PostCard = ({post}) => {
             </div>
             )    
         }
+        <EditPostContent post={post} show={show} handleModalForm= {handleModalForm}/>
+       
         </div>
     )
 }

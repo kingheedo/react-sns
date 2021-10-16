@@ -51,6 +51,12 @@ export const initialState = {
    retweetLoading : false,
    retweetDone : false,
    retweetError : null,
+   
+   editPostContentLoading : false,
+   editPostContentDone : false,
+   editPostContentError : null,
+   
+
 
    
 
@@ -92,6 +98,10 @@ export const initialState = {
 //     ...data,
 // })
 
+
+export const EDIT_POST_CONTENT_REQUEST = 'EDIT_POST_CONTENT_REQUEST';
+export const EDIT_POST_CONTENT_SUCCESS = 'EDIT_POST_CONTENT_SUCCESS';
+export const EDIT_POST_CONTENT_FAILURE = 'EDIT_POST_CONTENT_FAILURE';
 
 export const LOAD_USER_BOOKMARKS_REQUEST = 'LOAD_USER_BOOKMARKS_REQUEST';
 export const LOAD_USER_BOOKMARKS_SUCCESS = 'LOAD_USER_BOOKMARKS_SUCCESS';
@@ -192,6 +202,24 @@ const reducer = (state =  initialState, action) =>{
             case REMOVE_BOOKMARK_FAILURE:
                 draft.removeBookmarkLoading = false;
                 draft.removeBookmarkError = action.error;
+                break;
+            
+            case EDIT_POST_CONTENT_REQUEST:
+                draft.editPostContentLoading = true;
+                draft.editPostContentDone = false;
+                draft.editPostContentError = null;
+                break;
+            case EDIT_POST_CONTENT_SUCCESS:{
+                const post =  draft.mainPosts.find((v) => v.id === action.data.PostId);
+                post.content = action.data.content; 
+                draft.editPostContentLoading = false;
+                draft.editPostContentDone = true;
+                
+                break;
+            }
+            case EDIT_POST_CONTENT_FAILURE:
+                draft.editPostContentLoading = false;
+                draft.editPostContentError = action.error;
                 break;
             
             case ADD_BOOKMARK_REQUEST:

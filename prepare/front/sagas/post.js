@@ -1,9 +1,29 @@
 import {all, fork, put, takeLatest, delay, throttle, call } from 'redux-saga/effects'
 import axios from 'axios'
-import { ADD_BOOKMARK_FAILURE, ADD_BOOKMARK_REQUEST, ADD_BOOKMARK_SUCCESS, ADD_COMMENT_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_POST_FAILURE, ADD_POST_REQUEST, ADD_POST_SUCCESS, generateDummyPost, LIKE_POST_FAILURE, LIKE_POST_REQUEST, LIKE_POST_SUCCESS, LOAD_HASHTAG_POSTS_FAILURE, LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_SUCCESS, LOAD_POSTS_FAILURE, LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POST_FAILURE, LOAD_POST_REQUEST, LOAD_POST_SUCCESS, REMOVE_BOOKMARK_FAILURE, REMOVE_BOOKMARK_REQUEST, REMOVE_BOOKMARK_SUCCESS, REMOVE_POST_FAILURE, REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, RETWEET_FAILURE, RETWEET_REQUEST, RETWEET_SUCCESS, UNLIKE_POST_FAILURE, UNLIKE_POST_REQUEST, UNLIKE_POST_SUCCESS, UPLOAD_IMAGES_FAILURE, UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS } from '../reducers/post';
+import { ADD_BOOKMARK_FAILURE, ADD_BOOKMARK_REQUEST, ADD_BOOKMARK_SUCCESS, ADD_COMMENT_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_POST_FAILURE, ADD_POST_REQUEST, ADD_POST_SUCCESS, EDIT_POST_CONTENT_FAILURE, EDIT_POST_CONTENT_REQUEST, EDIT_POST_CONTENT_SUCCESS, generateDummyPost, LIKE_POST_FAILURE, LIKE_POST_REQUEST, LIKE_POST_SUCCESS, LOAD_HASHTAG_POSTS_FAILURE, LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_SUCCESS, LOAD_POSTS_FAILURE, LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POST_FAILURE, LOAD_POST_REQUEST, LOAD_POST_SUCCESS, REMOVE_BOOKMARK_FAILURE, REMOVE_BOOKMARK_REQUEST, REMOVE_BOOKMARK_SUCCESS, REMOVE_POST_FAILURE, REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, RETWEET_FAILURE, RETWEET_REQUEST, RETWEET_SUCCESS, UNLIKE_POST_FAILURE, UNLIKE_POST_REQUEST, UNLIKE_POST_SUCCESS, UPLOAD_IMAGES_FAILURE, UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS } from '../reducers/post';
 import shortId from 'shortid'
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
+
+function EditPostContentApi(data) { //hashtag/name
+    return axios.patch(`/post/${data.postId}/edit`,data)
+}
+function* EditPostContent (action){
+    try{
+        const result = yield call(EditPostContentApi, action.data )
+        yield put({
+            type: EDIT_POST_CONTENT_SUCCESS,
+            data: result.data
+        })
+        
+    }catch(err){
+      console.error(err)
+        yield put({
+            type: EDIT_POST_CONTENT_FAILURE,
+            error: err.response.data
+        })
+    }
+}
 
 function loadHashtagPostsApi(data,lastId) { //hashtag/name
     return axios.get(`/hashtag/${encodeURIComponent(data)}?lastId=${lastId || 0}`)
@@ -259,6 +279,9 @@ function* retweet(action) {
 
 
 
+function* watchEditPostContent() {
+  yield throttle(2000, EDIT_POST_CONTENT_REQUEST, EditPostContent);
+}
 function* watchLoadHashtagPosts() {
   yield throttle(2000, LOAD_HASHTAG_POSTS_REQUEST, loadHashtagPosts);
 }
@@ -298,6 +321,7 @@ function* watchRetweet() {
 
 export default function* postSaga(){
     yield all([
+        fork(watchEditPostContent),
         fork(watchRemoveBookmark),
         fork(watchAddBookmark),
         fork(watchLoadHashtagPosts),

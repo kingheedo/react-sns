@@ -48,6 +48,6 @@ const ImagesZoom = ({ images, onClose }) => {
 };
 ImagesZoom.propTypes = {
   images: PropTypes.arrayOf(PropTypes.object).isRequired,
-  OnClose: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
 export default ImagesZoom;

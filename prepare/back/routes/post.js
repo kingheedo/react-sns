@@ -5,6 +5,7 @@ const fs = require('fs');
 
 const { Post, Comment, Image, User, Hashtag } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+const { parse } = require('path');
 const router = express.Router();
 
 try{
@@ -28,6 +29,27 @@ const upload = multer ({
         limits: {fileSize: 20 * 1024 * 1024}, //20MB
 });
 
+router.patch('/:postId/edit', isLoggedIn, async(req, res, next) => { //글 내용 수정하기
+    try{
+        const exPost = await Post.findOne({
+            where : {id: req.params.postId}
+        })
+        if(exPost.UserId !== req.user.id){
+      return res.status(403).send('본인이 작성한 게시글만 수정할 수 있습니다.')
+        }
+       await Post.update({
+            content : req.body.contentText,
+           
+      },{
+          where: {id : req.params.postId},
+        })
+      
+      res.status(201).json({content : req.body.contentText, PostId : parseInt(req.params.postId, 10)})
+    }catch(error){
+        console.error(error);
+        next(error)
+    }
+})
 router.get('/:postId', isNotLoggedIn, async(req, res, next) => { //개시글 불러오기
     try{
       const post = await Post.findOne({
