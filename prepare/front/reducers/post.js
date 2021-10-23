@@ -56,6 +56,10 @@ export const initialState = {
    editPostContentDone : false,
    editPostContentError : null,
    
+   deltePostImageLoading : false,
+   deltePostImageDone : false,
+   deltePostImageError : null,
+   
 
 
    
@@ -98,6 +102,10 @@ export const initialState = {
 //     ...data,
 // })
 
+
+export const DELETE_POST_IMAGE_REQUEST = 'DELETE_POST_IMAGE_REQUEST';
+export const DELETE_POST_IMAGE_SUCCESS = 'DELETE_POST_IMAGE_SUCCESS';
+export const DELETE_POST_IMAGE_FAILURE = 'DELETE_POST_IMAGE_FAILURE';
 
 export const EDIT_POST_CONTENT_REQUEST = 'EDIT_POST_CONTENT_REQUEST';
 export const EDIT_POST_CONTENT_SUCCESS = 'EDIT_POST_CONTENT_SUCCESS';
@@ -185,6 +193,23 @@ const reducer = (state =  initialState, action) =>{
         switch (action.type) {
             case REMOVE_IMAGE :
                 draft.imagePaths = draft.imagePaths.filter((v,i) => i !== action.data);
+                break;
+            
+            case DELETE_POST_IMAGE_REQUEST:
+                draft.deletePostImageLoading = true;
+                draft.deletePostImageDone = false;
+                draft.deletePostImageError = null;
+                break;
+            case DELETE_POST_IMAGE_SUCCESS:{
+                draft.deletePostImageLoading = false;
+                draft.deletePostImageDone = true;
+                const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+                post.Images = post.Images.filter((v) => v.id !== action.data.ImageId)
+                break;
+            }
+            case DELETE_POST_IMAGE_FAILURE:
+                draft.deletePostImageLoading = false;
+                draft.deletePostImageError = action.error;
                 break;
             
             case REMOVE_BOOKMARK_REQUEST:

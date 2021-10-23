@@ -5,7 +5,6 @@ const fs = require('fs');
 
 const { Post, Comment, Image, User, Hashtag } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
-const { parse } = require('path');
 const router = express.Router();
 
 try{
@@ -140,7 +139,7 @@ router.post('/addpost', isLoggedIn, upload.none(), async(req, res, next) => { //
             }]
         })
         res.status(201).json(fullPost);
-        console.log('req.body',req.body)
+        // console.log('req.body',req.body)
     }catch(error){
         console.error(error);
         next(error)
@@ -149,8 +148,26 @@ router.post('/addpost', isLoggedIn, upload.none(), async(req, res, next) => { //
 
 
 router.post('/images', isLoggedIn, upload.array('image'), async(req, res, next) => { //Post /post/images
-    console.log(req.files);
+    console.log('req.files',req.files);
     res.json(req.files.map((v) => v.filename))
+})
+
+router.delete('/:postId/:imageId/imagedelete', isLoggedIn, async(req, res, next) => { //Post /post/3/imagedelete
+    try{
+        console.log('imageid',req.params.imageId)
+        console.log('postId',req.params.postId)
+        await Image.destroy({
+        where : {
+            id : req.params.imageId,
+            PostId : req.params.postId
+        }
+    })
+    res.status(203).json({PostId : parseInt(req.params.postId,10), ImageId : parseInt(req.params.imageId,10)})
+    }catch(error){
+        console.error(error);
+        next(error);
+    }
+    
 })
 
 router.post('/:postId/addcomment', isLoggedIn, async(req, res, next) => {

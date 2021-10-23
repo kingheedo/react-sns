@@ -212,7 +212,7 @@ const PostCard = ({post}) => {
                     ?
                     (<Card style={{border: 0, width: '100%', display:'inline-block',margin:'0.05rem' }}>
                         <div style={{display:'flex'}}>
-                            {post.Retweet.Images[0] && <PostImages  images = {post.Retweet.Images}/>}
+                            {post.Retweet.Images[0] && <PostImages images = {post.Retweet.Images}/>}
                             </div>
                             <div style={{width: '100%', padding:'24px'}}>
                                 {bookmark 
@@ -245,7 +245,7 @@ const PostCard = ({post}) => {
                     :
                     (<Card style={{ border: 0,width: '100%', display:'inline-block',margin:'0.05rem' }}>
                         <div style={{display:'flex'}}>
-                            {post.Images[0] && <PostImages  images = {post.Images}/>}
+                            {post.Images[0] && <PostImages images = {post.Images}/>}
                         </div>
                             <div style={{padding:'24px'}}>
                                 {bookmark 
