@@ -1,14 +1,16 @@
-import {all, fork, take, put, takeEvery, takeLatest, delay} from 'redux-saga/effects';
+import { all, fork } from 'redux-saga/effects';
+// take, put, takeEvery, takeLatest, delay
 import axios from 'axios';
+
+import userSaga from './user';
+import postSaga from './post';
 
 axios.defaults.baseURL = 'http://localhost:3065';
 axios.defaults.withCredentials = true;
 
-import userSaga from './user';
-import postSaga from './post'
 export default function* rootSaga() {
-    yield all ([
+    yield all([
         fork(userSaga),
         fork(postSaga),
-    ])
+    ]);
 }

@@ -40,7 +40,10 @@ router.patch('/:postId/edit', isLoggedIn, async(req, res, next) => { //글 내�
             content : req.body.contentText,
            
       },{
-          where: {id : req.params.postId},
+          where: {
+              id : req.params.postId,
+              UserId : req.user.id,
+          },
         })
       
       res.status(201).json({content : req.body.contentText, PostId : parseInt(req.params.postId, 10)})

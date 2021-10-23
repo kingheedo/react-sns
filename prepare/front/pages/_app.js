@@ -1,10 +1,10 @@
     import React from 'react';
     import PropTypes from 'prop-types';
     import Head from 'next/head';
-    import 'bootstrap/dist/css/bootstrap.css'
-    import wrapper from '../store/configureStore'
+    import 'bootstrap/dist/css/bootstrap.css';
+    import wrapper from '../store/configureStore';
   
-    const NodeBird = ({Component}) => {
+    const NodeBird = ({ Component }) => {
         return (
             <>
                 <Head>
@@ -13,11 +13,10 @@
                 </Head>
                 <Component/>
             </>
-        )
-    }
-    NodeBird.proptypes = {
-        Component :PropTypes.elementType.isRequired
-    }
+        );
+    };
+    NodeBird.propTypes = {
+        Component: PropTypes.elementType.isRequired,
+    };
 
     export default wrapper.withRedux(NodeBird);
-    

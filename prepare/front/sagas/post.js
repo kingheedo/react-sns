@@ -1,239 +1,225 @@
-import {all, fork, put, takeLatest, delay, throttle, call } from 'redux-saga/effects'
-import axios from 'axios'
-import { ADD_BOOKMARK_FAILURE, ADD_BOOKMARK_REQUEST, ADD_BOOKMARK_SUCCESS, ADD_COMMENT_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_POST_FAILURE, ADD_POST_REQUEST, ADD_POST_SUCCESS, DELETE_POST_IMAGE_FAILURE, DELETE_POST_IMAGE_REQUEST, DELETE_POST_IMAGE_SUCCESS, EDIT_POST_CONTENT_FAILURE, EDIT_POST_CONTENT_REQUEST, EDIT_POST_CONTENT_SUCCESS, generateDummyPost, LIKE_POST_FAILURE, LIKE_POST_REQUEST, LIKE_POST_SUCCESS, LOAD_HASHTAG_POSTS_FAILURE, LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_SUCCESS, LOAD_POSTS_FAILURE, LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POST_FAILURE, LOAD_POST_REQUEST, LOAD_POST_SUCCESS, REMOVE_BOOKMARK_FAILURE, REMOVE_BOOKMARK_REQUEST, REMOVE_BOOKMARK_SUCCESS, REMOVE_POST_FAILURE, REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, RETWEET_FAILURE, RETWEET_REQUEST, RETWEET_SUCCESS, UNLIKE_POST_FAILURE, UNLIKE_POST_REQUEST, UNLIKE_POST_SUCCESS, UPLOAD_IMAGES_FAILURE, UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS } from '../reducers/post';
-import shortId from 'shortid'
+import { all, fork, put, takeLatest, throttle, call } from 'redux-saga/effects';
+import axios from 'axios';
+import { ADD_BOOKMARK_FAILURE, ADD_BOOKMARK_REQUEST, ADD_BOOKMARK_SUCCESS, ADD_COMMENT_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_POST_FAILURE, ADD_POST_REQUEST, ADD_POST_SUCCESS, DELETE_POST_IMAGE_FAILURE, DELETE_POST_IMAGE_REQUEST, DELETE_POST_IMAGE_SUCCESS, EDIT_POST_CONTENT_FAILURE, EDIT_POST_CONTENT_REQUEST, EDIT_POST_CONTENT_SUCCESS, LIKE_POST_FAILURE, LIKE_POST_REQUEST, LIKE_POST_SUCCESS, LOAD_HASHTAG_POSTS_FAILURE, LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_SUCCESS, LOAD_POSTS_FAILURE, LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POST_FAILURE, LOAD_POST_REQUEST, LOAD_POST_SUCCESS, REMOVE_BOOKMARK_FAILURE, REMOVE_BOOKMARK_REQUEST, REMOVE_BOOKMARK_SUCCESS, REMOVE_POST_FAILURE, REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, RETWEET_FAILURE, RETWEET_REQUEST, RETWEET_SUCCESS, UNLIKE_POST_FAILURE, UNLIKE_POST_REQUEST, UNLIKE_POST_SUCCESS, UPLOAD_IMAGES_FAILURE, UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS } from '../reducers/post';
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
-
 function DeltePostImageApi(data) { //hashtag/name
-    return axios.delete(`/post/${data.postId}/${data.imageId}/imagedelete`,data)
+    return axios.delete(`/post/${data.postId}/${data.imageId}/imagedelete`, data);
 }
-function* DeltePostImage (action){
-    try{
-        const result = yield call(DeltePostImageApi, action.data)
+function* DeltePostImage(action) {
+    try {
+        const result = yield call(DeltePostImageApi, action.data);
         yield put({
             type: DELETE_POST_IMAGE_SUCCESS,
-            data: result.data
-        })
-        
-    }catch(err){
-      console.error(err)
+            data: result.data,
+        });
+    } catch (err) {
+      console.error(err);
         yield put({
             type: DELETE_POST_IMAGE_FAILURE,
-            error: err.response.data
-        })
+            error: err.response.data,
+        });
     }
 }
 
 function EditPostContentApi(data) { //hashtag/name
-    return axios.patch(`/post/${data.postId}/edit`,data)
+    return axios.patch(`/post/${data.postId}/edit`, data);
 }
-function* EditPostContent (action){
-    try{
-        const result = yield call(EditPostContentApi, action.data )
+function* EditPostContent(action) {
+    try {
+        const result = yield call(EditPostContentApi, action.data);
         yield put({
             type: EDIT_POST_CONTENT_SUCCESS,
-            data: result.data
-        })
-        
-    }catch(err){
-      console.error(err)
+            data: result.data,
+        });
+    } catch (err) {
+      console.error(err);
         yield put({
             type: EDIT_POST_CONTENT_FAILURE,
-            error: err.response.data
-        })
+            error: err.response.data,
+        });
     }
 }
 
-function loadHashtagPostsApi(data,lastId) { //hashtag/name
-    return axios.get(`/hashtag/${encodeURIComponent(data)}?lastId=${lastId || 0}`)
+function loadHashtagPostsApi(data, lastId) { //hashtag/name
+    return axios.get(`/hashtag/${encodeURIComponent(data)}?lastId=${lastId || 0}`);
 }
-function* loadHashtagPosts (action){
-    try{
-      console.log('loadHashtag')
-        const result = yield call(loadHashtagPostsApi, action.data, action.lastId )
+function* loadHashtagPosts(action) {
+    try {
+      console.log('loadHashtag');
+        const result = yield call(loadHashtagPostsApi, action.data, action.lastId);
         yield put({
             type: LOAD_HASHTAG_POSTS_SUCCESS,
-            data: result.data
-        })
-        
-    }catch(err){
-      console.error(err)
+            data: result.data,
+        });
+    } catch (err) {
+      console.error(err);
         yield put({
             type: LOAD_HASHTAG_POSTS_FAILURE,
-            error: err.response.data
-        })
+            error: err.response.data,
+        });
     }
 }
 
 function loadPostApi(data) {
-    return axios.get(`/post/${data}`)
+    return axios.get(`/post/${data}`);
 }
-function* loadPost (action){
-    try{
-        const result = yield call(loadPostApi, action.data )
+function* loadPost(action) {
+    try {
+        const result = yield call(loadPostApi, action.data);
         yield put({
             type: LOAD_POST_SUCCESS,
-            data: result.data
-        })
-        
-    }catch(err){
+            data: result.data,
+        });
+    } catch (err) {
         yield put({
-            type:LOAD_POST_FAILURE,
-            error: err.response.data
-        })
+            type: LOAD_POST_FAILURE,
+            error: err.response.data,
+        });
     }
 }
 
 function loadPostsApi(lastId) {
-    return axios.get(`/posts?lastId=${lastId || 0}`)
+    return axios.get(`/posts?lastId=${lastId || 0}`);
 }
-function* loadPosts (action){
-    try{
-        const result = yield call(loadPostsApi, action.lastId )
+function* loadPosts(action) {
+    try {
+        const result = yield call(loadPostsApi, action.lastId);
         yield put({
             type: LOAD_POSTS_SUCCESS,
-            data: result.data
-        })
-        
-    }catch(err){
+            data: result.data,
+        });
+    } catch (err) {
         yield put({
-            type:LOAD_POSTS_FAILURE,
-            error: err.response.data
-        })
+            type: LOAD_POSTS_FAILURE,
+            error: err.response.data,
+        });
     }
 }
 
-
 function addPostApi(data) {
-    return axios.post('/post/addpost', data) //formData는 바로 data로 정의
+    return axios.post('/post/addpost', data); //formData는 바로 data로 정의
 }
-function* addPost (action){
-
-    try{
-    const result = yield call(addPostApi, action.data)
+function* addPost(action) {
+    try {
+    const result = yield call(addPostApi, action.data);
         yield put({
             type: ADD_POST_SUCCESS,
-            data: result.data
+            data: result.data,
         });
-        console.log(result)
+        console.log(result);
         yield put({
             type: ADD_POST_TO_ME,
-            data: result.data.id
-        })
-    }catch(err){
-        console.error(err)
+            data: result.data.id,
+        });
+    } catch (err) {
+        console.error(err);
         yield put({
-            type:ADD_POST_FAILURE,
-            error: err.response.data
-        })
+            type: ADD_POST_FAILURE,
+            error: err.response.data,
+        });
     }
 }
 
 function removePostApi(data) {
-    return axios.delete(`/post/${data}/remove`)
+    return axios.delete(`/post/${data}/remove`);
 }
-function* removePost (action){
-    try{
-    const result = yield call(removePostApi, action.data)
+function* removePost(action) {
+    try {
+    const result = yield call(removePostApi, action.data);
 
         yield put({
             type: REMOVE_POST_SUCCESS,
-            data: result.data
-        })
+            data: result.data,
+        });
         yield put({
             type: REMOVE_POST_OF_ME,
-            data: result.data
-        })
-        
-    }catch(err){
-        console.error(err)
+            data: result.data,
+        });
+    } catch (err) {
+        console.error(err);
         yield put({
-            type:REMOVE_POST_FAILURE,
-            error: err.response.data
-        })
+            type: REMOVE_POST_FAILURE,
+            error: err.response.data,
+        });
     }
 }
 
 function addCommentApi(data) {
-    return axios.post(`/post/${data.postId}/addcomment`,data)
+    return axios.post(`/post/${data.postId}/addcomment`, data);
 }
-function* addComment (action){
-    try{
-    const result = yield call(addCommentApi, action.data)
+function* addComment(action) {
+    try {
+    const result = yield call(addCommentApi, action.data);
 
         yield put({
             type: ADD_COMMENT_SUCCESS,
-            data: result.data
-        })
-        
-    }catch(err){
+            data: result.data,
+        });
+    } catch (err) {
         yield put({
-            type:ADD_COMMENT_FAILURE,
-            data: err.response.data
-        })
+            type: ADD_COMMENT_FAILURE,
+            data: err.response.data,
+        });
     }
 }
 
 function addBookMarkApi(data) {
-    return axios.patch(`/post/${data}/bookmark`)
+    return axios.patch(`/post/${data}/bookmark`);
 }
-function* addBookMark (action){
-    try{
-    const result = yield call(addBookMarkApi, action.data)
+function* addBookMark(action) {
+    try {
+    const result = yield call(addBookMarkApi, action.data);
 
         yield put({
             type: ADD_BOOKMARK_SUCCESS,
-            data: result.data
-        })
-        
-    }catch(err){
+            data: result.data,
+        });
+    } catch (err) {
         console.error(err);
         yield put({
             type: ADD_BOOKMARK_FAILURE,
-            data: err.response.data
-        })
+            data: err.response.data,
+        });
     }
 }
 
 function removeBookMarkApi(data) {
-    return axios.patch(`/post/${data}/unbookmark`)
+    return axios.patch(`/post/${data}/unbookmark`);
 }
-function* removeBookMark (action){
-    try{
-    const result = yield call(removeBookMarkApi, action.data)
+function* removeBookMark(action) {
+    try {
+    const result = yield call(removeBookMarkApi, action.data);
 
         yield put({
             type: REMOVE_BOOKMARK_SUCCESS,
-            data: result.data
-        })
-        
-    }catch(err){
+            data: result.data,
+        });
+    } catch (err) {
         console.error(err);
         yield put({
             type: REMOVE_BOOKMARK_FAILURE,
-            data: err.response.data
-        })
+            data: err.response.data,
+        });
     }
 }
 function likePostApi(data) {
-    return axios.patch(`/post/${data}/like`)
+    return axios.patch(`/post/${data}/like`);
 }
-function* likePost (action){
-    try{
-    const result = yield call(likePostApi, action.data)
+function* likePost(action) {
+    try {
+    const result = yield call(likePostApi, action.data);
 
         yield put({
             type: LIKE_POST_SUCCESS,
-            data: result.data
-        })
-        
-    }catch(err){
+            data: result.data,
+        });
+    } catch (err) {
         console.error(err);
         yield put({
             type: LIKE_POST_FAILURE,
-            data: err.response.data
-        })
+            data: err.response.data,
+        });
     }
 }
 
@@ -249,7 +235,7 @@ function* unlikePost(action) {
       data: result.data,
     });
   } catch (err) {
-      console.error(err)
+      console.error(err);
     yield put({
       type: UNLIKE_POST_FAILURE,
       error: err.response.data,
@@ -258,7 +244,7 @@ function* unlikePost(action) {
 }
 
 function uploadImagesAPI(data) {
-  return axios.post(`/post/images`, data); //patch 게시글의 일부분을 수정
+  return axios.post('/post/images', data); //patch 게시글의 일부분을 수정
 }
 
 function* uploadImages(action) {
@@ -269,7 +255,7 @@ function* uploadImages(action) {
       data: result.data,
     });
   } catch (err) {
-      console.error(err)
+      console.error(err);
     yield put({
       type: UPLOAD_IMAGES_FAILURE,
       error: err.response.data,
@@ -278,7 +264,7 @@ function* uploadImages(action) {
 }
 
 function retweetAPI(data) {
-  return axios.post(`/post/${data}/retweet`,data); //patch 게시글의 일부분을 수정
+  return axios.post(`/post/${data}/retweet`, data); //patch 게시글의 일부분을 수정
 }
 
 function* retweet(action) {
@@ -289,15 +275,13 @@ function* retweet(action) {
       data: result.data,
     });
   } catch (err) {
-      console.error(err)
+      console.error(err);
     yield put({
       type: RETWEET_FAILURE,
       error: err.response.data,
     });
   }
 }
-
-
 
 function* watchDeltePostImage() {
   yield throttle(3000, DELETE_POST_IMAGE_REQUEST, DeltePostImage);
@@ -342,7 +326,7 @@ function* watchRetweet() {
   yield takeLatest(RETWEET_REQUEST, retweet);
 }
 
-export default function* postSaga(){
+export default function* postSaga() {
     yield all([
         fork(watchDeltePostImage),
         fork(watchEditPostContent),
@@ -358,5 +342,5 @@ export default function* postSaga(){
         fork(watchUnLikePost),
         fork(watchUploadImages),
         fork(watchRetweet),
-    ])
+    ]);
 }

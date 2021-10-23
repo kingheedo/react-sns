@@ -1,33 +1,32 @@
-import React,{useCallback, useEffect, useState} from 'react'
-import {Form,Col,Button,Row,} from 'react-bootstrap'
-import Link from 'next/link'
-import styled from 'styled-components'
-import useInput from '../hooks/useInput'
-import {useDispatch, useSelector} from 'react-redux'
-import { loginRequestAction } from '../reducers/user'
+import React, { useCallback, useEffect, useState } from 'react';
+import { Form, Col, Button, Row } from 'react-bootstrap';
+import Link from 'next/link';
+import styled from 'styled-components';
+import { useDispatch, useSelector } from 'react-redux';
+import useInput from '../hooks/useInput';
+import { loginRequestAction } from '../reducers/user';
 
 const FormLabel = styled(Form.Label)`
     padding: 10px;
-`
+`;
 
 const LoginForm = () => {
-    const dispatch =  useDispatch();
+    const dispatch = useDispatch();
     const [email, onChangeEmail] = useInput('');
     const [password, onChangePassword] = useInput('');
-    const {logInLoading, logInError} = useSelector(state => state.user)
+    const { logInLoading, logInError } = useSelector((state) => state.user);
 
     useEffect(() => {
-        if(logInError){
+        if (logInError) {
             alert(logInError);
         }
-        
         }, [logInError]);
 
     const onSubmitHandler = useCallback(
         (e) => {
             e.preventDefault();
-            dispatch(loginRequestAction({email,password}))
-         }, [email,password]
+            dispatch(loginRequestAction({ email, password }));
+         }, [email, password],
     );
     return (
         <div>
@@ -60,7 +59,7 @@ const LoginForm = () => {
                 </Form.Group>
             </Form>
         </div>
-    )
-}
+    );
+};
 
-export default LoginForm
+export default LoginForm;

@@ -1,8 +1,10 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+/* eslint-disable jsx-a11y/anchor-is-valid */
+/* eslint-disable react/no-array-index-key */
+import React from 'react';
+import PropTypes from 'prop-types';
 import Link from 'next/link';
-const PostCardContent = ({postContent}) => 
-(
+
+const PostCardContent = ({ postContent }) => (
         <div>
               {postContent.split(/(#[^\s#]+)/g).map((v, i) => {
           if (v.match(/(#[^\s#]+)/)) {
@@ -11,6 +13,6 @@ const PostCardContent = ({postContent}) =>
           return v;
           })}
         </div>
-    )
-PostCardContent.propTypes= {postContent: PropTypes.string.isRequired};
-export default PostCardContent
+    );
+PostCardContent.propTypes = { postContent: PropTypes.string.isRequired };
+export default PostCardContent;

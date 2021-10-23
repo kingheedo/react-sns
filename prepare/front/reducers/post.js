@@ -3,68 +3,64 @@ import produce from '../util/produce';
 // import faker from 'faker'
 
 export const initialState = {
-    mainPosts:[],
+    mainPosts: [],
     singlePost: null,
-    imagePaths:[],
+    imagePaths: [],
     hasMorePosts: true,
 
-    removeBookmarkLoading :false,
-    removeBookmarkDone : false,
-    removeBookmarkError : null,
+    removeBookmarkLoading: false,
+    removeBookmarkDone: false,
+    removeBookmarkError: null,
 
-    addBookmarkLoading :false,
-    addBookmarkDone : false,
-    addBookmarkError : null,
+    addBookmarkLoading: false,
+    addBookmarkDone: false,
+    addBookmarkError: null,
 
-    likePostLoading :false,
-    likePostDone : false,
-    likePostError : null,
+    likePostLoading: false,
+    likePostDone: false,
+    likePostError: null,
 
-    unlikePostLoading : false,
+    unlikePostLoading: false,
     unlikePostDone: false,
     unlikePostError: null,
 
-    loadPostLoading : false,
+    loadPostLoading: false,
     loadPostDone: false,
     loadPostError: null,
 
-    loadPostsLoading : false,
+    loadPostsLoading: false,
     loadPostsDone: false,
     loadPostsError: null,
 
-    addPostLoading : false,
+    addPostLoading: false,
     addPostDone: false,
     addPostError: null,
 
-    addCommentLoading : false,
+    addCommentLoading: false,
     addCommentDone: false,
     addCommentError: null,
 
-    removePostLoading : false,
+    removePostLoading: false,
     removePostDone: false,
     removePostError: null,
 
-    uploadImagesLoading : false,
-    uploadImagesDone : false,
-    uploadImagesError : null,
+    uploadImagesLoading: false,
+    uploadImagesDone: false,
+    uploadImagesError: null,
 
-   retweetLoading : false,
-   retweetDone : false,
-   retweetError : null,
+   retweetLoading: false,
+   retweetDone: false,
+   retweetError: null,
    
-   editPostContentLoading : false,
-   editPostContentDone : false,
-   editPostContentError : null,
+   editPostContentLoading: false,
+   editPostContentDone: false,
+   editPostContentError: null,
    
-   deltePostImageLoading : false,
-   deltePostImageDone : false,
-   deltePostImageError : null,
-   
+   deltePostImageLoading: false,
+   deltePostImageDone: false,
+   deltePostImageError: null,
 
-
-   
-
-}
+};
 
 // export const generateDummyPost = (number) =>
 // Array(number).fill().map(() => ({
@@ -101,7 +97,6 @@ export const initialState = {
 //     id: shortId.generate(),
 //     ...data,
 // })
-
 
 export const DELETE_POST_IMAGE_REQUEST = 'DELETE_POST_IMAGE_REQUEST';
 export const DELETE_POST_IMAGE_SUCCESS = 'DELETE_POST_IMAGE_SUCCESS';
@@ -171,28 +166,26 @@ export const REMOVE_IMAGE = 'REMOVE_IMAGE';
 
 export const addPostRequestAction = (data) => ({
     type: ADD_POST_REQUEST,
-    data
-})
+    data,
+});
 export const addPostSuccessAction = (data) => ({
     type: ADD_POST_SUCCESS,
-    data
-})
+    data,
+});
 export const addPostFailureAction = (data) => ({
     type: ADD_POST_FAILURE,
-})
+});
 
 export const addComment = (data) => ({
     type: ADD_COMMENT_REQUEST,
-    data
-})
+    data,
+});
 
-
-
-const reducer = (state =  initialState, action) =>{
-    return produce(state,(draft) => {
+const reducer = (state = initialState, action) => {
+    return produce(state, (draft) => {
         switch (action.type) {
-            case REMOVE_IMAGE :
-                draft.imagePaths = draft.imagePaths.filter((v,i) => i !== action.data);
+            case REMOVE_IMAGE:
+                draft.imagePaths = draft.imagePaths.filter((v, i) => i !== action.data);
                 break;
             
             case DELETE_POST_IMAGE_REQUEST:
@@ -200,11 +193,11 @@ const reducer = (state =  initialState, action) =>{
                 draft.deletePostImageDone = false;
                 draft.deletePostImageError = null;
                 break;
-            case DELETE_POST_IMAGE_SUCCESS:{
+            case DELETE_POST_IMAGE_SUCCESS: {
                 draft.deletePostImageLoading = false;
                 draft.deletePostImageDone = true;
                 const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
-                post.Images = post.Images.filter((v) => v.id !== action.data.ImageId)
+                post.Images = post.Images.filter((v) => v.id !== action.data.ImageId);
                 break;
             }
             case DELETE_POST_IMAGE_FAILURE:
@@ -217,7 +210,7 @@ const reducer = (state =  initialState, action) =>{
                 draft.removeBookmarkDone = false;
                 draft.removeBookmarkError = null;
                 break;
-            case REMOVE_BOOKMARK_SUCCESS:{
+            case REMOVE_BOOKMARK_SUCCESS: {
                 draft.removeBookmarkLoading = false;
                 draft.removeBookmarkDone = true;
                 const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
@@ -234,8 +227,8 @@ const reducer = (state =  initialState, action) =>{
                 draft.editPostContentDone = false;
                 draft.editPostContentError = null;
                 break;
-            case EDIT_POST_CONTENT_SUCCESS:{
-                const post =  draft.mainPosts.find((v) => v.id === action.data.PostId);
+            case EDIT_POST_CONTENT_SUCCESS: {
+                const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
                 post.content = action.data.content; 
                 draft.editPostContentLoading = false;
                 draft.editPostContentDone = true;
@@ -252,11 +245,11 @@ const reducer = (state =  initialState, action) =>{
                 draft.addBookmarkDone = false;
                 draft.addBookmarkError = null;
                 break;
-            case ADD_BOOKMARK_SUCCESS:{
+            case ADD_BOOKMARK_SUCCESS: {
                 draft.addBookmarkLoading = false;
                 draft.addBookmarkDone = true;
                 const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
-                post.Bookmarkers.push({id: action.data.UserId})
+                post.Bookmarkers.push({ id: action.data.UserId });
                 break;
             }
             case ADD_BOOKMARK_FAILURE:
@@ -269,11 +262,11 @@ const reducer = (state =  initialState, action) =>{
                 draft.likePostDone = false;
                 draft.likePostError = null;
                 break;
-            case LIKE_POST_SUCCESS:{
+            case LIKE_POST_SUCCESS: {
                 draft.likePostLoading = false;
                 draft.likePostDone = true;
-                const post = draft.mainPosts.find((v) => v.id === action.data.PostId)
-                post.Likers.push({id: action.data.UserId})
+                const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
+                post.Likers.push({ id: action.data.UserId });
                 break;
             }
             case LIKE_POST_FAILURE:
@@ -287,7 +280,7 @@ const reducer = (state =  initialState, action) =>{
             draft.unlikePostsError = null;
             break;
 
-            case UNLIKE_POST_SUCCESS:{
+            case UNLIKE_POST_SUCCESS: {
             const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
             post.Likers = post.Likers.filter((v) => v.id !== action.data.UserId);
             draft.unlikePostsLoading = false;
@@ -340,7 +333,6 @@ const reducer = (state =  initialState, action) =>{
                 draft.loadPostsError = null;
                 break;
 
-
             case LOAD_USER_BOOKMARKS_SUCCESS:
             case LOAD_POSTS_SUCCESS:
             case LOAD_HASHTAG_POSTS_SUCCESS:
@@ -364,7 +356,7 @@ const reducer = (state =  initialState, action) =>{
                 draft.addCommentDone = false;
                 draft.addCommentError = null;
                 break;
-            case ADD_COMMENT_SUCCESS:{
+            case ADD_COMMENT_SUCCESS: {
                 const post = draft.mainPosts.find((v) => v.id === action.data.PostId);
                 post.Comments.unshift(action.data);
                 draft.addCommentLoading = false;
@@ -412,7 +404,7 @@ const reducer = (state =  initialState, action) =>{
             draft.retweetError = null;
             break;
             case RETWEET_SUCCESS:
-                draft.mainPosts.unshift(action.data)
+                draft.mainPosts.unshift(action.data);
                 draft.retweetLoading = false;
                 draft.retweetDone = true;
                 break;
@@ -423,8 +415,7 @@ const reducer = (state =  initialState, action) =>{
             default:
                 break;
         }
-    })
-}
+    });
+};
 
 export default reducer;
-
