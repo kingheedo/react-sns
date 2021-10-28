@@ -13,6 +13,8 @@ const cookieParser = require('cookie-parser');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const path = require('path');
+const hpp = require('hpp');
+const helmet = require('helmet');
 
 db.sequelize.sync()
 .then(() => {
@@ -22,9 +24,17 @@ db.sequelize.sync()
 
 app.use('/', express.static(path.join(__dirname, 'uploads')))
 
-app.use(morgan('dev'));
 passportConfig();
 dotenv.config();
+
+if(process.env.NODE_ENV === 'production'){
+    app.use(morgan('combined'));
+    app.use(hpp());
+    app.use(helmet());
+}else{
+    app.use(morgan('dev'));
+
+}
 
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session({
@@ -36,7 +46,7 @@ app.use(passport.initialize());
 app.use(passport.session())
 
 app.use(cors({
-    origin : 'http://localhost:3060',
+    origin : ['http://localhost:3060', 'reactsns.com'],
     credentials: true,
 }))
 
