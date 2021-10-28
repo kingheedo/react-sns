@@ -55,7 +55,6 @@ app.use('/posts', postsRouter);
 app.use('/user', userRouter);
 
 app.use((err, req, res, next) => {
-    res.send('hello express');
 })
 
 app.listen(3065, () =>{
