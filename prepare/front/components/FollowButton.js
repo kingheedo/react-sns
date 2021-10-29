@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { FOLLOW_REQUEST, UNFOLLOW_REQUEST } from '../reducers/user';
 
 const FollowButton = ({ post }) => {
     const dispatch = useDispatch();
+    const { me } = useSelector((state) => state.user);
     const isFollowing = me?.Followings.find((v) => v.id === post.User.id); 
     const onClickButton = useCallback(() => {
             if (isFollowing) {

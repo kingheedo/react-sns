@@ -175,8 +175,8 @@ const PostCard = ({ post }) => {
         [show],
     );
 
-    const renderTooltip = () => (
-        <MoreButton>
+    const renderTooltip = (props) => (
+        <MoreButton id="button-tooltip" {...props}>
             
                <>
                {id && post.User.id === id && !post.Retweet
@@ -307,7 +307,7 @@ const PostCard = ({ post }) => {
 <OverlayTrigger
   placement="top"
   overlay={renderTooltip}
-  trigger="click"
+  delay={{ show: 250, hide: 400 }}
 >
                                     <ThreeDots style={{ width: '100%' }}/>
 </OverlayTrigger>

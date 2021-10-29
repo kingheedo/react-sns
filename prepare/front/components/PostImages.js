@@ -126,9 +126,8 @@ const PostImages = ({ images, header, postid }) => {
     );
 };
 PostImages.propTypes = {
-    postid: Proptypes.number.isRequired,
     images: Proptypes.arrayOf(Proptypes.object).isRequired,
     header: Proptypes.string.isRequired,
-
+    postid: Proptypes.number.isRequired,
 };
 export default PostImages;
