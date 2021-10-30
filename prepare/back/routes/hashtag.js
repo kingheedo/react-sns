@@ -23,6 +23,10 @@ router.get('/:hashtag', async(req, res, next) => {
                 model: User,
                 attributes: ['id', 'nickname']
             },{
+                model: User,
+                attributes: ['id'],
+                as : 'Bookmarkers'
+            },{
                 model: Image,
             },{
                 model: Comment,
