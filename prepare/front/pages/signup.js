@@ -12,7 +12,7 @@ import wrapper from '../store/configureStore';
 
 const signup = () => {
     const dispatch = useDispatch();
-    const { me, signUpLoading, signUpDone } = useSelector((state) => state.user);
+    const { me, signUpLoading, signUpDone, signUpError } = useSelector((state) => state.user);
     const [email, onChangeEmail] = useInput('');
     const [nickname, onChangeNickname] = useInput('');
     const [password, onChangePassword] = useInput('');
@@ -21,6 +21,11 @@ const signup = () => {
     const [checkbox, setCheckbox] = useState('');
     const [checkError, setCheckError] = useState(false);
 
+    useEffect(() => {
+        if (signUpError) {
+            alert(signUpError);
+        }
+    }, [signUpError]);
     useEffect(() => {
         if (signUpDone) {
             alert('회원가입이 완료되었습니다.');
@@ -59,7 +64,7 @@ const signup = () => {
                 data: { email, password, nickname },
             });
         },
-        [password, passwordCheck, checkbox],
+        [password, passwordCheck, checkbox,email,nickname],
     );
     return (
             <AppLayout>
