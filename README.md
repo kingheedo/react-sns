@@ -20,7 +20,6 @@
 
 
 ## 🛠 기술스택 
-*  Front
    -  React,
    -  Redux & Redux-Saga, 
    -  React Hooks, 
