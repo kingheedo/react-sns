@@ -15,8 +15,8 @@ const ListItemWrapper = styled.div`
 `;
 const Recommend = ({ recommend }) => {
    return (
-        <div>
-        <ListGroup>
+       <>
+        <ListGroup style={{ width: '20rem', top: '21rem', position: 'fixed', zIndex: '7' }}>
             <ListGroup.Item>Who to follow</ListGroup.Item>
             {recommend && recommend.map((v, i) => (
                 // eslint-disable-next-line react/no-array-index-key
@@ -30,7 +30,7 @@ const Recommend = ({ recommend }) => {
                 </ListItemWrapper>
             ))}
         </ListGroup>
-        </div>
+       </>
    );
 };
 Recommend.propTypes = {

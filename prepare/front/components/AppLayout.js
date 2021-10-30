@@ -275,10 +275,10 @@ Profile
                             }
                       </SearchList>
                   </Form>
-                  <div style={{ marginTop: '3rem', zIndex: '8', position: 'fixed' }}>
+                  <div style={{ top: '5rem', zIndex: '8', position: 'fixed' }}>
                           {me ? <UserProfile /> : <LoginForm />}
                   </div>
-                  {(me && recommend) ? <Recommend recommend={recommend} /> : null}
+                  {(me && recommend) ? <Recommend  recommend={recommend} /> : null}
 
               </Col>
           </Row>
