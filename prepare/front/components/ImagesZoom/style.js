@@ -1,5 +1,6 @@
-import styled, { createGlobalStyle } from 'styled-components'
-import {X} from 'react-bootstrap-icons'
+import styled, { createGlobalStyle } from 'styled-components';
+import { X } from 'react-bootstrap-icons';
+
 export const Overlay = styled.div`
     position: fixed;
     z-index: 5000;
@@ -7,7 +8,7 @@ export const Overlay = styled.div`
     left:0;
     right:0;
     bottom:0;
-`
+`;
 export const Header = styled.header`
     header: 44px;
     background: white;
@@ -23,11 +24,11 @@ export const Header = styled.header`
     }
     
     ;
-`
+`;
 export const SlickWrapper = styled.div`
 height: calc(100% - 44px);
 background:#090909;
-`
+`;
 
 export const ImgWrapper = styled.div`
     padding: 32px;
@@ -37,7 +38,7 @@ export const ImgWrapper = styled.div`
         margin: 0 auto;
         max-height: 750px;
     }
-`
+`;
 export const Indicator = styled.div`
     text-align: center;
 
@@ -52,8 +53,7 @@ export const Indicator = styled.div`
         color: white;
         font-size: 15px;
     }
-`
-
+`;
 
 export const CloseBtn = styled(X)`
     position:absolute;
@@ -62,7 +62,9 @@ export const CloseBtn = styled(X)`
         padding: 15px;
         line-height: 14px;
         cursor: pointer;
-`
+        font-size: 4rem;
+        color: black;
+`;
 
 export const Global = createGlobalStyle`
     .slick-slide {
@@ -71,4 +73,4 @@ export const Global = createGlobalStyle`
     .card{
         transform: none !important;
     }
-`
+`;

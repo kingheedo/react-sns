@@ -2,11 +2,8 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Slick from 'react-slick';
 
-import { Overlay, Global, CloseBtn, Header, ImgWrapper, Indicator, SlickWrapper } from './style';
-
 import styled from 'styled-components';
-
-
+import { Overlay, Global, CloseBtn, Header, ImgWrapper, Indicator, SlickWrapper } from './style';
 
 const ImagesZoom = ({ images, onClose }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -15,7 +12,7 @@ const ImagesZoom = ({ images, onClose }) => {
       <Global />
       <Header>
         <h1>상세 이미지</h1>
-        <CloseBtn color="black" onClick={onClose}>X</CloseBtn>
+        <CloseBtn onClick={onClose}>X</CloseBtn>
       </Header>
       <SlickWrapper>
         <div>
@@ -23,13 +20,13 @@ const ImagesZoom = ({ images, onClose }) => {
             initialSlide={0}
             beforeChange={(slide) => setCurrentSlide(slide)}
             infinite
-            arrows={true}
+            arrows={false}
             slidesToShow={1}
             slidesToScroll={1}
           >
             {images.map((v) => (
               <ImgWrapper key={v.src}>
-                <img src={`http://localhost:3065/${v.src}`} alt={v.src} />
+                <img style={{ width: '30rem' }} src={`http://localhost:3065/${v.src}`} alt={v.src} />
               </ImgWrapper>
             ))}
           </Slick>
