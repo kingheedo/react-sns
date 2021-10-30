@@ -60,7 +60,7 @@ const PostImages = ({ images, header, postid }) => {
         return (
             <>
             { 
-            header 
+            header === '수정'
             && (
 <>
                 <Card.Img id ={images[0].id} onClick = {handleDeleteImage} style={{ width: '100%' }} variant="top" alt={images[0].src} src={`http://localhost:3065/${images[0].src}`} />
@@ -69,7 +69,7 @@ const PostImages = ({ images, header, postid }) => {
 )
 
             }
-            {!header  
+            {header === '메인이미지' 
             && (
 <>
             <Card.Img style={{ width: '100%' }} variant="top" alt={images[0].src} src={`http://localhost:3065/${images[0].src}`} onClick={onZoom} />
@@ -82,7 +82,7 @@ const PostImages = ({ images, header, postid }) => {
     if (images.length === 2) {
         return (
             <>  
-            {header
+            {header === '수정'
                 && (
 <>
                     <Card.Img id ={images[0].id} onClick = {handleDeleteImage} style={{ width: '50%' }} variant="top" alt={images[0].src} src={`http://localhost:3065/${images[0].src}`} />
@@ -92,7 +92,7 @@ const PostImages = ({ images, header, postid }) => {
 </>
 )}
             
-            {!header  
+            {header === '메인이미지'
                 && (
 <>
                 <Card.Img style={{ width: '50%' }} variant="top" alt={images[0].src} src={`http://localhost:3065/${images[0].src}`} onClick={onZoom}/>
@@ -106,7 +106,7 @@ const PostImages = ({ images, header, postid }) => {
     return (
         <>
             { 
-            header 
+            header === '수정' 
             && (
 <>
                 <Card.Img id ={images[0].id} onClick = {handleDeleteImage} style={{ width: '100%' }} variant="top" alt={images[0].src} src={`http://localhost:3065/${images[0].src}`} />
@@ -115,7 +115,7 @@ const PostImages = ({ images, header, postid }) => {
 )
 
             }
-            {!header  
+            {header === '메인이미지'
             && (
 <>
             <Card.Img style={{ width: '100%' }} variant="top" alt={images[0].src} src={`http://localhost:3065/${images[0].src}`} onClick={onZoom} />

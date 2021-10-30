@@ -293,6 +293,10 @@ router.get('/:userId/posts', async (req, res, next) => { //GET /user/1/posts
                 as: 'Likers',
                 attributes: ['id'],
             },{
+                model: User,
+                as: 'Bookmarkers',
+                attributes: ['id'],
+            },{
             model: Post,
             as: 'Retweet',
             include: [{

@@ -13,8 +13,9 @@ const ListItemWrapper = styled.div`
     z-index: 9;
     
 `;
-const Recommend = ({ recommend }) => /*이 부분이 원래 단일아이디를 가져와서 비교해야 된다.*/ (
-    <div>
+const Recommend = ({ recommend }) => {
+   return (
+        <div>
         <ListGroup>
             <ListGroup.Item>Who to follow</ListGroup.Item>
             {recommend && recommend.map((v, i) => (
@@ -29,8 +30,9 @@ const Recommend = ({ recommend }) => /*이 부분이 원래 단일아이디를 �
                 </ListItemWrapper>
             ))}
         </ListGroup>
-    </div>
-);
+        </div>
+   );
+};
 Recommend.propTypes = {
     recommend: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
