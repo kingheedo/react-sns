@@ -2,6 +2,8 @@
 
 ## ❓ 트위터의 주요 기능을 직접 구현해보기
 
+<iframe width="640" height="360" src="https://www.youtube.com/embed/ws3LVpTa3fg" frameborder="0" gesture="media" allowfullscreen=""></iframe>
+
 ## 🔔 주요기능 및 로직
 - **게시글 작성** : 자신이 업로드 하고 싶은 내용 및 이미지를 업로드 및 수정
 - **북마크 기능** : 원하는 게시물을 북마크 리스트에 등록 및 삭제
