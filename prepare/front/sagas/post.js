@@ -3,8 +3,8 @@ import axios from 'axios';
 import { ADD_BOOKMARK_FAILURE, ADD_BOOKMARK_REQUEST, ADD_BOOKMARK_SUCCESS, ADD_COMMENT_FAILURE, ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_POST_FAILURE, ADD_POST_REQUEST, ADD_POST_SUCCESS, DELETE_POST_IMAGE_FAILURE, DELETE_POST_IMAGE_REQUEST, DELETE_POST_IMAGE_SUCCESS, EDIT_POST_CONTENT_FAILURE, EDIT_POST_CONTENT_REQUEST, EDIT_POST_CONTENT_SUCCESS, LIKE_POST_FAILURE, LIKE_POST_REQUEST, LIKE_POST_SUCCESS, LOAD_HASHTAG_POSTS_FAILURE, LOAD_HASHTAG_POSTS_REQUEST, LOAD_HASHTAG_POSTS_SUCCESS, LOAD_POSTS_FAILURE, LOAD_POSTS_REQUEST, LOAD_POSTS_SUCCESS, LOAD_POST_FAILURE, LOAD_POST_REQUEST, LOAD_POST_SUCCESS, REMOVE_BOOKMARK_FAILURE, REMOVE_BOOKMARK_REQUEST, REMOVE_BOOKMARK_SUCCESS, REMOVE_POST_FAILURE, REMOVE_POST_REQUEST, REMOVE_POST_SUCCESS, RETWEET_FAILURE, RETWEET_REQUEST, RETWEET_SUCCESS, UNLIKE_POST_FAILURE, UNLIKE_POST_REQUEST, UNLIKE_POST_SUCCESS, UPLOAD_IMAGES_FAILURE, UPLOAD_IMAGES_REQUEST, UPLOAD_IMAGES_SUCCESS } from '../reducers/post';
 import { ADD_POST_TO_ME, REMOVE_POST_OF_ME } from '../reducers/user';
 
-function DeltePostImageApi(data) { //hashtag/name
-    return axios.delete(`/post/${data.postId}/${data.imageId}/imagedelete`, data);
+function DeltePostImageApi(data) {
+    return axios.delete(`/post/${data.postId}/image/${data.imageId}`, data);
 }
 function* DeltePostImage(action) {
     try {
@@ -22,7 +22,7 @@ function* DeltePostImage(action) {
     }
 }
 
-function EditPostContentApi(data) { //hashtag/name
+function EditPostContentApi(data) {
     return axios.patch(`/post/${data.postId}/edit`, data);
 }
 function* EditPostContent(action) {
@@ -41,12 +41,11 @@ function* EditPostContent(action) {
     }
 }
 
-function loadHashtagPostsApi(data, lastId) { //hashtag/name
+function loadHashtagPostsApi(data, lastId) {
     return axios.get(`/hashtag/${encodeURIComponent(data)}?lastId=${lastId || 0}`);
 }
 function* loadHashtagPosts(action) {
     try {
-      console.log('loadHashtag');
         const result = yield call(loadHashtagPostsApi, action.data, action.lastId);
         yield put({
             type: LOAD_HASHTAG_POSTS_SUCCESS,
@@ -98,7 +97,7 @@ function* loadPosts(action) {
 }
 
 function addPostApi(data) {
-    return axios.post('/post/addpost', data); //formData는 바로 data로 정의
+    return axios.post('/post/addpost', data);
 }
 function* addPost(action) {
     try {
@@ -107,7 +106,6 @@ function* addPost(action) {
             type: ADD_POST_SUCCESS,
             data: result.data,
         });
-        console.log(result);
         yield put({
             type: ADD_POST_TO_ME,
             data: result.data.id,
@@ -146,7 +144,7 @@ function* removePost(action) {
 }
 
 function addCommentApi(data) {
-    return axios.post(`/post/${data.postId}/addcomment`, data);
+    return axios.post(`/post/${data.postId}/comment`, data);
 }
 function* addComment(action) {
     try {
@@ -224,7 +222,7 @@ function* likePost(action) {
 }
 
 function unlikePostAPI(data) {
-  return axios.delete(`/post/${data}/unlike`); //patch 게시글의 일부분을 수정
+  return axios.delete(`/post/${data}/unlike`);
 }
 
 function* unlikePost(action) {
@@ -244,7 +242,7 @@ function* unlikePost(action) {
 }
 
 function uploadImagesAPI(data) {
-  return axios.post('/post/images', data); //patch 게시글의 일부분을 수정
+  return axios.post('/post/images', data);
 }
 
 function* uploadImages(action) {
@@ -264,7 +262,7 @@ function* uploadImages(action) {
 }
 
 function retweetAPI(data) {
-  return axios.post(`/post/${data}/retweet`, data); //patch 게시글의 일부분을 수정
+  return axios.post(`/post/${data}/retweet`, data);
 }
 
 function* retweet(action) {

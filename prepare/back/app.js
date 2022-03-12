@@ -22,7 +22,7 @@ db.sequelize.sync()
 })
 .catch(console.error);
 
-app.use('/', express.static(path.join(__dirname, 'uploads')))
+app.use('/', express.static(path.join(__dirname, 'uploads'))) //localhost3065/ 경로
 
 passportConfig();
 dotenv.config();

@@ -47,10 +47,6 @@ const PostCard = ({ post }) => {
     const { retweetError } = useSelector((state) => state.post);
     const dispatch = useDispatch();
     const [show, setShow] = useState(false);
-    // const cardHeader = styled(Card.Header)`
-    // background : rgba(0,0,0,0);
-    
-    // `
     
     const headerStyle = useMemo(() => ({
         backgroundColor: 'rgba(0,0,0,0)',
@@ -176,6 +172,7 @@ const PostCard = ({ post }) => {
     );
 
     const renderTooltip = (props) => (
+        // eslint-disable-next-line react/jsx-props-no-spreading
         <MoreButton id="button-tooltip" {...props}>
             
                <>

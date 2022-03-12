@@ -1,6 +1,4 @@
 import produce from '../util/produce';
-// import shortId from 'shortid'
-// import faker from 'faker'
 
 export const initialState = {
     mainPosts: [],
@@ -61,42 +59,6 @@ export const initialState = {
    deltePostImageError: null,
 
 };
-
-// export const generateDummyPost = (number) =>
-// Array(number).fill().map(() => ({
-//     id: shortId.generate(),
-//     content: faker.lorem.paragraph(),
-//     User: {
-//         id: shortId.generate(),
-//         nickname: faker.name.findName(),
-//     },
-//     Images: [{
-//         src: faker.image.image()
-//     }],
-//     Comments:[{
-//         id: shortId.generate(),
-//         User: {
-//             id: shortId.generate(),
-//             nickname: faker.name.findName(),
-//         },
-//         content: faker.lorem.sentence(),
-//     }]
-    
-// }))
-// const dummyPost = (data) => ({
-//     id: data.id,
-//     content: data.content,
-//     User:{
-//         id:1,
-//         nickname:'사용자2'
-//     },
-//     Images: [{src:"https://cdn.pixabay.com/photo/2021/01/24/20/47/mountains-5946500_1280.jpg"},],
-//     Comments: ['댓글테스트'],
-// })
-// const dummyComment = (data) => ({
-//     id: shortId.generate(),
-//     ...data,
-// })
 
 export const DELETE_POST_IMAGE_REQUEST = 'DELETE_POST_IMAGE_REQUEST';
 export const DELETE_POST_IMAGE_SUCCESS = 'DELETE_POST_IMAGE_SUCCESS';

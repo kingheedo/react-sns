@@ -143,9 +143,6 @@ router.get('/recommend', isLoggedIn, async(req, res ,next) => {
            return res.status(201).json(null)
         }
         const EachOther =  myfollowers.filter(v => myfollowings.some(f => v.id === f.id)).map(v => v.id).sort(() => Math.floor(Math.random()-0.5))
-        // const random = Math.floor(Math.random()*EachOther.length)
-        // console.log('EachOther',EachOther)
-        // console.log('random',random)
         const user2 = await User.findOne({
             where: {id: EachOther[0]},
             attributes: {exclude:['password']},
@@ -162,12 +159,8 @@ router.get('/recommend', isLoggedIn, async(req, res ,next) => {
             },
         ] 
         })
-        // console.log('user2',user2.Followers.filter(v => user2.Followings.some(f => v.id === f.id)))
-        // console.log('user2id',user2.Followers.filter(v => user2.Followings.some(f => v.id === f.id)).map(v => v.id))
-        const user2EachOther = user2.Followers.filter(v => user2.Followings.some(f => v.id === f.id)).map(v => v.id)
         
-
-        // console.log('resultarray',user2EachOther.filter(v => EachOther.some(f => v !== f)))
+        const user2EachOther = user2.Followers.filter(v => user2.Followings.some(f => v.id === f.id)).map(v => v.id)
         const recommendArray =  user2EachOther.filter(v => EachOther.some(f => v !== f))
         const recommendUsers = await User.findAll({
             where: {id : {
@@ -179,23 +172,7 @@ router.get('/recommend', isLoggedIn, async(req, res ,next) => {
             attributes: ['id','nickname'],
             // limit :1
         })
-        
-        // console.log('recommendUsers', recommendUsers)
-        //user2.Following과 user2.Followers의 처리한 결과들을 배열로 만든다.
-        // 그 배열안의 id가 나와 follow following 관계가 아니라면 그 id를 팔로우추천 (알수도 있는 계정)이된다.
-        
-
-        // const userId = {[Op.eq] : [followings.map((v) => v.id), followers.map((v) => v.id)]};
-        // const userIdFollowings = await userId.getFollowings();
-        // const userIdFollowers = await userId.getFollowers();
-        // const userId2 = {[Op.eq] : [userIdFollowings.map((v) => v.id), userIdFollowers.map((v) => v.id)]};
-        // const recommendId = {[Op.ne]: [userId2,followings.map((v) => v.id),followers.map((v) => v.id) ]};
-        // const recommendUser = await User.findOne({
-        //     where : {id : recommendId},
-        //     attributes: ['id', 'nickname']
-        // })
         res.status(200).json(recommendUsers)
-        // console.log('followings',followings)
     }catch(err){
         console.error(err);
         next(err)
@@ -261,7 +238,7 @@ router.get('/:userId', async(req, res, next) => {
 
 
 
-router.get('/:userId/posts', async (req, res, next) => { //GET /user/1/posts
+router.get('/:userId/posts', async (req, res, next) => {
     try{
         const where ={UserId : req.params.userId}
         if (parseInt(req.query.lastId, 10)){ //초기 로딩이 아닐때
@@ -271,8 +248,6 @@ router.get('/:userId/posts', async (req, res, next) => { //GET /user/1/posts
         const posts = await Post.findAll({
             where,
             limit :10,
-                //limit과 offset 방식은 중간에 데이터가 삽입되거나 삭제될때 오류가 발생할수 있기 때문에 잘 사용 x
-                // 2차원 배열인이유는 여러기준으로 정렬할수 있다.
                 order: [
                 ['createdAt', 'DESC'],
             ],
@@ -289,7 +264,7 @@ router.get('/:userId/posts', async (req, res, next) => { //GET /user/1/posts
                     order:[['createdAt','DESC']],
                 }],
             },{
-                model: User, // 좋아요 누른사람
+                model: User,
                 as: 'Likers',
                 attributes: ['id'],
             },{
@@ -306,7 +281,6 @@ router.get('/:userId/posts', async (req, res, next) => { //GET /user/1/posts
                 model: Image,
             }]
         }],
-            //20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1
         });
         res.status(200).json(posts)
     }catch(error){
@@ -422,7 +396,7 @@ router.delete('/:userId/unfollow', isLoggedIn, async(req, res ,next) => {
             res.status(403).send('없는 사용자입니다.')
         }
         await user.removeFollowers(req.user.id);
-        res.status(200).json({id: user.id, nickname: user.nickname})
+        res.status(200).json({UserId: parseInt(req.params.userId,10)})
     }catch(err){
         console.error(err);
         next(err)

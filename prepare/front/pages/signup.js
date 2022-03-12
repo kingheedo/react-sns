@@ -64,7 +64,7 @@ const signup = () => {
                 data: { email, password, nickname },
             });
         },
-        [password, passwordCheck, checkbox,email,nickname],
+        [password, passwordCheck, checkbox, email, nickname],
     );
     return (
             <AppLayout>

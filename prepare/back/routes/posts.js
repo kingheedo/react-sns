@@ -4,16 +4,13 @@ const { Post, User, Image, Comment } = require('../models');
 const router = express.Router();
 
 router.get('/', async(req, res, next) => {
-    // console.log(req.headers)
     try{
-        //포스트 더 불러오기
         const where = {}
         if(parseInt(req.query.lastId, 10)){
             where.id = {[Op.lt] : parseInt(req.query.lastId ,10)}
             
         }
 
-        //초기로딩
         const posts = await Post.findAll({
         where,
         limit: 10,
@@ -50,7 +47,6 @@ router.get('/', async(req, res, next) => {
                }]
             }],
         });
-        // console.log(posts);
         if(posts){
         res.status(200).json(posts);
         }else{

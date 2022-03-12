@@ -51,15 +51,6 @@ export const initialState = {
     userInfo: null,
     recommend: null,
 };
-    // const dummyUser = (data) => ({
-    //     ...data,
-    //     nickname:'닉네임',
-    //     id:1,
-    //     Posts:[{id: 1}],
-    //     Followings:[{nickname:'부기'},{nickname:'부기2'},{nickname:'부기3'}],
-    //     Followers:[{nickname: 'king'}, {nickname: 'king1'}]
-
-    // })
 
 export const LOAD_RECOMMEND_USER_REQUEST = 'LOAD_RECOMMEND_USER_REQUEST';
 export const LOAD_RECOMMEND_USER_SUCCESS = 'LOAD_RECOMMEND_USER_SUCCESS';
@@ -238,7 +229,7 @@ const reducer = (state = initialState, action) => {
             case UNFOLLOW_SUCCESS:
             draft.unfollowLoading = false;
             draft.unfollowDone = true;
-            draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data.id);
+            draft.me.Followings = draft.me.Followings.filter((v) => v.id !== action.data.UserId);
             break;
             
             case UNFOLLOW_FAILURE:

@@ -4,7 +4,7 @@ const {User} = require('../models');
 const bcrypt = require('bcrypt');
 
 module.exports = () => {
-    passport.use(new LocalStrategy({ //passport.use 할때 new LocalStrategy를 통해 'local'이름이 등록 내부적으로 정해짐
+    passport.use(new LocalStrategy({
         usernameField: 'email',
         passwordField: 'password',
     }, async (email, password, done) =>{

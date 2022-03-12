@@ -13,13 +13,13 @@ const FollowList = ({ header, data, mutate }) => {
             data: id,
         });
         mutate((prev) => prev.filter((data) => data.id !== id));
-    }
-
+    } else {
             dispatch({
                 type: REMOVE_FOLLOWER_REQUEST,
                 data: id,
             });
         mutate((prev) => prev.filter((data) => data.id !== id));
+        }
     };
 
     const CardContent = data && data.map((v, i) => (

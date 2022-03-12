@@ -6,12 +6,12 @@ import AppLayout from '../components/AppLayout';
 import PostCard from '../components/PostCard';
 import PostForm from '../components/PostForm';
 import { LOAD_POSTS_REQUEST } from '../reducers/post';
-import { LOAD_MY_INFO_REQUEST, LOAD_RECOMMEND_USER_REQUEST } from '../reducers/user';
+import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import wrapper from '../store/configureStore';
 
 const Home = () => {
     const dispatch = useDispatch();
-    const { me, recommend } = useSelector((state) => state.user);
+    const { me } = useSelector((state) => state.user);
     const { retweetError } = useSelector((state) => state.post);
     const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector((state) => state.post);
     

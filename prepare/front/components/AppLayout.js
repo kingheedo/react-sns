@@ -124,11 +124,8 @@ const AppLayout = ({ children }) => {
   }, [me]);
 
   useEffect(() => {
-    // #stat
-    // stat 을 뽑아내고 그걸 dispatch 해야한다.
     if (searchContent.startsWith('#')) {
       setsearchHashtag(searchContent.slice(1));
-      // console.log('searchUser',searchHashtag)
     }
     if (searchContent) {
       dispatch({
@@ -212,27 +209,27 @@ const AppLayout = ({ children }) => {
                   </Link>
                   <ButtonGroupWrapper vertical>
                       <Button variant size="lg"><Link href="/"><h3>
-<HouseDoor style={{ marginRight: '1rem' }}/>
-Home
-                                                               </h3>
-                                                </Link>
+                      <HouseDoor style={{ marginRight: '1rem' }}/>
+                      Home
+                                                                                    </h3>
+                                                                      </Link>
+                                            </Button>
+                                            <Button variant size="lg"><Link href="/bookmarks"><h3>
+                      <Bookmark style={{ marginRight: '1rem' }}/>
+                      Bookmark
+                                                                                              </h3>
+                                                                      </Link>
+                                            </Button>
+                                            <Button variant size="lg"><Link href="/profile"><h3>
+                      <Person style={{ marginRight: '1rem' }}/>
+                      Profile
+                                                                                            </h3>
+                                                                      </Link>
+                                            </Button>
+                                            {!me && (
+                      <Button variant size="lg"><Link href="/signup">회원가입</Link>
                       </Button>
-                      <Button variant size="lg"><Link href="/bookmarks"><h3>
-<Bookmark style={{ marginRight: '1rem' }}/>
-Bookmark
-                                                                        </h3>
-                                                </Link>
-                      </Button>
-                      <Button variant size="lg"><Link href="/profile"><h3>
-<Person style={{ marginRight: '1rem' }}/>
-Profile
-                                                                      </h3>
-                                                </Link>
-                      </Button>
-                      {!me && (
-<Button variant size="lg"><Link href="/signup">회원가입</Link>
-</Button>
-)}
+                      )}
 
                       <h1>
                           <CircleButton variant="primary" onClick={handleModalForm}>
@@ -240,12 +237,12 @@ Profile
                           </CircleButton>
                       </h1>
                       {me ? (
-<Modal size="lg" show={show} onHide={handleModalForm} animation={false}>
-                            <Modal.Header closeButton>
-                            <Modal.Title>{' '}</Modal.Title>
-                            </Modal.Header>
-                            <Modal.Body><PostForm/></Modal.Body>
-</Modal>
+                        <Modal size="lg" show={show} onHide={handleModalForm} animation={false}>
+                                                  <Modal.Header closeButton>
+                                                    <Modal.Title>{' '}</Modal.Title>
+                                                    </Modal.Header>
+                                                    <Modal.Body><PostForm/></Modal.Body>
+                        </Modal>
                         ) : null}
                   </ButtonGroupWrapper>
               </Col>
@@ -254,12 +251,11 @@ Profile
 
               <Col >
                   <Form inline style={{ position: 'relative', zIndex: '10' }} onSubmit={FindUser}>
-                      <div style={{ position: 'fixed', width: '29%' }}>
+                      <div style={{ position: 'fixed', width: '20vw' }}>
                           <SearchIcon />
                           <SearchForm value={searchContent} onChange={onChangeSearchUserInput} type="text" placeholder="Search User or Hashtag" className="mr-sm-2" />
                           {searchContent && <DeleteSearchContent onClick={DeleteSearch} />}
                       </div>
-                      {/* <Button style={{display:'none'}} variant="outline-success" onClick={onSearchUser}>찾기</Button> */}
 
                       <SearchList>
                       {

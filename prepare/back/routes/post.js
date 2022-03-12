@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const path = require('path'); //노드에서 제공
+const path = require('path');
 const fs = require('fs');
 
 const { Post, Comment, Image, User, Hashtag } = require('../models');
@@ -14,13 +14,12 @@ try{
     fs.mkdirSync('uploads');
 }
 const upload = multer ({
-    storage: multer.diskStorage({ //실습할 때 잠깐 디스크 저장소에 저장하지만 나중에 aws에 배포할떄는 s3서비스로 대체할 것이다.
+    storage: multer.diskStorage({
         destination(req, file, done){
             done(null, 'uploads');
         },
-        // 노드는 중복되는 파일의 이름을 덮어씌운다. 이를 해결하기 위해 일이름의 중복성을 시간을 파일이름 뒤에 나타내어 해결하려한다.
-        filename(req, file, done){ //희도.png
-            const ext = path.extname(file.originalname); // 확장자 추출(.png), 파
+        filename(req, file, done){
+            const ext = path.extname(file.originalname); // 확장자 추출(.png),
             const basename = path.basename(file.originalname, ext); //희도
             done(null, basename + '_' + new Date().getTime() + ext); //희도12345.png
         },
@@ -28,7 +27,7 @@ const upload = multer ({
         limits: {fileSize: 20 * 1024 * 1024}, //20MB
 });
 
-router.patch('/:postId/edit', isLoggedIn, async(req, res, next) => { //글 내용 수정하기
+router.patch('/:postId/edit', isLoggedIn, async(req, res, next) => {
     try{
         const exPost = await Post.findOne({
             where : {id: req.params.postId}
@@ -52,7 +51,7 @@ router.patch('/:postId/edit', isLoggedIn, async(req, res, next) => { //글 내�
         next(error)
     }
 })
-router.get('/:postId', isNotLoggedIn, async(req, res, next) => { //개시글 불러오기
+router.get('/:postId', isNotLoggedIn, async(req, res, next) => {
     try{
       const post = await Post.findOne({
           where : {id : req.params.postId},
@@ -95,7 +94,7 @@ router.get('/:postId', isNotLoggedIn, async(req, res, next) => { //개시글 불
 })
 
 
-router.post('/addpost', isLoggedIn, upload.none(), async(req, res, next) => { // 게시글 업로드
+router.post('/addpost', isLoggedIn, upload.none(), async(req, res, next) => {
     try{
         const hashtags = req.body.content.match(/#[^\s#]+/g);
         const post = await Post.create({
@@ -128,7 +127,7 @@ router.post('/addpost', isLoggedIn, upload.none(), async(req, res, next) => { //
             },{
                 model: Comment,
                 include: [{
-                model: User, //댓글 작성자
+                model: User,
                 attributes: ['id', 'nickname'],
             }]
             },{
@@ -142,7 +141,6 @@ router.post('/addpost', isLoggedIn, upload.none(), async(req, res, next) => { //
             }]
         })
         res.status(201).json(fullPost);
-        // console.log('req.body',req.body)
     }catch(error){
         console.error(error);
         next(error)
@@ -150,12 +148,12 @@ router.post('/addpost', isLoggedIn, upload.none(), async(req, res, next) => { //
 })
 
 
-router.post('/images', isLoggedIn, upload.array('image'), async(req, res, next) => { //Post /post/images
+router.post('/images', isLoggedIn, upload.array('image'), async(req, res, next) => {
     console.log('req.files',req.files);
     res.json(req.files.map((v) => v.filename))
 })
 
-router.delete('/:postId/:imageId/imagedelete', isLoggedIn, async(req, res, next) => { //Post /post/3/imagedelete
+router.delete('/:postId/image/:imageId', isLoggedIn, async(req, res, next) => {
     try{
         console.log('imageid',req.params.imageId)
         console.log('postId',req.params.postId)
@@ -173,7 +171,7 @@ router.delete('/:postId/:imageId/imagedelete', isLoggedIn, async(req, res, next)
     
 })
 
-router.post('/:postId/addcomment', isLoggedIn, async(req, res, next) => {
+router.post('/:postId/comment', isLoggedIn, async(req, res, next) => {
     try{
        const post = await Post.findOne({
             where: {id : req.params.postId}

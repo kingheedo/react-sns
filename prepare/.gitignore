@@ -2,3 +2,4 @@ node-modules
 react_SNS.pem
 .env
 .next
+**/uploads
