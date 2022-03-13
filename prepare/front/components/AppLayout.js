@@ -1,10 +1,9 @@
-import React, { useCallback, useMemo, useState, useEffect } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import propTypes from 'prop-types';
 import { Container, Row, Col, FormControl, Form, Button, ButtonGroup, Modal, ListGroup, CloseButton, Dropdown } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import styled, { createGlobalStyle } from 'styled-components';
 import Link from 'next/link';
-import Router from 'next/router';
 import { Twitter, Search, HouseDoor, Bookmark, Person } from 'react-bootstrap-icons';
 import LoginForm from './LoginForm';
 import UserProfile from './UserProfile';
@@ -25,7 +24,7 @@ const Global = createGlobalStyle`
         margin: 0 !important;
     }
     `;
-
+    
 const ButtonGroupWrapper = styled(ButtonGroup)`
     display:flex;
     position: fixed;
@@ -34,15 +33,29 @@ const ButtonGroupWrapper = styled(ButtonGroup)`
         margin: 0 !important;
          padding-right: 14rem;
         text-decoration: none;
-    },
+    };
     Button{
         text-align: left;
-    },
+    };
     h3{
          color: #0a58ca;
-    }
+    };
+     @media screen and (max-width: 767px) { 
+    position: static;
+};
 
 `;
+
+const TwitterIcon = styled.h3`
+    cursor: pointer;
+    margin-bottom: 10px;
+    font-size: 3rem;
+    position: fixed;
+    @media screen and (max-width: 767px) { 
+    position: static;
+};
+`;
+
 const SearchList = styled(ListGroup)`
      position: fixed;
      top: 3.19rem;
@@ -62,6 +75,13 @@ const CircleButton = styled(Button)`
         font-size: 1.5rem;
 }
 `;
+
+const SearchWrapper = styled.div`
+position: fixed; 
+ width: 20vw;
+
+`;
+
 const SearchForm = styled(FormControl)`
     display: inline-block;
     padding-left:30px;
@@ -84,22 +104,54 @@ const DeleteSearchContent = styled(CloseButton)`
 const DropdownDivider = styled(Dropdown.Divider)`
                             margin: 0;
     `;
+  const UserInfoWrapper = styled.div`
+   top: 5rem;
+   position: fixed;
+ 
+
+   @media screen and (max-width: 992px) { 
+    position: fixed;
+    top: 31rem;
+    left: 4rem;
+};
+@media screen and (max-width: 840px) { 
+    position: fixed;
+    left: 3rem;
+};
+  @media screen and (max-width: 767px) { 
+    position: relative;
+    top: 5rem;
+    left: 0;
+};
+  `; 
+
+  const Col1 = styled(Col)`
+    padding-left: 12rem;
+    border-right: 1px solid #DCDCDC;
+    position: relative;
+  @media screen and (max-width: 1456px) { 
+    position: static;
+    padding-left: 0;
+    display:flex;
+    flex-direction: column;
+    align-items:center;
+    border-right: 1px solid #DCDCDC;
+
+},
+  `;
+
+  const Col2 = styled(Col)`
+    border-right: 1px solid #DCDCDC;
+  
+  @media screen and (max-width: 1456px) { 
+    position: relative;
+};
+@media screen and (max-width: 767px) { 
+    top: 5rem;
+};
+  `;
 
 const AppLayout = ({ children }) => {
-  const containerH2 = useMemo(() => ({
-    cursor: 'pointer',
-    marginBottom: '10px',
-    fontSize: '3rem',
-  }), []);
-  const Col1 = useMemo(() => ({
-    paddingLeft: '12rem',
-    borderRight: '1px solid #DCDCDC',
-    position: 'relative',
-  }), []);
-  const Col2 = useMemo(() => ({
-    borderRight: '1px solid #DCDCDC',
-  }), []);
-
   const [show, setShow] = useState(false);
   const handleModalForm = useCallback(
     () => {
@@ -171,23 +223,23 @@ const AppLayout = ({ children }) => {
     [],
   );
 
-  const FindUser = useCallback(
-    (e) => {
-      e.preventDefault();
-      searchUserList?.map((v) => {
-        if (searchContent && searchContent === v.nickname) {
-          Router.push(`/user/${v.id}`);
-          setsearchContent('');
-        }
-      });
+  // const FindUser = useCallback(
+  //   (e) => {
+  //     e.preventDefault();
+  //     searchUserList?.map((v) => {
+  //       if (searchContent && searchContent === v.nickname) {
+  //         Router.push(`/user/${v.id}`);
+  //         setsearchContent('');
+  //       }
+  //     });
 
-      if (searchHashtag) {
-        Router.push(`/hashtag/${searchHashtag}`);
-        setsearchContent('');
-      }
-    },
-    [searchHashtag, searchUserList, searchContent],
-  );
+  //     if (searchHashtag) {
+  //       Router.push(`/hashtag/${searchHashtag}`);
+  //       setsearchContent('');
+  //     }
+  //   },
+  //   [searchHashtag, searchUserList, searchContent],
+  // );
   const SelectListItem = useCallback(
     () => {
       setsearchContent('');
@@ -201,19 +253,19 @@ const AppLayout = ({ children }) => {
          <Global />
          <Container fluid="true">
           <Row xs={1} md={2} lg={3}>
-              <Col style={Col1}>
-                  <Link style={{ position: 'fixed' }} href="/">
-                      <h2 style={containerH2}>
-                          <Twitter style={{ color: '#0a58ca', position: 'fixed' }} />
-                      </h2>
+              <Col1>
+                  <Link href="/">
+                      <TwitterIcon>
+                          <Twitter style={{ color: '#0a58ca' }} />
+                      </TwitterIcon>
                   </Link>
                   <ButtonGroupWrapper vertical>
                       <Button variant size="lg"><Link href="/"><h3>
                       <HouseDoor style={{ marginRight: '1rem' }}/>
                       Home
-                                                                                    </h3>
-                                                                      </Link>
-                                            </Button>
+                                                               </h3>
+                                                </Link>
+                      </Button>
                                             <Button variant size="lg"><Link href="/bookmarks"><h3>
                       <Bookmark style={{ marginRight: '1rem' }}/>
                       Bookmark
@@ -240,26 +292,28 @@ const AppLayout = ({ children }) => {
                         <Modal size="lg" show={show} onHide={handleModalForm} animation={false}>
                                                   <Modal.Header closeButton>
                                                     <Modal.Title>{' '}</Modal.Title>
-                                                    </Modal.Header>
+                                                  </Modal.Header>
                                                     <Modal.Body><PostForm/></Modal.Body>
                         </Modal>
                         ) : null}
                   </ButtonGroupWrapper>
-              </Col>
+              </Col1>
 
-              <Col style={Col2}>{children}</Col>
+              <Col2>{children}</Col2>
 
-              <Col >
+              <Col>
+              
                   <Form inline style={{ position: 'relative', zIndex: '10' }} onSubmit={FindUser}>
-                      <div style={{ position: 'fixed', width: '20vw' }}>
+                      <SearchWrapper>
                           <SearchIcon />
                           <SearchForm value={searchContent} onChange={onChangeSearchUserInput} type="text" placeholder="Search User or Hashtag" className="mr-sm-2" />
                           {searchContent && <DeleteSearchContent onClick={DeleteSearch} />}
-                      </div>
+                      </SearchWrapper>
 
                       <SearchList>
                       {
                                 (searchContent && searchUserList) && searchUserList.map((v, i) => (
+                                  // eslint-disable-next-line react/no-array-index-key
                                   <Dropdown key={i}>
                                       <Dropdown.Item disabled={searchControl} onSelect={SelectListItem}>
                                           <Link href={`/user/${v.id}`}><a style={{ display: 'block', textDecoration: 'none' }} >{v.nickname}</a></Link>
@@ -271,10 +325,10 @@ const AppLayout = ({ children }) => {
                             }
                       </SearchList>
                   </Form>
-                  <div style={{ top: '5rem', zIndex: '8', position: 'fixed' }}>
+                  <UserInfoWrapper>
                           {me ? <UserProfile /> : <LoginForm />}
-                  </div>
-                  {(me && recommend) ? <Recommend  recommend={recommend} /> : null}
+                  </UserInfoWrapper>
+                  {(me && recommend) ? <Recommend recommend={recommend} /> : null}
 
               </Col>
           </Row>
@@ -283,7 +337,7 @@ const AppLayout = ({ children }) => {
   );
 };
 
-AppLayout.proptypes = {
+AppLayout.propTypes = {
   children: propTypes.node.isRequired,
 };
 export default AppLayout;

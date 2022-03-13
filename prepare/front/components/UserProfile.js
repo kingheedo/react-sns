@@ -15,6 +15,14 @@ const CardLinkWrapper = styled.div`
 const LogoutButton = styled(Button)`
     margin-bottom: 15px;
 `;
+const ProfileCard = styled(Card)`
+    width: 26rem;
+    flex-direction: row;
+   @media screen and (max-width: 991px) { 
+    width: 20rem;
+   }
+    
+`;
 const CardBody = styled(Card.Body)`
     padding: 1.0rem;
 `;
@@ -36,7 +44,7 @@ const UserProfile = () => {
         [],
     );
     return (
-        <Card style={{ width: '31rem', flexDirection: 'row' }}>
+        <ProfileCard>
             {/* <Card.Img variant="left" src="https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80" width='155' /> */}
             <CardBody>
                 <Link href= {`/user/${me.id}`}><a><Card.Title>{me.nickname}</Card.Title></a></Link>
@@ -52,7 +60,7 @@ const UserProfile = () => {
                 </CardLinkWrapper>
                 
             </CardBody>
-        </Card>
+        </ProfileCard>
     );
 };
 
