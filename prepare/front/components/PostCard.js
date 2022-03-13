@@ -203,40 +203,40 @@ const PostCard = ({ post }) => {
                 <Card.Body style={{ padding: 0 }}>
                     {post.RetweetId && post.Retweet
                     ? (
-<Card style={{ border: 0, width: '100%', display: 'inline-block', margin: '0.05rem' }}>
-                        <div style={{ display: 'flex' }}>
-                            {post.Retweet.Images[0] && <PostImages postid={post.id} header = "메인이미지" images = {post.Retweet.Images}/>}
-                        </div>
-                            <div style={{ width: '100%', padding: '24px' }}>
-                                {bookmark 
-                                ? <BookmarkFill style = {BookmarkStyle} onClick = {OnUnBookmark}/>
-                                : <Bookmark style={BookmarkStyle} onClick={OnBookmark}/>}
-                            
-                                <Card.Title style={{ marginBottom: '2rem' }}>
-                            <Link href= {`/user/${post.Retweet.User.id}`}>
-                                <a>
-                                    {/* <Image src="holder.js/171x180" roundedCircle /> */}{post.Retweet.User.nickname}
-                                </a>
-                            </Link>
-                                </Card.Title>
-                            <Card.Text>
-                            <div style={{ float: 'right' }}>{moment(post.createdAt).fromNow()}</div>
-                               {post.Likers.length >= 1 ? <h6 style={{ fontWeight: '600' }}>좋아요 {post.Likers.length}개</h6> : null}
-                            <br/>
-                            <PostCardContent postContent = {post.Retweet.content}/>
-                            <div style ={{ marginTop: '1rem', display: 'flex' }}>
-                                <h6>{post.Comments[0] && <Link href={`/user/${post.Comments[0].User.id}`}><a style={{ textDecoration: 'none', color: '#212529' }}>{post.Comments[0].User.nickname}</a></Link>}</h6>
-                                &nbsp;
-                                <p style={{ lineHeight: '1.2' }}>{post.Comments[0] && post.Comments[0].content}</p>
-                            </div>
-                            </Card.Text>
+                <Card style={{ border: 0, width: '100%', display: 'inline-block', margin: '0.05rem' }}>
+                                        <div style={{ display: 'flex' }}>
+                                            {post.Retweet.Images[0] && <PostImages postid={post.id} header = "메인이미지" images = {post.Retweet.Images}/>}
+                                        </div>
+                                            <div style={{ width: '100%', padding: '24px' }}>
+                                                {bookmark 
+                                                ? <BookmarkFill style = {BookmarkStyle} onClick = {OnUnBookmark}/>
+                                                : <Bookmark style={BookmarkStyle} onClick={OnBookmark}/>}
+                                            
+                                                <Card.Title style={{ marginBottom: '2rem' }}>
+                                            <Link href= {`/user/${post.Retweet.User.id}`}>
+                                                <a>
+                                                    {/* <Image src="holder.js/171x180" roundedCircle /> */}{post.Retweet.User.nickname}
+                                                </a>
+                                            </Link>
+                                                </Card.Title>
+                                            <Card.Text>
+                                            <div style={{ float: 'right' }}>{moment(post.createdAt).fromNow()}</div>
+                                            {post.Likers.length >= 1 ? <h6 style={{ fontWeight: '600' }}>좋아요 {post.Likers.length}개</h6> : null}
+                                            <br/>
+                                            <PostCardContent postContent = {post.Retweet.content}/>
+                                            <div style ={{ marginTop: '1rem', display: 'flex' }}>
+                                                <h6>{post.Comments[0] && <Link href={`/user/${post.Comments[0].User.id}`}><a style={{ textDecoration: 'none', color: '#212529' }}>{post.Comments[0].User.nickname}</a></Link>}</h6>
+                                                &nbsp;
+                                                <p style={{ lineHeight: '1.2' }}>{post.Comments[0] && post.Comments[0].content}</p>
+                                            </div>
+                                            </Card.Text>
 
-                            </div>
+                                            </div>
 
-</Card>
-)
-                    : (
-<Card style={{ border: 0, width: '100%', display: 'inline-block', margin: '0.05rem' }}>
+                </Card>
+                        )
+                                            : (
+                        <Card style={{ border: 0, width: '100%', display: 'inline-block', margin: '0.05rem' }}>
                         <div style={{ display: 'flex' }}>
                             {post.Images[0] && <PostImages postid={post.id} header = "메인이미지" images = {post.Images}/>}
                         </div>
@@ -264,18 +264,18 @@ const PostCard = ({ post }) => {
                                     <div style ={{ marginTop: '1rem', display: 'flex' }}>
                                         <h6>{post.Comments[0] 
                                             && (
-<Link href={`/user/${post.Comments[0].User.id}`}>
+                                <Link href={`/user/${post.Comments[0].User.id}`}>
                                                 <a style={{ textDecoration: 'none', color: '#212529' }}>{post.Comments[0].User.nickname}</a>
-</Link>
-)}
+                                </Link>
+                                )}
                                         </h6>
-                                        &nbsp;
-                                        <p style={{ lineHeight: '1.2' }}>{post.Comments[0] && post.Comments[0].content}</p>
+                                                                        &nbsp;
+                                                                        <p style={{ lineHeight: '1.2' }}>{post.Comments[0] && post.Comments[0].content}</p>
                                     </div>
                                 </Card.Text>
 
                             </div>
-</Card>
+                        </Card>
                     
                     )}
                     <ul style={ulStyle}>
@@ -301,14 +301,14 @@ const PostCard = ({ post }) => {
                                 {show 
                                 ? null
                                 : (
-<OverlayTrigger
-  placement="top"
-  overlay={renderTooltip}
-  delay={{ show: 250, hide: 400 }}
->
-                                    <ThreeDots style={{ width: '100%' }}/>
-</OverlayTrigger>
-)}    
+                                    <OverlayTrigger
+                                      placement="top"
+                                      overlay={renderTooltip}
+                                      delay={{ show: 250, hide: 400 }}
+                                    >
+                                                                        <ThreeDots style={{ width: '100%' }}/>
+                                    </OverlayTrigger>
+                                    )}    
                                 
                             </span>
                         </li>
@@ -318,20 +318,20 @@ const PostCard = ({ post }) => {
             </Card>
             {commentOpen
             && (
-<div style={{ width: '33rem' }}>
-                <CommentForm post={post}/>
-                <span>{post.Comments.length}개의 댓글</span>
-                <CommentList variant="flush">
-                    {post.Comments[0] && post.Comments.map((v) => (
-                        <CommentListItem>
-                            {/* <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" /> */}
-                            <Link href= {`/user/${v.User.id}`}><a>{v.UserId && v.User.nickname}</a></Link>
-                            <p>{v.content}</p>
-                        </CommentListItem>
-                    ))}
-                    
-                </CommentList>
-</div>
+                <div style={{ width: '33rem' }}>
+                                <CommentForm post={post}/>
+                                <span>{post.Comments.length}개의 댓글</span>
+                                <CommentList variant="flush">
+                                    {post.Comments[0] && post.Comments.map((v) => (
+                                        <CommentListItem>
+                                            {/* <img src="holder.js/20x20?text=%20" className="rounded mr-2" alt="" /> */}
+                                            <Link href= {`/user/${v.User.id}`}><a>{v.UserId && v.User.nickname}</a></Link>
+                                            <p>{v.content}</p>
+                                        </CommentListItem>
+                                    ))}
+                                    
+                                </CommentList>
+                </div>
             )}
         <EditPostContent post={post} show={show} handleModalForm= {handleModalForm}/>
        

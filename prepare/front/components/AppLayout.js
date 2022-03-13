@@ -223,23 +223,23 @@ const AppLayout = ({ children }) => {
     [],
   );
 
-  // const FindUser = useCallback(
-  //   (e) => {
-  //     e.preventDefault();
-  //     searchUserList?.map((v) => {
-  //       if (searchContent && searchContent === v.nickname) {
-  //         Router.push(`/user/${v.id}`);
-  //         setsearchContent('');
-  //       }
-  //     });
+  const FindUser = useCallback(
+    (e) => {
+      e.preventDefault();
+      searchUserList?.map((v) => {
+        if (searchContent && searchContent === v.nickname) {
+          Router.push(`/user/${v.id}`);
+          setsearchContent('');
+        }
+      });
 
-  //     if (searchHashtag) {
-  //       Router.push(`/hashtag/${searchHashtag}`);
-  //       setsearchContent('');
-  //     }
-  //   },
-  //   [searchHashtag, searchUserList, searchContent],
-  // );
+      if (searchHashtag) {
+        Router.push(`/hashtag/${searchHashtag}`);
+        setsearchContent('');
+      }
+    },
+    [searchHashtag, searchUserList, searchContent],
+  );
   const SelectListItem = useCallback(
     () => {
       setsearchContent('');
