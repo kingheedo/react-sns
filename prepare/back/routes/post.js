@@ -3,7 +3,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-const { Post, Comment, Image, User, Hashtag } = require('../models');
+const { Post, Comment, Image, User, Hashtag, Report } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const router = express.Router();
 
@@ -26,6 +26,22 @@ const upload = multer ({
         }),
         limits: {fileSize: 20 * 1024 * 1024}, //20MB
 });
+
+router.post('/:postId/report', async(req, res, next) => {
+    try{
+        const post = await Post.findOne({
+            where : {id: req.params.postId}
+        })
+       const report = await Report.create({
+            content : req.body.content,    
+      })
+      post.addReports(report)
+      res.status(201).send('Report 접수성공')
+    }catch(error){
+        console.error(error);
+        next(error)
+    }
+})
 
 router.patch('/:postId/edit', isLoggedIn, async(req, res, next) => {
     try{
@@ -51,6 +67,7 @@ router.patch('/:postId/edit', isLoggedIn, async(req, res, next) => {
         next(error)
     }
 })
+
 router.get('/:postId', isNotLoggedIn, async(req, res, next) => {
     try{
       const post = await Post.findOne({

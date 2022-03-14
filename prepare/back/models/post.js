@@ -3,7 +3,6 @@ const { Model } = DataTypes;
 module.exports = class Post extends Model{
     static init(sequelize){
         return super.init({
-        //id가 기본적으로 들어있다.
         content:{
             type : DataTypes.TEXT,
             allowNull: false,
@@ -24,6 +23,8 @@ module.exports = class Post extends Model{
         db.Post.belongsToMany(db.User, {through : 'Bookmark', as : 'Bookmarkers'});
         db.Post.belongsToMany(db.Hashtag, {through : 'PostHashtag'});
         db.Post.belongsTo(db.Post, {as: 'Retweet'}) //post.addRetweet
+        db.Post.belongsToMany(db.Report, {through : 'ReportPost'});
+
     }
     
 };

@@ -15,6 +15,8 @@ import PostCardContent from './PostCardContent';
 import PostImages from './PostImages';
 import FollowButton from './FollowButton';
 import EditPostContent from './EditPostContent';
+import useInput from '../hooks/useInput';
+import Report from './Report';
 
 moment.locale('ko');
 
@@ -47,7 +49,7 @@ const PostCard = ({ post }) => {
     const { retweetError } = useSelector((state) => state.post);
     const dispatch = useDispatch();
     const [show, setShow] = useState(false);
-    
+
     const headerStyle = useMemo(() => ({
         backgroundColor: 'rgba(0,0,0,0)',
     }), []);
@@ -126,8 +128,7 @@ const PostCard = ({ post }) => {
         [],
     );
     const onPostDelete = useCallback(
-        (e) => {
-            e.preventDefault();
+        () => {
             if (!id) {
                 return alert('로그인 후 이용하실 수 있습니다.');
             }
@@ -170,7 +171,7 @@ const PostCard = ({ post }) => {
         },
         [show],
     );
-
+    
     const renderTooltip = (props) => (
         // eslint-disable-next-line react/jsx-props-no-spreading
         <MoreButton id="button-tooltip" {...props}>
@@ -182,8 +183,8 @@ const PostCard = ({ post }) => {
                && <Button variant="danger" onClick={onPostDelete}>삭제</Button>}
                </>
             
-               {id && post.User.id !== id
-                && <Button variant="danger">신고</Button>}
+               {((id && post.User.id !== id) || !id)
+                && <Button variant="danger" onClick={handleModalForm}>신고</Button>}
         </MoreButton>
         );
     const like = post.Likers.find((v) => v.id === id);
@@ -203,39 +204,38 @@ const PostCard = ({ post }) => {
                 <Card.Body style={{ padding: 0 }}>
                     {post.RetweetId && post.Retweet
                     ? (
-                <Card style={{ border: 0, width: '100%', display: 'inline-block', margin: '0.05rem' }}>
-                                        <div style={{ display: 'flex' }}>
-                                            {post.Retweet.Images[0] && <PostImages postid={post.id} header = "메인이미지" images = {post.Retweet.Images}/>}
-                                        </div>
-                                            <div style={{ width: '100%', padding: '24px' }}>
-                                                {bookmark 
-                                                ? <BookmarkFill style = {BookmarkStyle} onClick = {OnUnBookmark}/>
-                                                : <Bookmark style={BookmarkStyle} onClick={OnBookmark}/>}
-                                            
-                                                <Card.Title style={{ marginBottom: '2rem' }}>
-                                            <Link href= {`/user/${post.Retweet.User.id}`}>
-                                                <a>
-                                                    {/* <Image src="holder.js/171x180" roundedCircle /> */}{post.Retweet.User.nickname}
-                                                </a>
-                                            </Link>
-                                                </Card.Title>
-                                            <Card.Text>
-                                            <div style={{ float: 'right' }}>{moment(post.createdAt).fromNow()}</div>
-                                            {post.Likers.length >= 1 ? <h6 style={{ fontWeight: '600' }}>좋아요 {post.Likers.length}개</h6> : null}
-                                            <br/>
-                                            <PostCardContent postContent = {post.Retweet.content}/>
-                                            <div style ={{ marginTop: '1rem', display: 'flex' }}>
-                                                <h6>{post.Comments[0] && <Link href={`/user/${post.Comments[0].User.id}`}><a style={{ textDecoration: 'none', color: '#212529' }}>{post.Comments[0].User.nickname}</a></Link>}</h6>
-                                                &nbsp;
-                                                <p style={{ lineHeight: '1.2' }}>{post.Comments[0] && post.Comments[0].content}</p>
-                                            </div>
-                                            </Card.Text>
+                        <Card style={{ border: 0, width: '100%', display: 'inline-block', margin: '0.05rem' }}>
+                            <div style={{ display: 'flex' }}>
+                                {post.Retweet.Images[0] && <PostImages postid={post.id} header = "메인이미지" images = {post.Retweet.Images}/>}
+                            </div>
+                            <div style={{ width: '100%', padding: '24px' }}>
+                                {bookmark 
+                                ? <BookmarkFill style = {BookmarkStyle} onClick = {OnUnBookmark}/>
+                                : <Bookmark style={BookmarkStyle} onClick={OnBookmark}/>}
+                            
+                                <Card.Title style={{ marginBottom: '2rem' }}>
+                            <Link href= {`/user/${post.Retweet.User.id}`}>
+                                <a>
+                                    {/* <Image src="holder.js/171x180" roundedCircle /> */}{post.Retweet.User.nickname}
+                                </a>
+                            </Link>
+                                </Card.Title>
+                            <Card.Text>
+                            <div style={{ float: 'right' }}>{moment(post.createdAt).fromNow()}</div>
+                            {post.Likers.length >= 1 ? <h6 style={{ fontWeight: '600' }}>좋아요 {post.Likers.length}개</h6> : null}
+                            <br/>
+                            <PostCardContent postContent = {post.Retweet.content}/>
+                            <div style ={{ marginTop: '1rem', display: 'flex' }}>
+                                <h6>{post.Comments[0] && <Link href={`/user/${post.Comments[0].User.id}`}><a style={{ textDecoration: 'none', color: '#212529' }}>{post.Comments[0].User.nickname}</a></Link>}</h6>
+                                &nbsp;
+                                <p style={{ lineHeight: '1.2' }}>{post.Comments[0] && post.Comments[0].content}</p>
+                            </div>
+                            </Card.Text>
 
-                                            </div>
-
-                </Card>
+                            </div>
+                        </Card>
                         )
-                                            : (
+                        : (
                         <Card style={{ border: 0, width: '100%', display: 'inline-block', margin: '0.05rem' }}>
                         <div style={{ display: 'flex' }}>
                             {post.Images[0] && <PostImages postid={post.id} header = "메인이미지" images = {post.Images}/>}
@@ -269,14 +269,12 @@ const PostCard = ({ post }) => {
                                 </Link>
                                 )}
                                         </h6>
-                                                                        &nbsp;
-                                                                        <p style={{ lineHeight: '1.2' }}>{post.Comments[0] && post.Comments[0].content}</p>
+                                        &nbsp;
+                                        <p style={{ lineHeight: '1.2' }}>{post.Comments[0] && post.Comments[0].content}</p>
                                     </div>
                                 </Card.Text>
-
                             </div>
                         </Card>
-                    
                     )}
                     <ul style={ulStyle}>
                         <li style={liStyle}>
@@ -304,9 +302,9 @@ const PostCard = ({ post }) => {
                                     <OverlayTrigger
                                       placement="top"
                                       overlay={renderTooltip}
-                                      delay={{ show: 250, hide: 400 }}
+                                      trigger="click"
                                     >
-                                                                        <ThreeDots style={{ width: '100%' }}/>
+                                        <ThreeDots style={{ width: '100%' }}/>
                                     </OverlayTrigger>
                                     )}    
                                 
@@ -333,7 +331,9 @@ const PostCard = ({ post }) => {
                                 </CommentList>
                 </div>
             )}
-        <EditPostContent post={post} show={show} handleModalForm= {handleModalForm}/>
+        {id && post.User.id === id 
+            ? <EditPostContent post={post} show={show} handleModalForm= {handleModalForm}/>
+            : <Report post={post} show={show} handleModalForm= {handleModalForm}/>}
        
         </div>
     );

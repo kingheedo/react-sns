@@ -3,7 +3,6 @@ const { Model } = DataTypes;
 module.exports = class User extends Model{
     static init(sequelize){
         return super.init({
-        //id가 기본적으로 들어있다.
         email:{
             type : DataTypes.STRING(30),
             allowNull: false,

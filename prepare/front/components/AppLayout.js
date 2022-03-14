@@ -60,7 +60,7 @@ const SearchList = styled(ListGroup)`
      position: fixed;
      top: 3.19rem;
      z-index: 9;
-     width: 29%;
+     width: 20.2%;
      border-left: 1px solid #e9ecef;
      background-color: #ffffff;
      border-right: 1px solid #e9ecef;
@@ -115,7 +115,6 @@ const DropdownDivider = styled(Dropdown.Divider)`
     left: 4rem;
 };
 @media screen and (max-width: 840px) { 
-    position: fixed;
     left: 3rem;
 };
   @media screen and (max-width: 767px) { 
@@ -135,7 +134,6 @@ const DropdownDivider = styled(Dropdown.Divider)`
     display:flex;
     flex-direction: column;
     align-items:center;
-    border-right: 1px solid #DCDCDC;
 
 },
   `;
