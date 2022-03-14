@@ -4,6 +4,12 @@ import { ListGroup } from 'react-bootstrap';
 import styled from 'styled-components';
 import RecommendFollowButton from './RecommendFollowButton';
 
+const List = styled(ListGroup)`
+    width: 20rem;
+    top: 21rem;
+    position: fixed;
+    z-index: 7;
+`;
 const ListGroupItem = styled(ListGroup.Item)`
     margin:0 !important;
     padding: 2rem;
@@ -16,7 +22,7 @@ const ListItemWrapper = styled.div`
 const Recommend = ({ recommend }) => {
    return (
        <>
-        <ListGroup style={{ width: '20rem', top: '21rem', position: 'fixed', zIndex: '7' }}>
+        <ListGroup>
             <ListGroup.Item>Who to follow</ListGroup.Item>
             {recommend && recommend.map((v, i) => (
                 // eslint-disable-next-line react/no-array-index-key

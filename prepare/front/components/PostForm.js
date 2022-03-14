@@ -3,6 +3,22 @@ import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { ADD_POST_REQUEST, REMOVE_IMAGE, UPLOAD_IMAGES_REQUEST } from '../reducers/post';
 import useInput from '../hooks/useInput';
+import styled from 'styled-components';
+
+const UploadButton = styled(Button)`
+ margin-top: 1rem;
+`
+const PostButton = styled(Button)`
+ float: right;
+ margin-top: 1rem;
+`
+const ImaegPathDiv = styled.div`
+ display: flex; 
+ margin-top: 20px;
+`
+const ImageDiv = styled.div`
+  margin-rght: 5px
+`
 
 const PostForm = () => {
     const { addPostDone, imagePaths } = useSelector((state) => state.post);
@@ -69,21 +85,21 @@ const PostForm = () => {
                 <Form.Label ><h2>Home</h2></Form.Label>
                 <Form.Control as="textarea" rows={3} value={text} onChange={onChangeText} />
                     <Form.File.Input type="file" name="image" ref={imageUpload} onChange={onChangeImages} multiple hidden />
-                    <Button style={{ marginTop: '1rem' }} onClick = {onClickImageUpload}>이미지업로드</Button>
-                    <Button style={{ float: 'right', marginTop: '1rem' }} type="submit" >게시</Button>
+                    <UploadButton onClick = {onClickImageUpload}>이미지업로드</UploadButton>
+                    <PostButton type="submit" >게시</PostButton>
             </Form.Group>
             </div>
-            <div style={{ display: 'flex', marginTop: '20px' }}>
+            <ImaegPathDiv>
                 {imagePaths.map((v, i) => (
                     // eslint-disable-next-line react/no-array-index-key
-                    <div key={i} style={{ marginRight: '5px' }}>
+                    <ImageDiv key={i}>
                         <img src={`http://localhost:3065/${v}`} alt={v} style= {{ width: '220px' }}/>
                         <div>
                             <Button onClick={onRemoveImage(i)}>제거</Button>
                         </div>
-                    </div>
+                    </ImageDiv>
                 ))}
-            </div>
+            </ImaegPathDiv>
         </Form>
         
     );

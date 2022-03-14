@@ -5,6 +5,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
 import useInput from '../hooks/useInput';
 import { ADD_COMMENT_REQUEST } from '../reducers/post';
+import styled from 'styled-components';
+
+const FormButton = styled(Button)`
+ position: absolute; 
+ right: 0;
+`
 
 const CommentForm = ({ post }) => {
     const me = useSelector((state) => state.user.me);
@@ -41,9 +47,9 @@ const CommentForm = ({ post }) => {
                     <Form.Label srOnly>Example textarea</Form.Label>
                     <Form.Control as="textarea" rows={3} value={commentText} onChange={OnChangeCommentText}/>
                 </Form.Group>
-                <Button disabled={addCommentLoading || !commentText} style={{ position: 'absolute', right: 0 }} variant="primary" type="submit">
+                <FormButton disabled={addCommentLoading || !commentText} variant="primary" type="submit">
                 {addCommentLoading ? 'Loading…' : '게시'}
-                </Button>
+                </FormButton>
             </Form>
             
         </>

@@ -46,7 +46,7 @@ const ButtonGroupWrapper = styled(ButtonGroup)`
 
 `;
 
-const TwitterIcon = styled.h3`
+const TwitterWrapper = styled.h3`
     cursor: pointer;
     margin-bottom: 10px;
     font-size: 3rem;
@@ -147,8 +147,27 @@ const DropdownDivider = styled(Dropdown.Divider)`
 @media screen and (max-width: 767px) { 
     top: 5rem;
 };
-  `;
+  ` ;
 
+const TwitterIcon = styled(Twitter)`
+  color: #0a58ca
+`
+const HouseDoorIcon = styled(HouseDoor)`
+  margin-right : 1rem
+`
+const BookmarkIcon = styled(Bookmark)`
+  margin-right : 1rem
+`
+const PersonIcon = styled(Person)`
+  margin-right : 1rem
+` 
+const Forms = styled(Form)`
+  position: relative;
+` 
+const Anchor = styled.a`
+   display: block; 
+   text-decoration: none;
+` 
 const AppLayout = ({ children }) => {
   const [show, setShow] = useState(false);
   const handleModalForm = useCallback(
@@ -246,37 +265,45 @@ const AppLayout = ({ children }) => {
     [],
   );
   return (
-
       <div>
          <Global />
          <Container fluid="true">
           <Row xs={1} md={2} lg={3}>
               <Col1>
                   <Link href="/">
-                      <TwitterIcon>
-                          <Twitter style={{ color: '#0a58ca' }} />
-                      </TwitterIcon>
+                      <TwitterWrapper>
+                          <TwitterIcon/>
+                      </TwitterWrapper>
                   </Link>
                   <ButtonGroupWrapper vertical>
-                      <Button variant size="lg"><Link href="/"><h3>
-                      <HouseDoor style={{ marginRight: '1rem' }}/>
-                      Home
-                                                               </h3>
-                                                </Link>
+                      <Button variant size="lg">
+                        <Link href="/">
+                          <h3>
+                          <HouseDoorIcon/>
+                          Home
+                          </h3>
+                        </Link>
                       </Button>
-                                            <Button variant size="lg"><Link href="/bookmarks"><h3>
-                      <Bookmark style={{ marginRight: '1rem' }}/>
-                      Bookmark
-                                                                                              </h3>
-                                                                      </Link>
-                                            </Button>
-                                            <Button variant size="lg"><Link href="/profile"><h3>
-                      <Person style={{ marginRight: '1rem' }}/>
-                      Profile
-                                                                                            </h3>
-                                                                      </Link>
-                                            </Button>
-                                            {!me && (
+
+                      <Button variant size="lg">
+                        <Link href="/bookmarks">
+                          <h3>
+                          <BookmarkIcon/>
+                          Bookmark
+                          </h3>
+                      </Link>
+                      </Button>
+
+                       <Button variant size="lg">
+                         <Link href="/profile">
+                          <h3>
+                          <PersonIcon/>
+                          Profile
+                          </h3>
+                      </Link>
+                       </Button>
+
+                      {!me && (
                       <Button variant size="lg"><Link href="/signup">회원가입</Link>
                       </Button>
                       )}
@@ -288,10 +315,10 @@ const AppLayout = ({ children }) => {
                       </h1>
                       {me ? (
                         <Modal size="lg" show={show} onHide={handleModalForm} animation={false}>
-                                                  <Modal.Header closeButton>
-                                                    <Modal.Title>{' '}</Modal.Title>
-                                                  </Modal.Header>
-                                                    <Modal.Body><PostForm/></Modal.Body>
+                          <Modal.Header closeButton>
+                            <Modal.Title>{' '}</Modal.Title>
+                          </Modal.Header>
+                            <Modal.Body><PostForm/></Modal.Body>
                         </Modal>
                         ) : null}
                   </ButtonGroupWrapper>
@@ -301,7 +328,7 @@ const AppLayout = ({ children }) => {
 
               <Col>
               
-                  <Form inline style={{ position: 'relative', zIndex: '10' }} onSubmit={FindUser}>
+                  <Forms inline onSubmit={FindUser}>
                       <SearchWrapper>
                           <SearchIcon />
                           <SearchForm value={searchContent} onChange={onChangeSearchUserInput} type="text" placeholder="Search User or Hashtag" className="mr-sm-2" />
@@ -314,7 +341,7 @@ const AppLayout = ({ children }) => {
                                   // eslint-disable-next-line react/no-array-index-key
                                   <Dropdown key={i}>
                                       <Dropdown.Item disabled={searchControl} onSelect={SelectListItem}>
-                                          <Link href={`/user/${v.id}`}><a style={{ display: 'block', textDecoration: 'none' }} >{v.nickname}</a></Link>
+                                          <Link href={`/user/${v.id}`}><Anchor>{v.nickname}</Anchor></Link>
                                       </Dropdown.Item>
                                       <DropdownDivider />
                                   </Dropdown>
@@ -322,7 +349,7 @@ const AppLayout = ({ children }) => {
                                 ))
                             }
                       </SearchList>
-                  </Form>
+                  </Forms>
                   <UserInfoWrapper>
                           {me ? <UserProfile /> : <LoginForm />}
                   </UserInfoWrapper>

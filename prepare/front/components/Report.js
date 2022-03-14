@@ -6,6 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import propTypes from 'prop-types';
 import useInput from '../hooks/useInput';
 import { ADD_REPORT_REQUEST } from '../reducers/post';
+import styled from 'styled-components';
+
+const FormButton = styled(Button)`
+  float: right;
+`
 
 const Report = ({ post, show, handleModalForm }) => {
     const { addReportLoading } = useSelector((state) => state.post);
@@ -43,7 +48,7 @@ const Report = ({ post, show, handleModalForm }) => {
               </Modal.Header>
               <Modal.Body>
                     <FormControl as="textarea" rows={3} value={report} onChange={onChangeReport} />
-                    <Button onClick={onReport} style={{ float: 'right' }} variant="primary" >수정</Button>
+                    <FormButton onClick={onReport} variant="primary" >수정</FormButton>
               </Modal.Body>
              </Modal>
         </>

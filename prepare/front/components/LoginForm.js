@@ -9,6 +9,9 @@ import { loginRequestAction } from '../reducers/user';
 const FormLabel = styled(Form.Label)`
     padding: 10px;
 `;
+const FormControl = styled(Form.Control)`
+     margin-eeft: 10px
+`;
 
 const LoginForm = () => {
     const dispatch = useDispatch();
@@ -36,7 +39,7 @@ const LoginForm = () => {
                     Email
                     </FormLabel>
                     <Col sm={10}>
-                    <Form.Control style={{ marginLeft: '10px' }} type="email" placeholder="Email" value={email} onChange={onChangeEmail} required/>
+                    <FormControl type="email" placeholder="Email" value={email} onChange={onChangeEmail} required/>
                     </Col>
                 </Form.Group>
 
@@ -45,7 +48,7 @@ const LoginForm = () => {
                     Password
                     </FormLabel>
                     <Col sm={10}>
-                    <Form.Control style={{ marginLeft: '10px' }} type="password" placeholder="Password" value={password} onChange={onChangePassword} required />
+                    <FormControl type="password" placeholder="Password" value={password} onChange={onChangePassword} required />
                     </Col>
                 </Form.Group>
                 

@@ -1,5 +1,4 @@
-node-modules
-react_SNS.pem
-.env
 .next
+.env
 **/uploads
+**/node_modules

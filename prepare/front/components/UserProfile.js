@@ -31,6 +31,10 @@ const CardLink = styled(Card.Link)`
     display:flex;
     text-align : center;
 `;
+const MomentDiv = styled.div`
+    float: right;
+    margin-top: 15px;
+`
 const UserProfile = () => {
     const { me } = useSelector((state) => state.user);
     const dispatch = useDispatch();
@@ -49,9 +53,9 @@ const UserProfile = () => {
             <CardBody>
                 <Link href= {`/user/${me.id}`}><a><Card.Title>{me.nickname}</Card.Title></a></Link>
                 <LogoutButton onClick={logoutHandler}>로그아웃</LogoutButton>
-                <div style ={{ float: 'right', marginTop: '15px' }}>
+                <MomentDiv>
                     Joined {moment(me.createdAt).format('MMMM YYYY')}
-                </div>
+                </MomentDiv>
                 <br/>
                 <CardLinkWrapper>
                     <Link href= {`/user/${me.id}`}><a><CardLink href="#">게시물 <br/>{me.Posts.length}</CardLink></a></Link>

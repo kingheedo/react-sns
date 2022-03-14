@@ -8,7 +8,25 @@ import propTypes from 'prop-types';
 import PostImages from './PostImages';
 import useInput from '../hooks/useInput';
 import { EDIT_POST_CONTENT_REQUEST } from '../reducers/post';
-
+import styled from 'styled-components';
+const ModalCard = styled(Card)`
+ border: 0;
+ width: 100%;
+ display: inline-block;
+ margin: 0.05rem;
+`
+const ModalDiv1 = styled.div`
+ position: relative;
+`
+const ModalDiv2 = styled.div`
+ padding: 24px;
+`
+const CartTitle = styled(Card.Title)`
+  margin-bottom: 2rem;
+`
+const ModalButton = styled(Button)`
+ float: right;
+`
 const EditPostContent = ({ post, show, handleModalForm }) => {
     const [text, onChangeText] = useInput(post?.content);
     const dispatch = useDispatch();
@@ -37,24 +55,24 @@ const EditPostContent = ({ post, show, handleModalForm }) => {
                 </Modal.Title>
               </Modal.Header>
               <Modal.Body>
-                  <Card style={{ border: 0, width: '100%', display: 'inline-block', margin: '0.05rem' }}>
-                    <div style= {{ position: 'relative' }}>
+                  <ModalCard>
+                    <ModalDiv1>
                           {post.Images[0] && <PostImages header = "수정" postid = {post.id} images = {post.Images}/>}
-                    </div>
-                    <div style={{ padding: '24px' }}>
+                    </ModalDiv1>
+                    <ModalDiv2>
                         
-                        <Card.Title style={{ marginBottom: '2rem' }}>
+                        <CartTitle>
                         <Link href= {`/user/${post.User.id}`}>
                             {/* <Image src="holder.js/171x180" roundedCircle /> */}<a>{post.User.nickname}</a>
                         </Link>
-                        </Card.Title>
+                        </CartTitle>
                         <Card.Text>
                             <br/>
                             <FormControl as="textarea" rows={3} value={text} onChange={onChangeText} />
                         </Card.Text>
-                    </div>
-                  </Card>
-                  <Button onClick={onSubmitEdit} style={{ float: 'right' }} variant="primary" >수정</Button>
+                    </ModalDiv2>
+                  </ModalCard>
+                  <ModalButton onClick={onSubmitEdit} variant="primary" >수정</ModalButton>
               </Modal.Body>
              </Modal>
         </>

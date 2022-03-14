@@ -3,7 +3,11 @@ import { Card, Button, CardGroup, ListGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { REMOVE_FOLLOWER_REQUEST, UNFOLLOW_REQUEST } from '../reducers/user';
+import styled from 'styled-components';
 
+const List = styled(ListGroup)`
+ margin-bottom: 5rem
+`
 const FollowList = ({ header, data, mutate }) => {
     const dispatch = useDispatch();
     const onCancel = (id) => () => {
@@ -36,13 +40,13 @@ const FollowList = ({ header, data, mutate }) => {
                     
     ));
     return (
-            <ListGroup style={{ marginBottom: '5rem' }}>
+            <List>
                 <ListGroup.Item>
                     <CardGroup>
                         {CardContent}
                     </CardGroup>
                 </ListGroup.Item>
-            </ListGroup>
+            </List>
     );
 };
 FollowList.propTypes = {
