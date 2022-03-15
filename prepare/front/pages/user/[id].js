@@ -13,6 +13,11 @@ import { LOAD_USER_POSTS_REQUEST } from '../../reducers/post';
 import { LOAD_MY_INFO_REQUEST, LOAD_USER_REQUEST } from '../../reducers/user';
 import wrapper from '../../store/configureStore';
 
+const UserCard = styled(Card)`
+ width: 100%;
+ flex-direction: row;
+`;
+
 const CardLinkWrapper = styled.div`
     padding-top : 15px;
     border-top: 1px solid rgba(0, 0, 0, 0.125);
@@ -70,7 +75,7 @@ const User = () => {
                   </Head>
                 )}
             {userInfo && ( 
-           <Card style={{ width: '31rem', flexDirection: 'row' }}>
+           <UserCard>
                 <CardBody>
                     <Card.Title>{userInfo.nickname}</Card.Title>
                     <br/>
@@ -81,7 +86,7 @@ const User = () => {
                     </CardLinkWrapper>
                     
                 </CardBody>
-           </Card>
+           </UserCard>
             )}
             {mainPosts && mainPosts.map((v) => <PostCard key={v.id} post = {v}/>)}
         </AppLayout>

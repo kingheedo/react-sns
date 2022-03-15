@@ -63,16 +63,16 @@ const PostComment = styled.div`
 const Anchor = styled.a`
 text-decoration: none; 
 color: #212529;
-`
+`;
 const P = styled.p`
  line-height: 1.2;
-`
+`;
 const H6 = styled.h6`
  font-Weight: 600'
-`
+`;
 const CardTitle = styled(Card.Title)`
   margin-bottom: 2rem
-`
+`;
 
 const PostCard = ({ post }) => {
     const [commentOpen, setCommentOpen] = useState(false);
@@ -116,33 +116,33 @@ const PostCard = ({ post }) => {
 
     const CardStyle = useMemo(() => ({
         width: '100%',
-    }), [])
+    }), []);
 
     const CardBody = useMemo(() => ({
         padding: '0',
-    }), [])
+    }), []);
 
     const RetweetCard = useMemo(() => ({
-        border:'0', 
+        border: '0', 
         width: '100%',
         display: 'inline-block',
         margin: '0.05rem',
-    }), [])
+    }), []);
 
     const TweetCard = useMemo(() => ({
-        border: "0", 
+        border: '0', 
         width: '100%', 
         display: 'inline-block',
         margin: '0.05rem',
-    }), [])
+    }), []);
 
     const CardIcon = useMemo(() => ({
-        width: '100%'
-    }), [])
+        width: '100%',
+    }), []);
     const HeartFillIcon = useMemo(() => ({
         width: '100%',
         color: '#dc3545',
-    }), [])
+    }), []);
 
     const onRetweet = useCallback(
         () => {

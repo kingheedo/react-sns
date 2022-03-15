@@ -1,24 +1,24 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import { ADD_POST_REQUEST, REMOVE_IMAGE, UPLOAD_IMAGES_REQUEST } from '../reducers/post';
 import useInput from '../hooks/useInput';
-import styled from 'styled-components';
 
 const UploadButton = styled(Button)`
  margin-top: 1rem;
-`
+`;
 const PostButton = styled(Button)`
  float: right;
  margin-top: 1rem;
-`
+`;
 const ImaegPathDiv = styled.div`
  display: flex; 
  margin-top: 20px;
-`
+`;
 const ImageDiv = styled.div`
   margin-rght: 5px
-`
+`;
 
 const PostForm = () => {
     const { addPostDone, imagePaths } = useSelector((state) => state.post);

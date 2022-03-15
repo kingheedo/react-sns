@@ -2,12 +2,12 @@ import React, { useCallback } from 'react';
 import { Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { FOLLOW_REQUEST, UNFOLLOW_REQUEST } from '../reducers/user';
 import styled from 'styled-components';
+import { FOLLOW_REQUEST, UNFOLLOW_REQUEST } from '../reducers/user';
 
 const IsFollowButton = styled(Button)`
  float: right;
-`
+`;
 
 const FollowButton = ({ post }) => {
     const dispatch = useDispatch();
@@ -27,7 +27,7 @@ const FollowButton = ({ post }) => {
                 }
         }, [isFollowing]);
     return (
-    <IsFollowButton onClick= {onClickButton}variant="outline-primary">
+    <IsFollowButton onClick= {onClickButton} variant="outline-primary">
         {isFollowing ? '언팔로우' : '팔로우'}
     </IsFollowButton>
     

@@ -1,16 +1,16 @@
 import React, { useCallback } from 'react';
-import { Button } from 'react-bootstrap';
 import Proptypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { FOLLOW_REQUEST, UNFOLLOW_REQUEST } from '../reducers/user';
 import styled from 'styled-components';
+import { Button } from 'react-bootstrap';
+import { FOLLOW_REQUEST, UNFOLLOW_REQUEST } from '../reducers/user';
 
-const isFollowButton = styled(Button)`
-    position: absolute; 
-    z-index: 10;
+const FollowButton = styled(Button)`
+    position: absolute;
     right: 1rem;
-    top: 1.6rem;
-`
+    top: 1.7rem;
+    z-index: 100;
+`;
 
 const RecommendFollowButton = ({ recommendUser }) => {
     const { me } = useSelector((state) => state.user);
@@ -34,9 +34,9 @@ const RecommendFollowButton = ({ recommendUser }) => {
         [isFollowing, recommendUser],
     ); 
     return (
-            <isFollowButton  onClick={onClickButton}>
+            <FollowButton onClick={onClickButton}>
                 {isFollowing ? '언팔로우' : '팔로우' }
-            </isFollowButton>
+            </FollowButton>
     );
 };
 RecommendFollowButton.propTypes = {

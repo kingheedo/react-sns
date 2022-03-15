@@ -4,13 +4,13 @@ import React, { useCallback, useEffect } from 'react';
 import { FormControl, Modal, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import propTypes from 'prop-types';
+import styled from 'styled-components';
 import useInput from '../hooks/useInput';
 import { ADD_REPORT_REQUEST } from '../reducers/post';
-import styled from 'styled-components';
 
 const FormButton = styled(Button)`
   float: right;
-`
+`;
 
 const Report = ({ post, show, handleModalForm }) => {
     const { addReportLoading } = useSelector((state) => state.post);

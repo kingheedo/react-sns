@@ -45,6 +45,9 @@
         "no-shadow": "off",
         "no-alert": "off",
         "consistent-return": "off",
-        "max-len": "off"
+        "max-len": "off",
+        "react/jsx-props-no-spreading": "off",
+        "react/prop-types": "off",
+        "array-callback-return" :"off"
     }
 }

@@ -2,12 +2,12 @@ import React from 'react';
 import { Card, Button, CardGroup, ListGroup } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { REMOVE_FOLLOWER_REQUEST, UNFOLLOW_REQUEST } from '../reducers/user';
 import styled from 'styled-components';
+import { REMOVE_FOLLOWER_REQUEST, UNFOLLOW_REQUEST } from '../reducers/user';
 
 const List = styled(ListGroup)`
  margin-bottom: 5rem
-`
+`;
 const FollowList = ({ header, data, mutate }) => {
     const dispatch = useDispatch();
     const onCancel = (id) => () => {

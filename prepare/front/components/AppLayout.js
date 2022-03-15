@@ -147,27 +147,31 @@ const DropdownDivider = styled(Dropdown.Divider)`
 @media screen and (max-width: 767px) { 
     top: 5rem;
 };
-  ` ;
+  `;
 
 const TwitterIcon = styled(Twitter)`
   color: #0a58ca
-`
+`;
 const HouseDoorIcon = styled(HouseDoor)`
   margin-right : 1rem
-`
+`;
 const BookmarkIcon = styled(Bookmark)`
   margin-right : 1rem
-`
+`;
 const PersonIcon = styled(Person)`
   margin-right : 1rem
-` 
+`; 
 const Forms = styled(Form)`
   position: relative;
-` 
+  @media screen and (max-width: 992px) { 
+    display:none;
+};
+
+`; 
 const Anchor = styled.a`
    display: block; 
    text-decoration: none;
-` 
+`; 
 const AppLayout = ({ children }) => {
   const [show, setShow] = useState(false);
   const handleModalForm = useCallback(
@@ -243,12 +247,14 @@ const AppLayout = ({ children }) => {
   const FindUser = useCallback(
     (e) => {
       e.preventDefault();
-      searchUserList?.map((v) => {
+      if (searchUserList) {
+        searchUserList.map((v) => {
         if (searchContent && searchContent === v.nickname) {
           Router.push(`/user/${v.id}`);
           setsearchContent('');
         }
       });
+      }
 
       if (searchHashtag) {
         Router.push(`/hashtag/${searchHashtag}`);
@@ -291,7 +297,7 @@ const AppLayout = ({ children }) => {
                           <BookmarkIcon/>
                           Bookmark
                           </h3>
-                      </Link>
+                        </Link>
                       </Button>
 
                        <Button variant size="lg">
@@ -300,7 +306,7 @@ const AppLayout = ({ children }) => {
                           <PersonIcon/>
                           Profile
                           </h3>
-                      </Link>
+                         </Link>
                        </Button>
 
                       {!me && (
@@ -327,7 +333,6 @@ const AppLayout = ({ children }) => {
               <Col2>{children}</Col2>
 
               <Col>
-              
                   <Forms inline onSubmit={FindUser}>
                       <SearchWrapper>
                           <SearchIcon />

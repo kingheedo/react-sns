@@ -34,7 +34,7 @@ const CardLink = styled(Card.Link)`
 const MomentDiv = styled.div`
     float: right;
     margin-top: 15px;
-`
+`;
 const UserProfile = () => {
     const { me } = useSelector((state) => state.user);
     const dispatch = useDispatch();

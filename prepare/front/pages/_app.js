@@ -4,14 +4,14 @@
     import 'bootstrap/dist/css/bootstrap.css';
     import wrapper from '../store/configureStore';
   
-    const NodeBird = ({ Component }) => {
+    const NodeBird = ({ Component, pageProps }) => {
         return (
             <>
                 <Head>
                     <meta charSet="utf-8"/>
                     <title>트위터</title>
                 </Head>
-                <Component/>
+                <Component {...pageProps}/>
             </>
         );
     };

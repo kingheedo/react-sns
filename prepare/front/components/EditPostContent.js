@@ -5,28 +5,29 @@ import { Card, FormControl, Modal, Button } from 'react-bootstrap';
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
 import propTypes from 'prop-types';
+import styled from 'styled-components';
 import PostImages from './PostImages';
 import useInput from '../hooks/useInput';
 import { EDIT_POST_CONTENT_REQUEST } from '../reducers/post';
-import styled from 'styled-components';
+
 const ModalCard = styled(Card)`
  border: 0;
  width: 100%;
  display: inline-block;
  margin: 0.05rem;
-`
+`;
 const ModalDiv1 = styled.div`
  position: relative;
-`
+`;
 const ModalDiv2 = styled.div`
  padding: 24px;
-`
+`;
 const CartTitle = styled(Card.Title)`
   margin-bottom: 2rem;
-`
+`;
 const ModalButton = styled(Button)`
  float: right;
-`
+`;
 const EditPostContent = ({ post, show, handleModalForm }) => {
     const [text, onChangeText] = useInput(post?.content);
     const dispatch = useDispatch();

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { ListGroup } from 'react-bootstrap';
 import styled from 'styled-components';
@@ -8,7 +8,10 @@ const List = styled(ListGroup)`
     width: 20rem;
     top: 21rem;
     position: fixed;
-    z-index: 7;
+    @media screen and (max-width: 992px) { 
+    display:none;
+};
+
 `;
 const ListGroupItem = styled(ListGroup.Item)`
     margin:0 !important;
@@ -16,13 +19,14 @@ const ListGroupItem = styled(ListGroup.Item)`
 `;
 const ListItemWrapper = styled.div`
     position: relative;
-    z-index: 9;
     
 `;
 const Recommend = ({ recommend }) => {
+    const h2Style = useMemo(() => ({ margin: '0' }), []);
+
    return (
        <>
-        <ListGroup>
+        <List>
             <ListGroup.Item>Who to follow</ListGroup.Item>
             {recommend && recommend.map((v, i) => (
                 // eslint-disable-next-line react/no-array-index-key
@@ -30,12 +34,12 @@ const Recommend = ({ recommend }) => {
                     <ListGroupItem action href={`/user/${v.id}`}>
                         {v.nickname}
                     </ListGroupItem>
-                    <h2 style={{ margin: 0 }}>
+                    <h2 style={h2Style}>
                         <RecommendFollowButton recommendUser={v} />
                     </h2>
                 </ListItemWrapper>
             ))}
-        </ListGroup>
+        </List>
        </>
    );
 };

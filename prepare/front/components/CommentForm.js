@@ -3,14 +3,14 @@ import { Form, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import Router from 'next/router';
+import styled from 'styled-components';
 import useInput from '../hooks/useInput';
 import { ADD_COMMENT_REQUEST } from '../reducers/post';
-import styled from 'styled-components';
 
 const FormButton = styled(Button)`
  position: absolute; 
  right: 0;
-`
+`;
 
 const CommentForm = ({ post }) => {
     const me = useSelector((state) => state.user.me);

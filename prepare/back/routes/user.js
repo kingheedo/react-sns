@@ -142,7 +142,7 @@ router.get('/recommend', isLoggedIn, async(req, res ,next) => {
         if(!myfollowings || !myfollowers){
            return res.status(201).json(null)
         }
-        const EachOther =  myfollowers.filter(v => myfollowings.some(f => v.id === f.id)).map(v => v.id).sort(() => Math.floor(Math.random()-0.5))
+        const EachOther =  myfollowers.filter(v => myfollowings.some(f => v.id === f.id)).map(v => v.id)
         const user2 = await User.findOne({
             where: {id: EachOther[0]},
             attributes: {exclude:['password']},
