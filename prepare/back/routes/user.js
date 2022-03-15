@@ -48,7 +48,7 @@ router.get('/followers', isLoggedIn, async(req, res ,next) => {
         const followers = await user.getFollowers({
             limit: 3,
         });
-        res.status(203).json(followers);
+        res.status(200).json(followers);
     }catch(err){
         console.error(err);
         next(err)
@@ -65,7 +65,7 @@ router.get('/followings', isLoggedIn, async(req, res ,next) => {
         const followings = await user.getFollowings({
             limit: 3,
         });
-        res.status(203).json(followings);
+        res.status(200).json(followings);
     }catch(err){
         console.error(err);
         next(err)
@@ -122,7 +122,7 @@ router.get('/bookmarks', isLoggedIn, async(req, res, next) => {
             },]
             
         })
-        res.status(201).json(posts)
+        res.status(200).json(posts)
     }catch(error){
         console.error(error);
         next(error);
@@ -140,7 +140,7 @@ router.get('/recommend', isLoggedIn, async(req, res ,next) => {
         const myfollowers = await user.getFollowers();
 
         if(!myfollowings || !myfollowers){
-           return res.status(201).json(null)
+           return res.status(200).json(null)
         }
         const EachOther =  myfollowers.filter(v => myfollowings.some(f => v.id === f.id)).map(v => v.id)
         const user2 = await User.findOne({
@@ -187,9 +187,9 @@ router.get('/list', isLoggedIn, async(req, res ,next) => {
             where: {nickname: {[Op.like]: req.query.data +'%'}},
             attributes: ['id','nickname']
         })
-        res.status(203).json(user);
+        res.status(200).json(user);
         }else{
-            res.status(203).json(null)
+            res.status(200).json(null)
             }
     }catch(err){
         console.error(err);
@@ -228,7 +228,7 @@ router.get('/:userId', async(req, res, next) => {
         data.Followings = data.Followings.length;
         res.status(200).json(data)
     }else{
-        res.status(404).json('존재하지 않는 사용자입니다.')
+        res.status(403).json('존재하지 않는 사용자입니다.')
     }
    }catch(err){
        console.error(err);
@@ -299,7 +299,7 @@ router.post('/login',isNotLoggedIn, (req, res, next) => {
         return next(err);
     }
     if(info) {
-        return res.status(401).send(info.reason);
+        return res.status(403).send(info.reason);
     }
     return req.login(user, async(loginErr) => { //login 한다음 실행되는게  passport index의 serialize가 실행되고 user정보가 들어간다.
         if(loginErr){
@@ -365,7 +365,7 @@ router.post('/signUp', isNotLoggedIn, async(req, res, next) => {
         password: hasedPassword,
         nickname: req.body.nickname,
     })
-    res.status(200).send('회원가입이 완료되었습니다.')
+    res.status(201).send('회원가입이 완료되었습니다.')
    }catch(error){
        console.error(error);
        next(error)
