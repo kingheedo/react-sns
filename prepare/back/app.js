@@ -1,6 +1,5 @@
 const express = require('express');
 const db = require('./models');
-const app = express();
 const hashtagRouter = require('./routes/hashtag')
 const postRouter = require('./routes/post');
 const postsRouter = require('./routes/posts');
@@ -15,6 +14,8 @@ const morgan = require('morgan');
 const path = require('path');
 const hpp = require('hpp');
 const helmet = require('helmet');
+dotenv.config();
+const app = express();
 
 db.sequelize.sync()
 .then(() => {
@@ -25,7 +26,6 @@ db.sequelize.sync()
 app.use('/', express.static(path.join(__dirname, 'uploads'))) //localhost3065/ 경로
 
 passportConfig();
-dotenv.config();
 
 if(process.env.NODE_ENV === 'production'){
     app.use(morgan('combined'));
