@@ -25,7 +25,7 @@ const signup = () => {
         if (signUpError) {
             alert(signUpError);
         }
-    }, [signUpError]);
+    }, []);
     useEffect(() => {
         if (signUpDone) {
             alert('회원가입이 완료되었습니다.');

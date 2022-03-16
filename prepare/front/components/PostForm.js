@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { ADD_POST_REQUEST, REMOVE_IMAGE, UPLOAD_IMAGES_REQUEST } from '../reducers/post';
 import useInput from '../hooks/useInput';
+import { backUrl } from '../config/config';
 
 const UploadButton = styled(Button)`
  margin-top: 1rem;
@@ -93,7 +94,7 @@ const PostForm = () => {
                 {imagePaths.map((v, i) => (
                     // eslint-disable-next-line react/no-array-index-key
                     <ImageDiv key={i}>
-                        <img src={`http://localhost:3065/${v}`} alt={v} style= {{ width: '220px' }}/>
+                        <img src={`${backUrl}/${v}`} alt={v} style= {{ width: '220px' }}/>
                         <div>
                             <Button onClick={onRemoveImage(i)}>제거</Button>
                         </div>

@@ -6,6 +6,7 @@ import { XSquareFill } from 'react-bootstrap-icons';
 import styled from 'styled-components';
 import { DELETE_POST_IMAGE_REQUEST } from '../reducers/post';
 import ImagesZoom from './ImagesZoom';
+import { backUrl } from '../config/config';
 
 const CardImg1 = styled(Card.Img)`
     width: 100%;
@@ -89,7 +90,7 @@ const PostImages = ({ images, header, postid }) => {
             header === '수정'
             && (
             <>
-                <CardImg1 id ={images[0].id} onClick = {handleDeleteImage} variant="top" alt={images[0].src} src={`http://localhost:3065/${images[0].src}`} />
+                <CardImg1 id ={images[0].id} onClick = {handleDeleteImage} variant="top" alt={images[0].src} src={`${backUrl}/${images[0].src}`} />
                 {selectImage1 && <XSquare1 onClick={!deletePostImageLoading && onDeleteImage(images[0].id, postid)}>Delete</XSquare1>}
             </>
                 )
@@ -98,7 +99,7 @@ const PostImages = ({ images, header, postid }) => {
             {header === '메인이미지' 
             && (
             <>
-            <CardImg1 variant="top" alt={images[0].src} src={`http://localhost:3065/${images[0].src}`} onClick={onZoom} />
+            <CardImg1 variant="top" alt={images[0].src} src={`${backUrl}/${images[0].src}`} onClick={onZoom} />
                  {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
             </>
                 )}
@@ -111,8 +112,8 @@ const PostImages = ({ images, header, postid }) => {
             {header === '수정'
                 && (
             <>
-                    <CardImg2 id ={images[0].id} onClick = {handleDeleteImage} variant="top" alt={images[0].src} src={`http://localhost:3065/${images[0].src}`} />
-                    <CardImg2 id ={images[1].id} onClick = {handleDeleteImage} variant="top" alt={images[1].src} src={`http://localhost:3065/${images[1].src}`} />
+                    <CardImg2 id ={images[0].id} onClick = {handleDeleteImage} variant="top" alt={images[0].src} src={`${backUrl}/${images[0].src}`} />
+                    <CardImg2 id ={images[1].id} onClick = {handleDeleteImage} variant="top" alt={images[1].src} src={`${backUrl}/${images[1].src}`} />
                     {selectImage1 && <XSquare2 onClick={!deletePostImageLoading && onDeleteImage(images[0].id, postid)}>Delete</XSquare2>}
                     {selectImage2 && <XSquare1 onClick={!deletePostImageLoading && onDeleteImage(images[1].id, postid)}>Delete</XSquare1>}
             </>
@@ -121,8 +122,8 @@ const PostImages = ({ images, header, postid }) => {
             {header === '메인이미지'
                 && (
             <>
-                <CardImg2 variant="top" alt={images[0].src} src={`http://localhost:3065/${images[0].src}`} onClick={onZoom}/>
-                <CardImg2 variant="top" alt={images[1].src} src={`http://localhost:3065/${images[1].src}`} onClick={onZoom}/>
+                <CardImg2 variant="top" alt={images[0].src} src={`${backUrl}/${images[0].src}`} onClick={onZoom}/>
+                <CardImg2 variant="top" alt={images[1].src} src={`${backUrl}/${images[1].src}`} onClick={onZoom}/>
                    {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
             </>
             )}
@@ -136,7 +137,7 @@ const PostImages = ({ images, header, postid }) => {
             header === '수정' 
             && (
             <>
-                <CardImg1 id ={images[0].id} onClick = {handleDeleteImage} variant="top" alt={images[0].src} src={`http://localhost:3065/${images[0].src}`} />
+                <CardImg1 id ={images[0].id} onClick = {handleDeleteImage} variant="top" alt={images[0].src} src={`${backUrl}/${images[0].src}`} />
                 {selectImage1 && <XSquare1 onClick={!deletePostImageLoading && onDeleteImage(images[0].id, postid)}>Delete</XSquare1>}
             </>
             )
@@ -145,7 +146,7 @@ const PostImages = ({ images, header, postid }) => {
             {header === '메인이미지'
             && (
             <>
-            <CardImg1 variant="top" alt={images[0].src} src={`http://localhost:3065/${images[0].src}`} onClick={onZoom} />
+            <CardImg1 variant="top" alt={images[0].src} src={`${backUrl}/${images[0].src}`} onClick={onZoom} />
                  {showImagesZoom && <ImagesZoom images={images} onClose={onClose} />}
             </>
             )}
