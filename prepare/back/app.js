@@ -31,9 +31,16 @@ if(process.env.NODE_ENV === 'production'){
     app.use(morgan('combined'));
     app.use(hpp());
     app.use(helmet());
+    app.use(cors({
+    origin : 'http://pressheart.com',
+    credentials: true,
+}))
 }else{
     app.use(morgan('dev'));
-
+    app.use(cors({
+    origin : true,
+    credentials: true,
+}))
 }
 
 app.use(cookieParser(process.env.COOKIE_SECRET));
@@ -50,10 +57,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session())
 
-app.use(cors({
-    origin : ['http://localhost:3060', 'pressheart.com'],
-    credentials: true,
-}))
+
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
