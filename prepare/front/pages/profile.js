@@ -10,6 +10,7 @@ import FollowList from '../components/FollowList';
 import NickNameEditForm from '../components/NickNameEditForm';
 import { LOAD_MY_INFO_REQUEST } from '../reducers/user';
 import wrapper from '../store/configureStore';
+import { backUrl } from '../config/config';
 
 const fetcher = (url) => axios.get(url, { withCredentials: true }).then((result) => result.data);
 const Profile = () => {
@@ -17,8 +18,8 @@ const Profile = () => {
 
     const dispatch = useDispatch();
 
-    const { data: followersData, error: followerError, mutate: mutateFollower } = useSWR(`${back}/user/followers`, fetcher);
-    const { data: followingsData, error: followingError, mutate: mutateFollowing } = useSWR(`${back}/user/followings`, fetcher);
+    const { data: followersData, error: followerError, mutate: mutateFollower } = useSWR(`${backUrl}/user/followers`, fetcher);
+    const { data: followingsData, error: followingError, mutate: mutateFollowing } = useSWR(`${backUrl}/user/followings`, fetcher);
     
     useEffect(() => {
         if (!me) {
