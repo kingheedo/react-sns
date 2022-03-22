@@ -40,13 +40,18 @@ app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session({
     saveUninitialized: false,
     resave: false,
-    secret: process.env.COOKIE_SECRET //쿠키와 이 secret을 알면 백엔드의 데이터를 복원할 수 있다. 위험하므로 숨겨야한다.
+    secret: process.env.COOKIE_SECRET, //쿠키와 이 secret을 알면 백엔드의 데이터를 복원할 수 있다. 위험하므로 숨겨야한다.
+    cookie: {
+        httpOnly: true,
+        secure: false,
+        domain: process.env_NODE_ENV === 'production' && '.pressheart.com'
+    }
 }))
 app.use(passport.initialize());
 app.use(passport.session())
 
 app.use(cors({
-    origin : ['http://localhost:3060', 'pressheart.com', 'http://13.209.41.160'],
+    origin : ['http://localhost:3060', 'pressheart.com'],
     credentials: true,
 }))
 
