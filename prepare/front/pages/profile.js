@@ -17,8 +17,8 @@ const Profile = () => {
 
     const dispatch = useDispatch();
 
-    const { data: followersData, error: followerError, mutate: mutateFollower } = useSWR('http://localhost:3065/user/followers', fetcher);
-    const { data: followingsData, error: followingError, mutate: mutateFollowing } = useSWR('http://localhost:3065/user/followings', fetcher);
+    const { data: followersData, error: followerError, mutate: mutateFollower } = useSWR(`${back}/user/followers`, fetcher);
+    const { data: followingsData, error: followingError, mutate: mutateFollowing } = useSWR(`${back}/user/followings`, fetcher);
     
     useEffect(() => {
         if (!me) {
