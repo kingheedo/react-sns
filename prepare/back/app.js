@@ -46,7 +46,7 @@ app.use(passport.initialize());
 app.use(passport.session())
 
 app.use(cors({
-    origin : ['http://localhost:3060', 'reactsns.com', 'http://15.164.231.130'],
+    origin : ['http://localhost:3060', 'pressheart.com', 'http://13.209.41.160'],
     credentials: true,
 }))
 
