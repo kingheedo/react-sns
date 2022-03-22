@@ -51,7 +51,7 @@ app.use(session({
     cookie: {
         httpOnly: true,
         secure: false,
-        domain: process.env_NODE_ENV === 'production' && '.pressheart.com'
+        domain: process.env.NODE_ENV === 'production' && '.pressheart.com'
     }
 }))
 app.use(passport.initialize());
