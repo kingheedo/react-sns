@@ -93,7 +93,7 @@ const PostForm = () => {
                 {imagePaths.map((v, i) => (
                     // eslint-disable-next-line react/no-array-index-key
                     <ImageDiv key={i}>
-                        <img src={v} alt={v} style= {{ width: '220px' }}/>
+                        <img src={v.replace(/\/thumb\//, '/original/')} alt={v} style= {{ width: '220px' }}/>
                         <div>
                             <Button onClick={onRemoveImage(i)}>제거</Button>
                         </div>
