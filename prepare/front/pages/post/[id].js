@@ -28,7 +28,7 @@ const Post = () => {
                 <meta property = "og:title" content ={`${singlePost.User.nickname} 님의 게시글`}/>
                 <meta property = "og:description" content ={singlePost.content}/>
                 <meta property = "og:image" content ={singlePost.Images[0] ? singlePost.Images[0].src : 'https://localhost:3060/twitter.ico'}/>
-                <meta property = "og:url" content ={`https://localhost:3060/post/${id}`}/>
+                <meta property = "og:url" content ={`https://pressheart.com/post/${id}`}/>
             </Head>
             <PostCard post={singlePost}/>
         </AppLayout>
