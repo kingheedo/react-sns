@@ -172,7 +172,7 @@ router.post('/addpost', isLoggedIn, upload.none(), async(req, res, next) => {
 
 router.post('/images', isLoggedIn, upload.array('image'), async(req, res, next) => {
     console.log('req.files',req.files);
-    res.json(req.files.map((v) => v.location))
+    res.json(req.files.map((v) => v.location.replace(/\/original\//, '/thumb/')));
 })
 
 router.delete('/:postId/image/:imageId', isLoggedIn, async(req, res, next) => {
