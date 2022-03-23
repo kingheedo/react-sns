@@ -6,26 +6,31 @@ const fs = require('fs');
 const { Post, Comment, Image, User, Hashtag, Report } = require('../models');
 const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
 const router = express.Router();
-
+const multerS3 = require('multer-s3');
+const AWS = require('aws-sdk')
 try{
     fs.accessSync('uploads');
 }catch(error){
     console.log('uploads 폴더가 없으므로 생성합니다.');
     fs.mkdirSync('uploads');
 }
+
+AWS.config.update({
+    accessKeyId: process.env.S3_ACCESS_KEY_ID,
+    secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+    region: 'ap-northeast-2',
+})
+
 const upload = multer ({
-    storage: multer.diskStorage({
-        destination(req, file, done){
-            done(null, 'uploads');
-        },
-        filename(req, file, done){
-            const ext = path.extname(file.originalname); // 확장자 추출(.png),
-            const basename = path.basename(file.originalname, ext); //희도
-            done(null, basename + '_' + new Date().getTime() + ext); //희도12345.png
-        },
-        }),
-        limits: {fileSize: 20 * 1024 * 1024}, //20MB
-});
+    storage: multerS3({
+        s3: new AWS.S3(),
+        bucket: 'pressheart-s3',
+        key(req, file, cb){
+            cb(null, `original/${Date.now()}_${path.basename(file.originalname)}`)
+        }
+}),
+    limits: {fileSize: 20 * 1024 * 1024}
+})
 
 router.post('/:postId/report', async(req, res, next) => {
     try{
@@ -167,7 +172,7 @@ router.post('/addpost', isLoggedIn, upload.none(), async(req, res, next) => {
 
 router.post('/images', isLoggedIn, upload.array('image'), async(req, res, next) => {
     console.log('req.files',req.files);
-    res.json(req.files.map((v) => v.filename))
+    res.json(req.files.map((v) => v.location))
 })
 
 router.delete('/:postId/image/:imageId', isLoggedIn, async(req, res, next) => {
