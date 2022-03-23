@@ -48,7 +48,7 @@ const Report = ({ post, show, handleModalForm }) => {
               </Modal.Header>
               <Modal.Body>
                     <FormControl as="textarea" rows={3} value={report} onChange={onChangeReport} />
-                    <FormButton onClick={onReport} variant="primary" >수정</FormButton>
+                    <FormButton onClick={onReport} variant="primary" >신고하기</FormButton>
               </Modal.Body>
              </Modal>
         </>

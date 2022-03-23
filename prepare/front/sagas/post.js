@@ -42,7 +42,7 @@ function* DeltePostImage(action) {
 }
 
 function EditPostContentApi(data) {
-    return axios.patch(`/post/${data.postId}/edit`, data);
+    return axios.patch(`/post/${data.postId}`, data);
 }
 function* EditPostContent(action) {
     try {
@@ -116,7 +116,7 @@ function* loadPosts(action) {
 }
 
 function addPostApi(data) {
-    return axios.post('/post/addpost', data);
+    return axios.post('/post', data);
 }
 function* addPost(action) {
     try {

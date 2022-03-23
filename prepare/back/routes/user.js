@@ -179,7 +179,7 @@ router.get('/recommend', isLoggedIn, async(req, res ,next) => {
     }
 })
 
-router.get('/list', isLoggedIn, async(req, res ,next) => {
+router.get('/list', async(req, res ,next) => {
     try{
        
         if(req.query.data){

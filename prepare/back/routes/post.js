@@ -4,7 +4,7 @@ const path = require('path');
 const fs = require('fs');
 
 const { Post, Comment, Image, User, Hashtag, Report } = require('../models');
-const { isLoggedIn, isNotLoggedIn } = require('./middlewares');
+const { isLoggedIn } = require('./middlewares');
 const router = express.Router();
 const multerS3 = require('multer-s3');
 const AWS = require('aws-sdk')
@@ -48,7 +48,7 @@ router.post('/:postId/report', async(req, res, next) => {
     }
 })
 
-router.patch('/:postId/edit', isLoggedIn, async(req, res, next) => {
+router.patch('/:postId', isLoggedIn, async(req, res, next) => {
     try{
         const exPost = await Post.findOne({
             where : {id: req.params.postId}
@@ -73,7 +73,7 @@ router.patch('/:postId/edit', isLoggedIn, async(req, res, next) => {
     }
 })
 
-router.get('/:postId', isNotLoggedIn, async(req, res, next) => {
+router.get('/:postId', async(req, res, next) => {
     try{
       const post = await Post.findOne({
           where : {id : req.params.postId},
@@ -116,7 +116,7 @@ router.get('/:postId', isNotLoggedIn, async(req, res, next) => {
 })
 
 
-router.post('/addpost', isLoggedIn, upload.none(), async(req, res, next) => {
+router.post('/', isLoggedIn, upload.none(), async(req, res, next) => {
     try{
         const hashtags = req.body.content.match(/#[^\s#]+/g);
         const post = await Post.create({
