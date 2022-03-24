@@ -32,7 +32,7 @@ if(process.env.NODE_ENV === 'production'){
     app.use(hpp());
     app.use(helmet());
     app.use(cors({
-    origin : 'http://pressheart.com',
+    origin : 'https://pressheart.com',
     credentials: true,
 }))
 }else{
@@ -76,6 +76,6 @@ app.use('/user', userRouter);
 app.use((err, req, res, next) => {
 })
 
-app.listen(80, () =>{
+app.listen(3065, () =>{
     console.log('서버 실행중')
 })
