@@ -90,7 +90,7 @@ const PostImages = ({ images, header, postid }) => {
             header === '수정'
             && (
             <>
-                <CardImg1 id ={images[0].id} onClick = {handleDeleteImage} variant="top" alt={images[0].src} src={`${images[0].src.replace(/\/thumb\//, '/original/')}`} />
+                <CardImg1 id ={images[0].id} onClick = {handleDeleteImage} variant="top" alt={images[0].src} src={`${images[0].src.replace(/\/original\//, '/thumb/')}`} />
                 {selectImage1 && <XSquare1 onClick={!deletePostImageLoading && onDeleteImage(images[0].id, postid)}>Delete</XSquare1>}
             </>
                 )
