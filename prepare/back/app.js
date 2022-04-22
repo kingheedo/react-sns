@@ -45,13 +45,13 @@ if(process.env.NODE_ENV === 'production'){
 
 app.use(cookieParser(process.env.COOKIE_SECRET));
 app.use(session({
-    proxy: true,
+    proxy: true,    
     saveUninitialized: false,
     resave: false,
     secret: process.env.COOKIE_SECRET, //쿠키와 이 secret을 알면 백엔드의 데이터를 복원할 수 있다. 위험하므로 숨겨야한다.
     cookie: {
         httpOnly: true,
-        secure: true,
+        secure: process.env.NODE_ENV ==='production' ? true : false,
         domain: process.env.NODE_ENV === 'production' && '.pressheart.com'
     }
 }))
