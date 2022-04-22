@@ -56,6 +56,7 @@ router.patch('/:postId', isLoggedIn, async(req, res, next) => {
         if(exPost.UserId !== req.user.id){
       return res.status(403).send('본인이 작성한 게시글만 수정할 수 있습니다.')
         }
+
        await Post.update({
             content : req.body.contentText,
            
@@ -66,6 +67,16 @@ router.patch('/:postId', isLoggedIn, async(req, res, next) => {
           },
         })
       
+        const hashtags = req.body.contentText.match(/#[^\s#]+/g);
+        if(hashtags){
+            const result = await Promise.all(hashtags.map(hashtag => 
+                Hashtag.findOrCreate({
+                    where : {name : hashtag.slice(1).toLowerCase()}
+                })
+            ))
+            exPost.setHashtags(result.map(v => v[0]))
+        }
+
       res.status(201).json({content : req.body.contentText, PostId : parseInt(req.params.postId, 10)})
     }catch(error){
         console.error(error);
