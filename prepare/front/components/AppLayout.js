@@ -38,7 +38,13 @@ const ButtonGroupWrapper = styled(ButtonGroup)`
         text-align: left;
     };
     h3{
-         color: #0a58ca;
+      color: #4283b2;
+      &:hover{
+        color: #0069d9;
+      }
+      & svg {
+        margin-right : 1rem;
+      }
     };
      @media screen and (max-width: 767px) { 
     position: static;
@@ -67,12 +73,14 @@ const SearchList = styled(ListGroup)`
     `;
 const CircleButton = styled(Button)`
     margin-top: 50px;
+    background: #4a87b2;
     border-radius: 9999px;
         text-align: center !important;
         display:block;
         height: 64px;
         width: 270px;
         font-size: 1.5rem;
+        border: none;
 }
 `;
 
@@ -149,18 +157,29 @@ const DropdownDivider = styled(Dropdown.Divider)`
 };
   `;
 
-const TwitterIcon = styled(Twitter)`
-  color: #0a58ca
-`;
 const HouseDoorIcon = styled(HouseDoor)`
-  margin-right : 1rem
+  &:hover{
+    color: #0069d9;
+  }
 `;
 const BookmarkIcon = styled(Bookmark)`
-  margin-right : 1rem
+  &:hover{
+    color: #0069d9;
+  }
 `;
 const PersonIcon = styled(Person)`
-  margin-right : 1rem
+  &:hover{
+    color: #0069d9;
+  }
 `; 
+const SignupButton = styled(Button)`
+& a{
+  color:#4088bc
+}
+  &:hover{
+    color: #0069d9;
+  }
+`;
 const Forms = styled(Form)`
   position: relative;
   @media screen and (max-width: 992px) { 
@@ -278,7 +297,7 @@ const AppLayout = ({ children }) => {
               <Col1>
                   <Link href="/">
                       <TwitterWrapper>
-                          <TwitterIcon/>
+                          <img alt="logo" src="https://img.icons8.com/cotton/64/000000/swipe-heart-right--v1.png"/>
                       </TwitterWrapper>
                   </Link>
                   <ButtonGroupWrapper vertical>
@@ -310,8 +329,8 @@ const AppLayout = ({ children }) => {
                        </Button>
 
                       {!me && (
-                      <Button variant size="lg"><Link href="/signup">회원가입</Link>
-                      </Button>
+                      <SignupButton variant size="lg"><Link href="/signup">회원가입</Link>
+                      </SignupButton>
                       )}
 
                       <h1>

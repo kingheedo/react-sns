@@ -10,7 +10,14 @@ const FormLabel = styled(Form.Label)`
     padding: 10px;
 `;
 const FormControl = styled(Form.Control)`
-     margin-eeft: 10px
+     margin-left: 10px
+`;
+const FormButton = styled(Button)`
+    background: #4088bc;
+    &:hover{
+    background: #0069d9;
+  }
+  color: #FFFFFF;
 `;
 
 const LoginForm = () => {
@@ -54,10 +61,10 @@ const LoginForm = () => {
                 
                 <Form.Group as={Row}>
                     <Col sm={{ span: 10, offset: 2 }}>
-                        <Button disabled={logInLoading} variant="primary" type="submit">
+                        <FormButton disabled={logInLoading} variant="primary" type="submit">
                             {logInLoading ? 'Loading…' : '로그인'}    
-                        </Button>
-                    <Link href="/signup"><Button variant="outline-primary">회원가입</Button></Link>
+                        </FormButton>
+                    <Link href="/signup"><FormButton variant="outline-primary">회원가입</FormButton></Link>
                     </Col>
                 </Form.Group>
             </Form>

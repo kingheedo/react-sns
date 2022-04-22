@@ -7,6 +7,11 @@ import { FOLLOW_REQUEST, UNFOLLOW_REQUEST } from '../reducers/user';
 
 const IsFollowButton = styled(Button)`
  float: right;
+ color: #ffffff;
+ background: #4088bc;
+    &:hover{
+    background: #0069d9;
+  }
 `;
 
 const FollowButton = ({ post }) => {

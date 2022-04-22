@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Card } from 'react-bootstrap';
 import styled from 'styled-components';
+import Link from 'next/link';
 import AppLayout from '../../components/AppLayout';
 import PostCard from '../../components/PostCard';
 import { LOAD_USER_POSTS_REQUEST } from '../../reducers/post';
@@ -18,21 +19,12 @@ const UserCard = styled(Card)`
  flex-direction: row;
 `;
 
-const CardLinkWrapper = styled.div`
-    padding-top : 15px;
-    border-top: 1px solid rgba(0, 0, 0, 0.125);
-    display: flex !important
-    
-`;
-
 const CardBody = styled(Card.Body)`
     padding: 1.0rem;
 `;
 const CardLink = styled(Card.Link)`
-    padding : 5px;
+    padding: 0;
     display:flex;
-    text-align : center;
-    padding : 0 1.0rem;
 `;
 const User = () => {
     const { mainPosts, hasMorePosts, loadPostsLoading } = useSelector((state) => state.post);
@@ -74,20 +66,19 @@ const User = () => {
                 <meta property = "og:url" content ={`https://localhost:3000/user/${id}`}/>
                   </Head>
                 )}
-            {userInfo && ( 
-           <UserCard>
-                <CardBody>
-                    <Card.Title>{userInfo.nickname}</Card.Title>
-                    <br/>
-                    <CardLinkWrapper>
-                        <CardLink href="#">게시글 수 <br/>{userInfo.Posts}</CardLink>
-                        <CardLink href="#">팔로잉 <br/>{userInfo.Followings}</CardLink>
-                        <CardLink href="#">팔로워 <br/>{userInfo.Followers}</CardLink>
-                    </CardLinkWrapper>
-                    
-                </CardBody>
-           </UserCard>
-            )}
+                {userInfo && ( 
+                    <UserCard>
+                            <CardBody>
+                                <Card.Title>{userInfo.nickname}</Card.Title>
+                                <br/>
+                                <div style={{ paddingTop: '15px', borderTop: '1px solid rgba(0, 0, 0, 0.125)', display: 'flex', textAlign: 'center' }}>
+                                    <Link href= {`/user/${userInfo.id}`}><a><CardLink href="#">게시물 <br/>{userInfo.Posts}</CardLink></a></Link>
+                                    <Link href="/profile"><a><CardLink href="#">팔로우 <br/>{userInfo.Followings}</CardLink></a></Link>
+                                    <Link href="/profile"><a><CardLink href="#">팔로워 <br/>{userInfo.Followers}</CardLink></a></Link>
+                                </div>
+                            </CardBody>
+                    </UserCard>
+                )}
             {mainPosts && mainPosts.map((v) => <PostCard key={v.id} post = {v}/>)}
         </AppLayout>
     );

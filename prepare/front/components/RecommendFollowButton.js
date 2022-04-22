@@ -10,6 +10,10 @@ const FollowButton = styled(Button)`
     right: 1rem;
     top: 1.7rem;
     z-index: 100;
+    background: #4088BC;
+    &:hover{
+    background: #0069d9;
+    }
 `;
 
 const RecommendFollowButton = ({ recommendUser }) => {

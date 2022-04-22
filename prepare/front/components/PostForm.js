@@ -7,10 +7,20 @@ import useInput from '../hooks/useInput';
 
 const UploadButton = styled(Button)`
  margin-top: 1rem;
+ color: #fffff;
+ background: #4283b2;
+      &:hover{
+        background: #0069d9;
+      }
 `;
 const PostButton = styled(Button)`
  float: right;
  margin-top: 1rem;
+ color: #fffff;
+ background: #4283b2;
+      &:hover{
+        background: #0069d9;
+      }
 `;
 const ImaegPathDiv = styled.div`
  display: flex; 

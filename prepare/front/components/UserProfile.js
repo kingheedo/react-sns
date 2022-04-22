@@ -10,10 +10,14 @@ const CardLinkWrapper = styled.div`
     padding-top : 15px;
     border-top: 1px solid rgba(0, 0, 0, 0.125);
     display: flex !important
-    
 `;
 const LogoutButton = styled(Button)`
     margin-bottom: 15px;
+    background: #4088bc;
+    color: #ffffff;
+    &:hover{
+        background: #0069d9;
+    }
 `;
 const ProfileCard = styled(Card)`
     width: 26rem;

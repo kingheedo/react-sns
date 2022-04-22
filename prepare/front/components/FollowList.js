@@ -8,6 +8,13 @@ import { REMOVE_FOLLOWER_REQUEST, UNFOLLOW_REQUEST } from '../reducers/user';
 const List = styled(ListGroup)`
  margin-bottom: 5rem
 `;
+const DeleteButton = styled(Button)`
+    color: #ffffff;
+ background: #4088bc;
+    &:hover{
+    background: #0069d9;
+  }
+`;
 const FollowList = ({ header, data, mutate }) => {
     const dispatch = useDispatch();
     const onCancel = (id) => () => {
@@ -34,7 +41,7 @@ const FollowList = ({ header, data, mutate }) => {
                                 <Card.Title>{v.nickname}</Card.Title>
                                 </Card.Body>
                                 <Card.Footer>
-                                <Button onClick={onCancel(v.id)}>X</Button>
+                                <DeleteButton onClick={onCancel(v.id)}>X</DeleteButton>
                                 </Card.Footer>
                             </Card>
                     

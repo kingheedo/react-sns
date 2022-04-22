@@ -27,6 +27,11 @@ const CartTitle = styled(Card.Title)`
 `;
 const ModalButton = styled(Button)`
  float: right;
+ color: #ffffff;
+ background: #4088bc;
+    &:hover{
+    background: #0069d9;
+  }
 `;
 const EditPostContent = ({ post, show, handleModalForm }) => {
     const [text, onChangeText] = useInput(post?.content);

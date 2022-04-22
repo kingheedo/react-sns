@@ -124,14 +124,14 @@ const PostCard = ({ post }) => {
 
     const RetweetCard = useMemo(() => ({
         border: '0', 
-        width: '100%',
+        width: '99%',
         display: 'inline-block',
         margin: '0.05rem',
     }), []);
 
     const TweetCard = useMemo(() => ({
         border: '0', 
-        width: '100%', 
+        width: '99%', 
         display: 'inline-block',
         margin: '0.05rem',
     }), []);
