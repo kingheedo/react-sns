@@ -19,16 +19,15 @@
 - **해시태그** : ex) '#리액트'  입력시 해시태그에 리액트가 추가, <br>게시글에 리액트의 해시태그를 가진 게시글의 페이지로 이동
 - **검색기능** : 원하는 유저의 닉네임을 입력시 유저 목록을 불러오고 검색, <br> #태그 검색시 해당 해시태그를 가진 게시글의 페이지로 이동
 - **작성시간** : 게시글이 얼마전에 작성되었는지 표시
-- **서버** : 노드로 서버구동 및 express 사용
-- **DB** : sequelize를 이용하여 MySQL에 데이터를 조작
+- **서버** : 노드로 서버구동 및 express 사용 및 sequelize를 이용하여 MySQL에 데이터를 조작
 
 
 ## 🛠 기술스택 
-   -  React,
+   -  React, Next.js
+   -  Typescript
    -  Redux & Redux-Saga, 
    -  React Hooks, 
    -  Styled Components, 
    -  React-boostrap, 
-   -  서버사이드 렌더링,
    -  Express
    -  Sequelize 
